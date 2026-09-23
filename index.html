@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maaz Khan | Data & AI Engineering</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom Tailwind Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#3b82f6', dark: '#0f172a' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-slate-300 font-sans antialiased selection:bg-primary selection:text-white">
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+        <!-- Background glowing orb -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto text-center z-10" data-aos="fade-up" data-aos-duration="1000">
+            <p class="text-primary font-semibold tracking-widest uppercase mb-4">Portfolio & Capstone Space</p>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
+                Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Maaz Khan.</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                I build intelligent systems, data pipelines, and platforms. BBA Student at IBA Karachi intersecting business strategy with machine learning engineering.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#projects" class="px-8 py-3 rounded-full bg-white text-dark font-bold hover:bg-slate-200 transition duration-300">View My Work</a>
+                <a href="YOUR_CALENDLY_OR_BOOKING_LINK" target="_blank" class="px-8 py-3 rounded-full border border-slate-600 hover:border-slate-400 transition duration-300 text-white">Book a Meeting</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- What I'm Building Section -->
+    <section id="projects" class="py-24 px-6 bg-slate-900/50">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center" data-aos="fade-up">Currently Building</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-blue-400 text-2xl">⚽</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Outfield App</h3>
+                    <p class="text-slate-400 leading-relaxed">A two-sided mobile application streamlining sports ground bookings for players and facility owners in Karachi. Engineered with React, Vite, Supabase, and Vercel.</p>
+                </div>
+
+                <!-- Project 2 (Capstone Placeholder) -->
+                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 border-dashed hover:border-cyan-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-cyan-400 text-2xl">🚀</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">FlyRank Capstone</h3>
+                    <p class="text-slate-400 leading-relaxed italic">ML-08 Capstone documentation and official FlyRank completion badge will be published here upon program approval.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect / Links Section -->
+    <section class="py-24 px-6 border-t border-slate-800">
+        <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-white mb-8">Let's Connect</h2>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" target="_blank" class="px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">LinkedIn</a>
+                <a href="https://github.com/MaazKhan53?preview=true" target="_blank" class="px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">GitHub</a>
+                <a href="https://drive.google.com/file/d/1QiDw1NckTzGEgWgc7jAPieo2Gtk0fVXj/view?usp=sharing" target="_blank" class="px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">Download CV</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-slate-500 text-sm">
+        <p>&copy; 2026 Maaz Khan. Built for FlyRank PF-04.</p>
+    </footer>
+
+    <!-- AOS Animation Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50 });
+    </script>
+</body>
+</html>
