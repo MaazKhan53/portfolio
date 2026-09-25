@@ -68,14 +68,46 @@
         </div>
     </section>
 
-    <!-- Connect / Links Section -->
+    <!-- Connect / Contact Section -->
     <section class="py-24 px-6 border-t border-slate-800">
-        <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
-            <h2 class="text-3xl font-bold text-white mb-8">Let's Connect</h2>
-            <div class="flex flex-wrap justify-center gap-6">
+        <div class="max-w-3xl mx-auto" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">Let's Connect</h2>
+            
+            <!-- Links row -->
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
                 <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" target="_blank" class="px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">LinkedIn</a>
                 <a href="https://github.com/MaazKhan53?preview=true" target="_blank" class="px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">GitHub</a>
                 <a href="https://drive.google.com/file/d/1QiDw1NckTzGEgWgc7jAPieo2Gtk0fVXj/view?usp=sharing" target="_blank" class="px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">Download CV</a>
+            </div>
+
+            <!-- The Backend Feature: Formspree Contact Form -->
+            <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+                <h3 class="text-xl font-semibold text-white mb-6 text-center">Send me a message</h3>
+                
+                <!-- action="YOUR_ENDPOINT" tells the browser where to send the data -->
+                <form action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-4">
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-400 mb-1">Your Email</label>
+                        <!-- required: graceful failure if empty. type="email": graceful failure if invalid email -->
+                        <input type="email" name="email" id="email" required placeholder="you@company.com" 
+                            class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition">
+                    </div>
+
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-400 mb-1">Message</label>
+                        <!-- required: graceful failure if empty -->
+                        <textarea name="message" id="message" rows="4" required placeholder="What's on your mind?"
+                            class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition resize-none"></textarea>
+                    </div>
+
+                    <!-- formspree redirect on success (graceful happy path) -->
+                    <input type="hidden" name="_next" value="https://maazkhan-portfolio.vercel.app/">
+                    
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                        Send Message
+                    </button>
+                </form>
             </div>
         </div>
     </section>
