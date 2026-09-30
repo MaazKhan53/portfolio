@@ -14,22 +14,25 @@
     <meta property="og:url" content="https://maazkhan--portfolio.vercel.app/">
     <meta property="og:title" content="Maaz Khan | Data & AI Engineering">
     <meta property="og:description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist.">
-    <!-- Note: For a real image, you would upload a screenshot of your site to your repo and link it here -->
-    <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:image" content="https://maazkhan--portfolio.vercel.app/preview.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Maaz Khan | Data & AI Engineering">
     <meta name="twitter:description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist.">
+    <meta name="twitter:image" content="https://maazkhan--portfolio.vercel.app/preview.png">
 
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- AOS Animation Library CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom Tailwind Colors -->
     <script>
         tailwind.config = {
             theme: {
-                extend: { colors: { primary: '#3b82f6', dark: '#0f172a' } }
+                extend: {
+                    colors: { primary: '#3b82f6', dark: '#0f172a' }
+                }
             }
         }
     </script>
@@ -38,21 +41,26 @@
 
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+        <!-- Background glowing orb -->
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
         
         <div class="max-w-4xl mx-auto text-center z-10" data-aos="fade-up" data-aos-duration="1000">
             <p class="text-primary font-semibold tracking-widest uppercase mb-4">Portfolio & Capstone Space</p>
+            
             <h1 class="font-extrabold mb-6 tracking-tight">
                 <span class="text-3xl md:text-5xl text-white">Hi, I'm</span>
                 <span class="block md:inline text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mt-2 md:mt-0">Maaz Khan.</span>
             </h1>
-           <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            
+            <!-- Updated Hero Text from the 10-Second Test -->
+            <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
                 I turn messy business problems into working software. I build data-driven tools and web apps for companies that want to automate processes or use their data better.
             </p>
+            
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#projects" class="px-8 py-3 rounded-full bg-white text-dark font-bold hover:bg-slate-200 transition duration-300">View My Work</a>
-                <!-- Paste your Calendly Link here -->
-                <a href="https://calendly.com/maazkhan53123/30min" target="_blank" class="px-8 py-3 rounded-full border border-slate-600 hover:border-slate-400 transition duration-300 text-white">Book a Meeting</a>
+                <!-- Remember to paste your real Calendly link here eventually! -->
+                <a href="PASTE_YOUR_CALENDLY_LINK_HERE" target="_blank" class="px-8 py-3 rounded-full border border-slate-600 hover:border-slate-400 transition duration-300 text-white">Book a Meeting</a>
             </div>
         </div>
     </section>
@@ -63,7 +71,7 @@
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center" data-aos="fade-up">Currently Building</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Outfield App (Now a clickable link to your GitHub!) -->
+                <!-- Outfield App Link -->
                 <a href="https://github.com/MaazKhan53" target="_blank" class="block bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
                     <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
                         <span class="text-blue-400 text-2xl">⚽</span>
@@ -98,20 +106,25 @@
             <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
                 <h3 class="text-xl font-semibold text-white mb-6 text-center">Send me a message</h3>
                 
-                <form action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-4">
+                <!-- Updated form with onsubmit JavaScript to prevent double-submit spam -->
+                <form action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-4" onsubmit="document.getElementById('submitBtn').disabled=true; document.getElementById('submitBtn').innerText='Sending...';">
+                    
                     <div>
                         <label for="email" class="block text-sm font-medium text-slate-400 mb-1">Your Email</label>
-                        <input type="email" name="email" id="email" required placeholder="you@company.com" class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition">
+                        <input type="email" name="email" id="email" required placeholder="you@company.com" 
+                            class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition">
                     </div>
+
                     <div>
                         <label for="message" class="block text-sm font-medium text-slate-400 mb-1">Message</label>
-                        <textarea name="message" id="message" rows="4" required placeholder="What's on your mind?" class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition resize-none"></textarea>
+                        <textarea name="message" id="message" rows="4" required placeholder="What's on your mind?"
+                            class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition resize-none"></textarea>
                     </div>
-                    
-                    <!-- NEW: Redirects to the custom success page after sending -->
+
                     <input type="hidden" name="_next" value="https://maazkhan--portfolio.vercel.app/success.html">
                     
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                    <!-- Updated button with an ID to attach the JavaScript disable function -->
+                    <button id="submitBtn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Send Message
                     </button>
                 </form>
@@ -123,7 +136,10 @@
         <p>&copy; 2026 Maaz Khan. Built for FlyRank PF-04.</p>
     </footer>
 
+    <!-- AOS Animation Library JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init({ once: true, offset: 50 });</script>
+    <script>
+        AOS.init({ once: true, offset: 50 });
+    </script>
 </body>
 </html>
