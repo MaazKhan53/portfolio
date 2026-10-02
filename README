@@ -1,0 +1,26 @@
+# Maaz Khan: FlyRank Capstone & Portfolio Index 🚀
+
+Welcome to the master repository for my FlyRank AI Internship Capstone. This repo houses the complete codebase for my production portfolio and my ML-08 Predictive Content Auditing research paper.
+
+## 🗂 Master Index & Deliverables
+*   **[Live Portfolio Site](https://maazkhan--portfolio.vercel.app/)**
+*   **[Deployed ML Research Paper](PASTE_YOUR_GITHUB_PAGES_URL_HERE)**
+*   **[Demo Video: End-to-End Walkthrough](PASTE_YOUR_LOOM_OR_VIDEO_LINK_HERE)**
+*   **[ML Capstone Notebook (`capstone.ipynb`)](./work/notebooks/capstone.ipynb)**
+
+## 🏗 Architecture Sketch
+*   **Frontend Portfolio:** Vanilla HTML5, Tailwind CSS (via CDN), inline SVG graphics, hosted on Vercel with zero-config Web Analytics.
+*   **ML Pipeline:** Python, Pandas, Scikit-Learn (Random Forest Classifier). Validated via GroupKFold cross-validation to isolate client data. 
+
+## 🤖 AI Transparency Clause
+*Honesty reads as credibility.* In this project, I utilized Gemini and Claude as collaborative coding agents. The AI did the heavy lifting on generating the boilerplate HTML/Tailwind CSS layout and writing the raw Python syntax for the data pipelines. However, I personally designed the architecture, audited all mathematical outputs (precision metrics, cross-validation boundaries), built the Leakage Harness to prevent data contamination, and wrote the final business-logic translations.
+
+## ⚠️ Limitations & V2 Eval Results
+*   **ML Model Performance (V2):** Achieved a Precision@50 of 0.540, a 12% measured, directional improvement over the legacy baseline. 
+*   **Limitation:** This model is non-causal. It predicts a proxy for decline based on observed historical data (Impressions, CTR) but does not prove *why* a page is declining. Additionally, the portfolio architecture lacks a CMS, requiring manual codebase updates for new case studies.
+
+## ⚙️ Setup for Reproduction
+A stranger can reproduce this ML pipeline by:
+1. Cloning this repository.
+2. Installing standard dependencies: `pip install pandas numpy scikit-learn matplotlib`
+3. Navigating to `work/notebooks/` and executing `capstone.ipynb` top-to-bottom.
