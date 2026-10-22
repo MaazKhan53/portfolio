@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- Basic SEO & Favicon -->
+    <title>Maaz Khan | Data & AI Engineering</title>
+    <meta name="description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist based in Karachi.">
+    <meta name="author" content="Maaz Khan">
+    <link rel="canonical" href="https://maazkhan--portfolio.vercel.app/">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Open Graph / Social Share Preview (WhatsApp, LinkedIn, Slack) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://maazkhan--portfolio.vercel.app/">
+    <meta property="og:title" content="Maaz Khan | Data & AI Engineering">
+    <meta property="og:description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist.">
+    <meta property="og:image" content="https://maazkhan--portfolio.vercel.app/og-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Hi, I'm Maaz Khan. I turn messy business problems into working software.">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Maaz Khan | Data & AI Engineering">
+    <meta name="twitter:description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist.">
+    <meta name="twitter:image" content="https://maazkhan--portfolio.vercel.app/og-preview.png">
+    <meta name="twitter:image:alt" content="Hi, I'm Maaz Khan. I turn messy business problems into working software.">
+
+    <!-- Tailwind CSS for styling (version pinned) -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom Tailwind Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#3b82f6', dark: '#0f172a' }
+                }
+            }
+        }
+    </script>
+
+    <!-- Vercel Web Analytics Script -->
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="bg-dark text-slate-300 font-sans antialiased selection:bg-primary selection:text-white">
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+        <!-- Background glowing orb -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto text-center z-10" data-aos="fade-up" data-aos-duration="1000">
+            <p class="text-primary font-semibold tracking-widest uppercase mb-4">Portfolio & Capstone Space</p>
+
+            <h1 class="font-extrabold mb-6 tracking-tight">
+                <span class="text-3xl md:text-5xl text-white">Hi, I'm</span>
+                <span class="block md:inline text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mt-2 md:mt-0">Maaz Khan.</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                I turn messy business problems into working software. I build data-driven tools and web apps for companies that want to automate processes or use their data better.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#projects" class="px-8 py-3 rounded-full bg-white text-dark font-bold hover:bg-slate-200 transition duration-300">View My Work</a>
+                <a href="https://calendly.com/maazkhan53123/30min" target="_blank" rel="noopener noreferrer" class="px-8 py-3 rounded-full border border-slate-600 hover:border-slate-400 transition duration-300 text-white">Book a Meeting</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- What I'm Building Section -->
+    <section id="projects" class="py-24 px-6 bg-slate-900/50">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center" data-aos="fade-up">Currently Building</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Outfield App -->
+                <a href="https://github.com/MaazKhan53/outfield" target="_blank" rel="noopener noreferrer" class="block bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"/>
+                          <line x1="12" y1="4" x2="12" y2="20" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                          <path d="M12 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Outfield App</h3>
+                    <p class="text-slate-400 leading-relaxed">A two-sided mobile application streamlining sports ground bookings for players and facility owners in Karachi. Engineered with React, Vite, Supabase, and Vercel.</p>
+                    <p class="text-blue-400 font-medium mt-4">View repository &rarr;</p>
+                </a>
+
+                <!-- FlyRank Capstone -->
+                <!-- When the paper link is ready, change the href below to the GitHub Pages URL and the link text to "Read the paper" -->
+                <a href="https://internship.flyrank.ai/verify?id=CA4FE6AB-D114-4772-B96C-15D2288F281E&amp;first_name=Maaz" target="_blank" rel="noopener noreferrer" class="block bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-cyan-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <circle cx="5" cy="19" r="2" fill="currentColor"/>
+                          <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                          <circle cx="19" cy="5" r="2" fill="currentColor"/>
+                          <path d="M6.5 17.5 L10.5 13.5" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M13.5 10.5 L17.5 6.5" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M19 12l1-3 3-1-3-1-1-3-1 3-3 1 3 1 1 3z" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">FlyRank ML Capstone</h3>
+                    <p class="text-slate-400 leading-relaxed">Google Search Ranking & Discoverability. A reproducible machine learning study on a 79M-row dataset, validated with grouped cross-validation and framed under the NIST AI Risk Management Framework. Completed with a verified FlyRank AI internship credential.</p>
+                    <p class="text-cyan-400 font-medium mt-4">View verified credential &rarr;</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect / Contact Section -->
+    <section class="py-24 px-6 border-t border-slate-800">
+        <div class="max-w-3xl mx-auto" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">Let's Connect</h2>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12 w-full max-w-xs mx-auto sm:max-w-none">
+                <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" target="_blank" rel="noopener noreferrer" class="w-full text-center px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">LinkedIn</a>
+                <a href="https://github.com/MaazKhan53" target="_blank" rel="noopener noreferrer" class="w-full text-center px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">GitHub</a>
+                <a href="https://drive.google.com/file/d/1QiDw1NckTzGEgWgc7jAPieo2Gtk0fVXj/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full text-center px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">Download CV</a>
+            </div>
+
+            <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+                <h3 class="text-xl font-semibold text-white mb-6 text-center">Send me a message</h3>
+
+                <form action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-4" onsubmit="document.getElementById('submitBtn').disabled=true; document.getElementById('submitBtn').innerText='Sending...';">
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-400 mb-1">Your Email</label>
+                        <input type="email" name="email" id="email" required placeholder="you@company.com"
+                            class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition">
+                    </div>
+
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-400 mb-1">Message</label>
+                        <textarea name="message" id="message" rows="4" required placeholder="What's on your mind?"
+                            class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition resize-none"></textarea>
+                    </div>
+
+                    <input type="hidden" name="_next" value="https://maazkhan--portfolio.vercel.app/success.html">
+
+                    <button id="submitBtn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with FlyRank Graduate Badge -->
+    <footer class="py-12 text-center border-t border-slate-800 mt-12">
+        <div class="mb-6 flex justify-center">
+            <!-- FlyRank Verification Banner -->
+            <a href="https://internship.flyrank.ai/verify?id=CA4FE6AB-D114-4772-B96C-15D2288F281E&amp;first_name=Maaz" target="_blank" rel="noopener noreferrer"
+               aria-label="Verify Maaz Khan's FlyRank AI Internship credential"
+               class="transition duration-300 transform hover:scale-105"
+               style="box-sizing:border-box;margin:0;padding:0;border:0;background:none;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-style:normal;line-height:1.25;text-transform:none;float:none;-webkit-font-smoothing:antialiased;display:inline-flex;align-items:center;gap:14px;padding:14px 18px;background:#051F21;border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 1px 2px rgba(0,0,0,0.35);max-width:100%">
+              <svg width="40" height="40" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display:block;flex:none;opacity:1;transform:none;max-width:none"><rect width="96" height="96" rx="22" fill="#54E399" /><path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#051F21" /></svg>
+              <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left;">
+                <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55)">FlyRank AI Internship</span>
+                <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;font-size:15px;font-weight:600;color:#FFFFFF;letter-spacing:-0.01em;white-space:nowrap">Verified credential</span>
+                <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;font-size:11.5px;color:rgba(255,255,255,0.55);white-space:nowrap">Machine Learning</span>
+              </span>
+              <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;display:flex;align-items:center;gap:6px;margin-left:8px;padding:6px 12px;background:rgba(84,227,153,0.12);border:1px solid rgba(84,227,153,0.25);border-radius:9999px;font-size:12px;font-weight:600;color:#54E399;flex:none">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display:block;flex:none;opacity:1;transform:none;max-width:none"><circle cx="12" cy="12" r="10" stroke="#54E399" stroke-width="1.5" /><path d="M7.9 12.3l2.8 2.8 5.4-5.8" stroke="#54E399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>Verify
+              </span>
+            </a>
+        </div>
+        <p class="text-slate-500 text-sm">&copy; 2026 Maaz Khan. Built for FlyRank PF-04.</p>
+    </footer>
+
+    <!-- AOS Animation Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50 });
+
+        // If the user hits Back after submitting, the browser can restore the page with the button still disabled.
+        window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+                var btn = document.getElementById('submitBtn');
+                btn.disabled = false;
+                btn.innerText = 'Send Message';
+            }
+        });
+    </script>
+</body>
+</html>
