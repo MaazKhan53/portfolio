@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#0f172a">
 
     <!-- Basic SEO & Favicon -->
-    <title>Maaz Khan | Data & AI Engineering</title>
-    <meta name="description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist based in Karachi.">
+    <title>Maaz Khan | Automation & Data Engineering</title>
+    <meta name="description" content="I build systems that give people their time back. Automation and data engineering that returned 59+ hours a month to two departments at PepsiCo. Based in Karachi.">
     <meta name="author" content="Maaz Khan">
     <link rel="canonical" href="https://maazkhan--portfolio.vercel.app/">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,20 +15,20 @@
     <!-- Open Graph / Social Share Preview (WhatsApp, LinkedIn, Slack) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://maazkhan--portfolio.vercel.app/">
-    <meta property="og:title" content="Maaz Khan | Data & AI Engineering">
-    <meta property="og:description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist.">
-    <meta property="og:image" content="https://maazkhan--portfolio.vercel.app/og-preview.png">
+    <meta property="og:title" content="Maaz Khan | Automation & Data Engineering">
+    <meta property="og:description" content="I build systems that give people their time back. 59+ hours a month returned to two departments at PepsiCo.">
+    <meta property="og:image" content="https://maazkhan--portfolio.vercel.app/og-preview-v2.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Hi, I'm Maaz Khan. I turn messy business problems into working software.">
+    <meta property="og:image:alt" content="Hi, I'm Maaz Khan. I build systems that give people their time back.">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Maaz Khan | Data & AI Engineering">
-    <meta name="twitter:description" content="I turn messy business problems into working software. Machine Learning Engineer & Business Strategist.">
-    <meta name="twitter:image" content="https://maazkhan--portfolio.vercel.app/og-preview.png">
-    <meta name="twitter:image:alt" content="Hi, I'm Maaz Khan. I turn messy business problems into working software.">
+    <meta name="twitter:title" content="Maaz Khan | Automation & Data Engineering">
+    <meta name="twitter:description" content="I build systems that give people their time back. 59+ hours a month returned to two departments at PepsiCo.">
+    <meta name="twitter:image" content="https://maazkhan--portfolio.vercel.app/og-preview-v2.png">
+    <meta name="twitter:image:alt" content="Hi, I'm Maaz Khan. I build systems that give people their time back.">
 
     <!-- Tailwind CSS for styling (version pinned) -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
@@ -45,27 +45,86 @@
         }
     </script>
 
+    <style>
+        :root { --hw: 108px; --hh: calc(var(--hw) * 1.1547); }
+        @media (max-width: 640px) { :root { --hw: 88px; } }
+        html { scroll-padding-top: 5rem; }
+
+        /* Skill map: honeycomb */
+        .hexwrap { width: var(--hw); height: var(--hh); flex: none; transition: filter .2s ease, transform .2s ease; }
+        .hexwrap:hover, .hexwrap:focus-within, .hexwrap.is-active { filter: drop-shadow(0 0 10px rgba(103,232,249,.6)); transform: translateY(-2px); }
+        .hex { position: relative; width: 100%; height: 100%; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;
+               text-align: center; padding: 0 10px; color: #fff; font-weight: 700; font-size: 11px; line-height: 1.15; overflow-wrap: anywhere;
+               clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+        @media (max-width: 640px) { .hex { font-size: 9.5px; padding: 0 4px; letter-spacing: -0.1px; } }
+        .hex.t1 { background: linear-gradient(160deg, #3b5878, #2a4262); color: #e2e8f0; }
+        .hex.t2 { background: linear-gradient(160deg, #2563eb, #0e7490); }
+        .hex-star { position: absolute; top: 14%; left: 50%; transform: translateX(-50%); color: #fde047; font-style: normal; font-size: 12px; }
+        .hexwrap:focus-visible .hex, .hex:focus-visible { outline: none; background: linear-gradient(160deg, #60a5fa, #22d3ee); color: #0f172a; }
+
+        /* Certificates: scroll-linked rows */
+        .cert-viewport { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+        .cert-track { display: flex; gap: 16px; width: max-content; will-change: transform; }
+        .cert { flex: none; width: 270px; min-height: 140px; }
+
+        .kpi-num { font-variant-numeric: tabular-nums; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .hexwrap { transition: none; } }
+    </style>
+
     <!-- Vercel Web Analytics Script -->
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="bg-dark text-slate-300 font-sans antialiased selection:bg-primary selection:text-white">
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
-        <!-- Background glowing orb -->
+    <!-- Nav -->
+    <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-dark/75 backdrop-blur">
+        <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between" aria-label="Main">
+            <a href="#top" class="flex items-center gap-3 text-white font-bold tracking-tight">
+                <img src="favicon.svg" alt="" class="w-8 h-8"><span>Maaz Khan</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#projects" class="hover:text-white transition">Work</a>
+                <a href="#experience" class="hover:text-white transition">Experience</a>
+                <a href="#skills" class="hover:text-white transition">Skills</a>
+                <a href="#certificates" class="hover:text-white transition">Certificates</a>
+                <a href="#contact" class="hover:text-white transition">Contact</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="https://calendly.com/maazkhan53123/30min" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-block px-5 py-2 rounded-full bg-white text-dark text-sm font-bold hover:bg-slate-200 transition">Book a Meeting</a>
+                <button id="menuBtn" type="button" class="md:hidden p-2 rounded-lg text-white hover:bg-white/10" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 px-6 py-4 space-y-3 text-slate-200 font-medium">
+            <a href="#projects" class="block">Work</a>
+            <a href="#experience" class="block">Experience</a>
+            <a href="#skills" class="block">Skills</a>
+            <a href="#certificates" class="block">Certificates</a>
+            <a href="#contact" class="block">Contact</a>
+            <a href="https://calendly.com/maazkhan53123/30min" target="_blank" rel="noopener noreferrer" class="block text-cyan-300">Book a Meeting</a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section id="top" class="min-h-screen flex items-center justify-center px-6 pt-24 pb-16 relative overflow-hidden">
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
         <div class="max-w-4xl mx-auto text-center z-10" data-aos="fade-up" data-aos-duration="1000">
-            <p class="text-primary font-semibold tracking-widest uppercase mb-4">Portfolio & Capstone Space</p>
+            <p class="text-primary font-semibold tracking-widest uppercase mb-4">Automation & Data Engineering</p>
 
             <h1 class="font-extrabold mb-6 tracking-tight">
                 <span class="text-3xl md:text-5xl text-white">Hi, I'm</span>
                 <span class="block md:inline text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mt-2 md:mt-0">Maaz Khan.</span>
             </h1>
 
-            <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-                I turn messy business problems into working software. I build data-driven tools and web apps for companies that want to automate processes or use their data better.
+            <p class="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight max-w-3xl mx-auto">I build systems that give people their time back.</p>
+
+            <p class="text-lg md:text-xl text-slate-400 mb-4 max-w-2xl mx-auto leading-relaxed">
+                I turn messy business problems into working software: data-driven tools and automations that take repetitive work off people's plates.
             </p>
+            <p class="text-base md:text-lg text-cyan-300 mb-10 max-w-2xl mx-auto">At PepsiCo, that meant 59+ hours a month handed back to two departments.</p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#projects" class="px-8 py-3 rounded-full bg-white text-dark font-bold hover:bg-slate-200 transition duration-300">View My Work</a>
@@ -74,52 +133,236 @@
         </div>
     </section>
 
-    <!-- What I'm Building Section -->
+    <!-- KPI strip -->
+    <section class="px-6 -mt-6 pb-16 relative z-10">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
+            <div class="rounded-2xl border border-slate-700/70 bg-slate-800/60 p-6 text-center">
+                <div class="kpi-num text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="59" data-suffix="+">59+</span></div>
+                <p class="mt-2 text-sm uppercase tracking-widest text-slate-400">hours returned every month</p>
+            </div>
+            <div class="rounded-2xl border border-slate-700/70 bg-slate-800/60 p-6 text-center">
+                <div class="kpi-num text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="7">7</span></div>
+                <p class="mt-2 text-sm uppercase tracking-widest text-slate-400">tools live in two departments</p>
+            </div>
+            <div class="rounded-2xl border border-slate-700/70 bg-slate-800/60 p-6 text-center">
+                <div class="kpi-num text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="192">192</span><span class="text-2xl md:text-3xl ml-1">sec</span></div>
+                <p class="mt-2 text-sm uppercase tracking-widest text-slate-400">instead of a 26-hour reconciliation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Work -->
     <section id="projects" class="py-24 px-6 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 text-center" data-aos="fade-up">Selected Work</h2>
+            <p class="text-center text-slate-400 mb-14 max-w-2xl mx-auto" data-aos="fade-up">Every project answers one question: how much time did it hand back?</p>
+
+            <!-- 01 PepsiCo -->
+            <article id="pepsico" class="relative rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-800 to-slate-900 p-6 md:p-10 mb-10 overflow-hidden" data-aos="fade-up">
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 rounded-full bg-blue-500/15 text-blue-300 text-xs font-semibold tracking-widest uppercase">01 &middot; Flagship</span>
+                        <span class="text-sm text-slate-400">PepsiCo Pakistan &middot; Roshan Kal GTM Program &middot; Jul to Aug 2026</span>
+                    </div>
+                    <h3 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">I gave two PepsiCo departments 59+ hours a month back.</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl">Seven VBA tools for GTM and Tax. Each one is a button on a custom Excel ribbon, installable on any company laptop in under a minute.</p>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 my-8">
+                        <div class="rounded-2xl bg-slate-900/70 border border-slate-700 p-5">
+                            <div class="kpi-num text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="33">33</span><span class="text-xl md:text-2xl ml-1">hrs</span></div>
+                            <p class="mt-2 text-sm font-semibold text-white">saved per month in GTM</p>
+                            <p class="mt-1 text-xs text-slate-400 leading-relaxed">36 gross hours of manual reporting, minus about 3 hours of residual work. The tools themselves run in under 15 minutes.</p>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900/70 border border-slate-700 p-5">
+                            <div class="kpi-num text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="26.4" data-decimals="1">26.4</span><span class="text-xl md:text-2xl ml-1">hrs</span></div>
+                            <p class="mt-2 text-sm font-semibold text-white">saved per month in Tax</p>
+                            <p class="mt-1 text-xs text-slate-400 leading-relaxed">25.4 from FBR and SAP reconciliation, 1.0 from CPR standardization.</p>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900/70 border border-slate-700 p-5">
+                            <div class="kpi-num text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="100">100</span><span class="text-xl md:text-2xl ml-1">%</span></div>
+                            <p class="mt-2 text-sm font-semibold text-white">automated validation accuracy</p>
+                            <p class="mt-1 text-xs text-slate-400 leading-relaxed">CNIC and mobile-network checks, with fake barcode scans isolated automatically.</p>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900/70 border border-slate-700 p-5">
+                            <div class="kpi-num text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300"><span data-count="60" data-prefix="&lt;">&lt;60</span><span class="text-xl md:text-2xl ml-1">sec</span></div>
+                            <p class="mt-2 text-sm font-semibold text-white">to install, no IT help</p>
+                            <p class="mt-1 text-xs text-slate-400 leading-relaxed">A 4-phase illustrated manual let supervisors and executives deploy the suite themselves.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-2">Problem</h4>
+                            <p class="text-slate-400 leading-relaxed">GTM spent 36 hours a month on manual reporting and master-data checks. Tax spent about 25 hours reconciling SAP against the FBR dashboard line by line. Skilled people were doing copy and paste, and errors crept in.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-2">Solution</h4>
+                            <p class="text-slate-400 leading-relaxed">Seven VBA tools built on memory arrays and Dictionary objects, packaged as portable .xlam add-ins with custom ribbon interfaces, and cleared to run past corporate macro blocking.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-2">Result</h4>
+                            <p class="text-slate-400 leading-relaxed">33 net hours saved monthly in GTM and 26.4 in Tax. I presented the architecture and ROI to the COO and CFO, and the tools keep running in both departments after my internship.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 rounded-2xl border border-cyan-400/30 bg-cyan-400/5 px-6 py-4 flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                        <span class="text-xs uppercase tracking-widest text-cyan-300 font-semibold">Time returned</span>
+                        <span class="text-white text-lg font-semibold">59.4 net hours every month, across GTM and Tax.</span>
+                    </div>
+
+                    <details class="mt-6">
+                        <summary class="cursor-pointer text-blue-300 font-medium hover:text-blue-200">See the 7 tools</summary>
+                        <ul class="mt-4 grid md:grid-cols-2 gap-3 text-sm">
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4"><span class="font-semibold text-white">CNIC & Cell Audit Engine</span><br><span class="text-slate-400">Validates 13-digit CNICs and network codes, and turns every bad row red.</span></li>
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4"><span class="font-semibold text-white">YTD Reports Generator</span><br><span class="text-slate-400">Consolidates periodic data, filter-safe, with no double counting.</span></li>
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4"><span class="font-semibold text-white">Pending Transfers Module</span><br><span class="text-slate-400">Finds stalled transfers across thousands of rows in under a second.</span></li>
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4"><span class="font-semibold text-white">Barcode Summary Engine</span><br><span class="text-slate-400">Groups massive scan volumes by product and region in memory.</span></li>
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4"><span class="font-semibold text-white">Invalid Barcode %</span><br><span class="text-slate-400">Isolates fake and duplicate scans and reports the contamination rate.</span></li>
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4"><span class="font-semibold text-white">FBR & SAP Reconciliation Engine</span><br><span class="text-slate-400">Tolerance-based matching with green, red and amber output.</span></li>
+                            <li class="rounded-xl bg-slate-900/60 border border-slate-700 p-4 md:col-span-2"><span class="font-semibold text-white">CPR Standardization Protocol</span><br><span class="text-slate-400">Formats thousands of CPR numbers in place, in one click.</span></li>
+                        </ul>
+                    </details>
+
+                    <div class="mt-6 flex flex-wrap items-center gap-2 text-xs">
+                        <span class="px-3 py-1 rounded-full bg-slate-700/60 text-slate-300">VBA</span>
+                        <span class="px-3 py-1 rounded-full bg-slate-700/60 text-slate-300">Scripting.Dictionary</span>
+                        <span class="px-3 py-1 rounded-full bg-slate-700/60 text-slate-300">Memory arrays</span>
+                        <span class="px-3 py-1 rounded-full bg-slate-700/60 text-slate-300">.xlam add-ins</span>
+                        <span class="px-3 py-1 rounded-full bg-slate-700/60 text-slate-300">Custom XML ribbon</span>
+                        <span class="text-slate-500 ml-1">Screens and company data stay inside PepsiCo.</span>
+                    </div>
+                </div>
+            </article>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- 02 Outfield -->
+                <article id="outfield" class="rounded-3xl border border-slate-700 bg-slate-800/70 p-6 md:p-8 hover:border-blue-500/40 transition duration-300" data-aos="fade-up">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 rounded-full bg-blue-500/15 text-blue-300 text-xs font-semibold tracking-widest uppercase">02</span>
+                        <span class="px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 text-xs font-semibold tracking-widest uppercase">In development</span>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2">Outfield</h3>
+                    <p class="text-slate-400 mb-6">A two-sided sports ground booking app for Karachi.</p>
+                    <div class="space-y-5">
+                        <div><h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-1">Problem</h4><p class="text-slate-400 leading-relaxed">Finding and booking a sports ground in Karachi is slow and scattered, for players and for the owners who run the facilities.</p></div>
+                        <div><h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-1">Solution</h4><p class="text-slate-400 leading-relaxed">One app for both sides: players search and book, owners manage availability. Built with React, Vite, Supabase and Vercel.</p></div>
+                        <div><h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-1">Status</h4><p class="text-slate-400 leading-relaxed">Being rebuilt. The repository is public, and the live app will be linked here once it is running.</p></div>
+                    </div>
+                    <div class="mt-6 rounded-xl border border-cyan-400/30 bg-cyan-400/5 px-4 py-3 text-sm"><span class="text-xs uppercase tracking-widest text-cyan-300 font-semibold mr-2">Goal</span><span class="text-white">Replace a chain of calls with a single booking.</span></div>
+                    <a href="https://github.com/MaazKhan53/outfield" target="_blank" rel="noopener noreferrer" class="inline-block mt-6 text-blue-400 font-medium hover:text-blue-300">View repository &rarr;</a>
+                </article>
+
+                <!-- 03 FlyRank -->
+                <article id="flyrank" class="rounded-3xl border border-slate-700 bg-slate-800/70 p-6 md:p-8 hover:border-cyan-500/40 transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 rounded-full bg-blue-500/15 text-blue-300 text-xs font-semibold tracking-widest uppercase">03</span>
+                        <span class="text-sm text-slate-400">FlyRank AI &middot; Jul to Sep 2026</span>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2">Honest machine learning</h3>
+                    <p class="text-slate-400 mb-6">A content opportunity scoring study, built to be reproducible and validated to be believed.</p>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="rounded-xl bg-slate-900/70 border border-slate-700 p-4">
+                            <div class="kpi-num text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">79M</div>
+                            <p class="text-xs text-slate-400 mt-1">rows in the dataset</p>
+                        </div>
+                        <div class="rounded-xl bg-slate-900/70 border border-slate-700 p-4">
+                            <div class="kpi-num text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">0.4152</div>
+                            <p class="text-xs text-slate-400 mt-1">honest precision, vs 0.4426 on a random split</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div><h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-1">Problem</h4><p class="text-slate-400 leading-relaxed">Auditing content for ranking opportunity by hand does not scale, and a model that flatters itself is worse than no model.</p></div>
+                        <div><h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-1">Solution</h4><p class="text-slate-400 leading-relaxed">Logistic regression and random forest models validated with client-grouped splits so no client appears in both train and test, a leakage harness, drift monitoring, and claims framed under the NIST AI RMF.</p></div>
+                        <div><h4 class="text-xs uppercase tracking-widest text-cyan-300 mb-1">Result</h4><p class="text-slate-400 leading-relaxed">Grouped validation exposed client memorization, and I reported the lower, honest number. An engineered leakage feature scored 100% accuracy, then 48.5% once removed. Completed with a verified FlyRank credential.</p></div>
+                    </div>
+                    <div class="mt-6 rounded-xl border border-cyan-400/30 bg-cyan-400/5 px-4 py-3 text-sm"><span class="text-xs uppercase tracking-widest text-cyan-300 font-semibold mr-2">Time returned</span><span class="text-white">Manual content auditing becomes a ranked review queue.</span></div>
+                    <!-- When the paper link is ready, add: <a href="PAPER_URL">Read the paper</a> here -->
+                    <a href="https://internship.flyrank.ai/verify?id=CA4FE6AB-D114-4772-B96C-15D2288F281E&amp;first_name=Maaz" target="_blank" rel="noopener noreferrer" class="inline-block mt-6 text-cyan-400 font-medium hover:text-cyan-300">View verified credential &rarr;</a>
+                </article>
+            </div>
+
+            <!-- Also built -->
+            <div id="also-built" class="mt-14">
+                <h3 class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-5 text-center">Also built</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="rounded-2xl border border-slate-700 bg-slate-800/60 p-6" data-aos="fade-up">
+                        <h4 class="text-lg font-bold text-white">AI financial newsletter pipeline</h4>
+                        <p class="text-slate-400 mt-2 text-sm leading-relaxed">A self-hosted n8n workflow that scrapes the day's financial news, has an LLM write the digest and emails it every morning. n8n, Docker, Groq, SMTP.</p>
+                        <p class="mt-3 text-sm"><span class="text-xs uppercase tracking-widest text-cyan-300 font-semibold mr-2">Time returned</span><span class="text-slate-300">The morning news scan, handed to a system.</span></p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-700 bg-slate-800/60 p-6" data-aos="fade-up" data-aos-delay="100">
+                        <h4 class="text-lg font-bold text-white">Dynamic resume tailor agent</h4>
+                        <p class="text-slate-400 mt-2 text-sm leading-relaxed">A local Claude agent on the MCP filesystem server that rewrites a resume to match a job description.</p>
+                        <p class="mt-3 text-sm"><span class="text-xs uppercase tracking-widest text-cyan-300 font-semibold mr-2">Time returned</span><span class="text-slate-300">Resume tailoring, handed to an agent.</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 text-center" data-aos="fade-up">Where I've Worked</h2>
+            <p class="text-center text-slate-400 mb-14 max-w-2xl mx-auto" data-aos="fade-up">Six internships, one teaching role and a trading desk of one, across six industries.</p>
+            <div id="experienceGrid" class="grid md:grid-cols-2 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- Skill map -->
+    <section id="skills" class="py-24 px-6 bg-slate-900/50">
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center" data-aos="fade-up">Currently Building</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 text-center" data-aos="fade-up">How I Give Time Back</h2>
+            <p class="text-center text-slate-400 mb-4 max-w-2xl mx-auto" data-aos="fade-up">Tap a hexagon. Every skill links to the work that proves it.</p>
+            <p class="text-center text-xs text-slate-500 mb-12 max-w-2xl mx-auto" data-aos="fade-up"><span class="text-cyan-300 font-semibold">Advanced Practitioner</span> means shipped and used by other people. <span class="text-slate-300 font-semibold">Practitioner</span> means built and shipped independently.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Outfield App -->
-                <a href="https://github.com/MaazKhan53/outfield" target="_blank" rel="noopener noreferrer" class="block bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"/>
-                          <line x1="12" y1="4" x2="12" y2="20" stroke-width="2"/>
-                          <circle cx="12" cy="12" r="3" stroke-width="2"/>
-                          <path d="M12 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Outfield App</h3>
-                    <p class="text-slate-400 leading-relaxed">A two-sided mobile application streamlining sports ground bookings for players and facility owners in Karachi. Engineered with React, Vite, Supabase, and Vercel.</p>
-                    <p class="text-blue-400 font-medium mt-4">View repository &rarr;</p>
-                </a>
+            <div class="flex flex-col md:flex-row md:justify-center md:items-start gap-10 md:gap-12 items-center" data-aos="fade-up">
+                <div>
+                    <p class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-4 text-center md:text-left">Practitioner</p>
+                    <div id="clusterP"></div>
+                </div>
+                <div>
+                    <p class="text-xs uppercase tracking-widest text-cyan-300 font-semibold mb-4 text-center md:text-left">Advanced Practitioner</p>
+                    <div id="clusterA"></div>
+                </div>
+            </div>
 
-                <!-- FlyRank Capstone -->
-                <!-- When the paper link is ready, change the href below to the GitHub Pages URL and the link text to "Read the paper" -->
-                <a href="https://internship.flyrank.ai/verify?id=CA4FE6AB-D114-4772-B96C-15D2288F281E&amp;first_name=Maaz" target="_blank" rel="noopener noreferrer" class="block bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-cyan-500/50 transition duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <circle cx="5" cy="19" r="2" fill="currentColor"/>
-                          <circle cx="12" cy="12" r="2" fill="currentColor"/>
-                          <circle cx="19" cy="5" r="2" fill="currentColor"/>
-                          <path d="M6.5 17.5 L10.5 13.5" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M13.5 10.5 L17.5 6.5" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M19 12l1-3 3-1-3-1-1-3-1 3-3 1 3 1 1 3z" fill="currentColor" stroke="none"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">FlyRank ML Capstone</h3>
-                    <p class="text-slate-400 leading-relaxed">Google Search Ranking & Discoverability. A reproducible machine learning study on a 79M-row dataset, validated with grouped cross-validation and framed under the NIST AI Risk Management Framework. Completed with a verified FlyRank AI internship credential.</p>
-                    <p class="text-cyan-400 font-medium mt-4">View verified credential &rarr;</p>
-                </a>
+            <div id="skillPanel" class="mt-12 max-w-2xl mx-auto rounded-2xl border border-slate-700 bg-slate-800/70 p-6 md:p-8" aria-live="polite"></div>
+        </div>
+    </section>
+
+    <!-- Certificates -->
+    <section id="certificates" class="py-24 overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 text-center" data-aos="fade-up">Certificates</h2>
+            <p class="text-center text-slate-400 mb-14 max-w-2xl mx-auto" data-aos="fade-up">Issued by Anthropic, in AI Fluency and in Claude Code and agents.</p>
+        </div>
+        <div id="certRows"></div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-24 px-6 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 text-center">About</h2>
+            <div class="flex flex-col md:flex-row gap-10 items-center md:items-start">
+                <figure id="aboutPhoto" class="hidden w-44 h-44 md:w-56 md:h-56 shrink-0 rounded-3xl overflow-hidden border border-slate-700"></figure>
+                <div class="space-y-5">
+                    <p id="aboutBelief" class="text-xl md:text-2xl text-white font-semibold leading-snug"></p>
+                    <div id="aboutStory" class="space-y-4"></div>
+                    <ul id="aboutFacts" class="space-y-2 text-slate-300"></ul>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Connect / Contact Section -->
-    <section class="py-24 px-6 border-t border-slate-800">
+    <section id="contact" class="py-24 px-6 border-t border-slate-800">
         <div class="max-w-3xl mx-auto" data-aos="fade-up">
-            <h2 class="text-3xl font-bold text-white mb-8 text-center">Let's Connect</h2>
+            <h2 class="text-3xl font-bold text-white mb-3 text-center">Let's Connect</h2>
+            <p class="text-center text-slate-400 mb-8">Which task eats your week? Tell me about it and we'll see if it can be handed to a system.</p>
 
             <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12 w-full max-w-xs mx-auto sm:max-w-none">
                 <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" target="_blank" rel="noopener noreferrer" class="w-full text-center px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition text-white font-medium">LinkedIn</a>
@@ -131,21 +374,17 @@
                 <h3 class="text-xl font-semibold text-white mb-6 text-center">Send me a message</h3>
 
                 <form action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-4" onsubmit="document.getElementById('submitBtn').disabled=true; document.getElementById('submitBtn').innerText='Sending...';">
-
                     <div>
                         <label for="email" class="block text-sm font-medium text-slate-400 mb-1">Your Email</label>
                         <input type="email" name="email" id="email" required placeholder="you@company.com"
                             class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition">
                     </div>
-
                     <div>
                         <label for="message" class="block text-sm font-medium text-slate-400 mb-1">Message</label>
-                        <textarea name="message" id="message" rows="4" required placeholder="What's on your mind?"
+                        <textarea name="message" id="message" rows="4" required placeholder="Which task eats your week?"
                             class="text-base w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 transition resize-none"></textarea>
                     </div>
-
                     <input type="hidden" name="_next" value="https://maazkhan--portfolio.vercel.app/success.html">
-
                     <button id="submitBtn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Send Message
                     </button>
@@ -178,17 +417,8 @@
 
     <!-- AOS Animation Library JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ once: true, offset: 50 });
-
-        // If the user hits Back after submitting, the browser can restore the page with the button still disabled.
-        window.addEventListener('pageshow', function (e) {
-            if (e.persisted) {
-                var btn = document.getElementById('submitBtn');
-                btn.disabled = false;
-                btn.innerText = 'Send Message';
-            }
-        });
-    </script>
+    <!-- Site content and behavior -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
