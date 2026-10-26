@@ -1,19 +1,21 @@
 /* ============================================================
    SITE CONTENT. Edit this file to change what the site shows.
-   - experience: add or edit roles. Drop a logo into /logos named
-     <key>.svg, .png, .webp or .jpg and it appears automatically.
-     No file? A clean monogram is shown instead.
-   - certs: add a certificate = add one line + put the PDF in /certs.
-   - skills: each skill links to the work that proves it.
-   - about.story: your own paragraphs. Empty = section shows the
-     short factual intro only. Put headshot.jpg/png/webp in the
-     site root and it appears automatically.
+   - analytics.clarityId: paste your free Microsoft Clarity ID
+     (from clarity.microsoft.com) to see visitor networks,
+     cities, scroll heatmaps & session replays with zero popups.
+   - experience: drop a logo into /logos named <key>.svg, .png,
+     .webp or .jpg and it appears automatically.
+   - certs: 2 balanced rows of 7 certificates (14 total).
    ============================================================ */
 window.SITE = {
 
+  analytics: {
+    clarityId: '' /* Optional: e.g. 'p9abc123xyz' from clarity.microsoft.com */
+  },
+
   experience: [
     { key: 'flyrank', company: 'FlyRank AI', role: 'Machine Learning Engineering Intern', dates: 'Jul 2026 to Sep 2026', place: 'Remote, Chicago',
-      impact: 'Built and validated a logistic regression model that beat the baseline rule, then a reproducible ML capstone with grouped validation and drift monitoring.' },
+      impact: 'Engineered a content decay triage pipeline across 30,000 production URLs (32 clients), achieving 70.0% Precision@10 on unseen domains (3.5x lift over baseline) with a deliberate leakage harness.' },
     { key: 'pepsico', company: 'PepsiCo', role: 'GTM Analytics Intern, Roshan Kal', dates: 'Jul 2026 to Aug 2026', place: 'Islamabad',
       impact: 'Shipped 7 VBA automation tools for GTM and Tax, returning 59+ hours a month. Presented the architecture and ROI to the COO and CFO.' },
     { key: 'attock-refinery', company: 'Attock Refinery Limited', role: 'B2B Sales Intern', dates: 'Jun 2026 to Jul 2026', place: 'Islamabad',
@@ -50,13 +52,13 @@ window.SITE = {
     ],
     practitioner: [
       { id: 'python', name: 'Python & pandas',
-        summary: 'Data exploration, cleaning and modeling notebooks across the FlyRank internship.',
+        summary: 'Data exploration, schema sanitization and modeling notebooks across 30,000 production URLs in the FlyRank internship.',
         proof: [{ label: 'FlyRank AI', href: '#flyrank' }] },
       { id: 'sklearn', name: 'scikit-learn',
-        summary: 'Logistic regression and random forest models, including one that beat the baseline rule.',
+        summary: 'Calibrated Logistic Regression and Regularized Random Forest pipelines achieving 70.0% Precision@10 on unseen clients.',
         proof: [{ label: 'FlyRank AI', href: '#flyrank' }] },
       { id: 'validation-ml', name: 'Model Validation',
-        summary: 'Grouped splits and a leakage harness. A random split reported 0.4426 precision, the honest grouped holdout was 0.4152.',
+        summary: 'Client-grouped splits and a deliberate leakage harness. Exposed a +14.4% optimism inflation gap between random splitting (0.7197 AP) and honest grouped splitting (0.5758 AP).',
         proof: [{ label: 'FlyRank AI', href: '#flyrank' }] },
       { id: 'pbi', name: 'Power BI & DAX',
         summary: 'A quick-commerce analytics model on a star schema at PepsiCo.',
@@ -74,7 +76,7 @@ window.SITE = {
         summary: 'A local resume-tailoring agent on the MCP filesystem server, plus Anthropic certificates in Claude Code and agents.',
         proof: [{ label: 'Certificates', href: '#certificates' }] },
       { id: 'gov', name: 'AI Governance',
-        summary: 'Claims framed under the NIST AI RMF, and drift monitoring with a 15% tolerance that triggers retraining checks.',
+        summary: 'Claims framed under the NIST AI RMF, with automated human-in-the-loop safety guardrails and drift monitoring.',
         proof: [{ label: 'FlyRank AI', href: '#flyrank' }] },
       { id: 'sap', name: 'SAP Workflows',
         summary: 'SAP exports at PepsiCo, billing and allocation at FFC, Ariba sourcing at OGDCL.',
@@ -97,26 +99,34 @@ window.SITE = {
     ]
   },
 
-  /* Put each PDF in /certs using the file name shown here. */
+  /* 14 Certificates split evenly into 2 rows of 7 */
   certs: [
-    { group: 'AI Fluency & Claude', items: [
-      { title: 'AI Fluency: Frameworks and Foundations', file: 'ai-fluency-frameworks-and-foundations.pdf' },
-      { title: 'Claude 101', file: 'claude-101.pdf' },
-      { title: 'Introduction to Claude Cowork', file: 'introduction-to-claude-cowork.pdf' },
-      { title: 'AI Capabilities and Limitations', file: 'ai-capabilities-and-limitations.pdf' },
-      { title: 'AI Fluency for Students', file: 'ai-fluency-for-students.pdf' },
-      { title: 'AI Fluency for Small Businesses', file: 'ai-fluency-for-small-businesses.pdf' },
-      { title: 'AI Fluency for Educators', file: 'ai-fluency-for-educators.pdf' },
-      { title: 'Teaching AI Fluency', file: 'teaching-ai-fluency.pdf' },
-      { title: 'AI Fluency for Nonprofits', file: 'ai-fluency-for-nonprofits.pdf' },
-      { title: 'AI Fluency for Builders', file: 'ai-fluency-for-builders.pdf' }
-    ]},
-    { group: 'Claude Code & Agents', items: [
-      { title: 'Claude Code 101', file: 'claude-code-101.pdf' },
-      { title: 'Claude Code in Action', file: 'claude-code-in-action.pdf' },
-      { title: 'Introduction to Agent Skills', file: 'introduction-to-agent-skills.pdf' },
-      { title: 'Introduction to Subagents', file: 'introduction-to-subagents.pdf' }
-    ]}
+    {
+      group: 'Row 01 · AI Fluency & Applied Foundations',
+      direction: -1,
+      items: [
+        { title: 'AI Fluency: Frameworks & Foundations', file: 'AI-Fluency-Frameworks-and-Foundation.pdf', alt: 'ai-fluency-frameworks-and-foundations.pdf' },
+        { title: 'AI Capabilities and Limitations', file: 'AI-Capabilities-and-Limitations.pdf', alt: 'ai-capabilities-and-limitations.pdf' },
+        { title: 'AI Fluency for Builders', file: 'AI-Fluency-for-Builders.pdf', alt: 'ai-fluency-for-builders.pdf' },
+        { title: 'AI Fluency for Small Businesses', file: 'AI-Fluency-for-Small-Businesses.pdf', alt: 'ai-fluency-for-small-businesses.pdf' },
+        { title: 'AI Fluency for Students', file: 'AI-Fluency-for-students.pdf', alt: 'ai-fluency-for-students.pdf' },
+        { title: 'AI Fluency for Educators', file: 'AI-Fluency-for-educators.pdf', alt: 'ai-fluency-for-educators.pdf' },
+        { title: 'AI Fluency for Nonprofits', file: 'AI-Fluency-for-nonprofits.pdf', alt: 'ai-fluency-for-nonprofits.pdf' }
+      ]
+    },
+    {
+      group: 'Row 02 · Claude Code, Subagents & Workflows',
+      direction: 1,
+      items: [
+        { title: 'Claude Code in Action', file: 'Claude-Code-in-Action.pdf', alt: 'claude-code-in-action.pdf' },
+        { title: 'Claude Code 101', file: 'Claude-Code-101.pdf', alt: 'claude-code-101.pdf' },
+        { title: 'Introduction to Agent Skills', file: 'Introduction-to-agent-skills.pdf', alt: 'introduction-to-agent-skills.pdf' },
+        { title: 'Introduction to Subagents', file: 'Introduction-to-subagents.pdf', alt: 'introduction-to-subagents.pdf' },
+        { title: 'Introduction to Claude Cowork', file: 'Introduction-to-Claude-Cowork.pdf', alt: 'introduction-to-claude-cowork.pdf' },
+        { title: 'Claude 101', file: 'Claude-101.pdf', alt: 'claude-101.pdf' },
+        { title: 'Teaching AI Fluency', file: 'Teaching-AI-Fluency.pdf', alt: 'teaching-ai-fluency.pdf' }
+      ]
+    }
   ],
 
   about: {
@@ -126,6 +136,6 @@ window.SITE = {
       'Self-directed equity trader on the PSX since 2025'
     ],
     belief: 'Busy people lose their evenings to repetitive work. I build systems that give those hours back, so there is time for the people they care about.',
-    story: []   /* your own paragraphs go here, one string each */
+    story: []
   }
 };
