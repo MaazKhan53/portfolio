@@ -10,7 +10,7 @@
 window.SITE = {
 
   analytics: {
-    clarityId: '' /* Optional: e.g. 'p9abc123xyz' from clarity.microsoft.com */
+    clarityId: 'z3rbxtmulr' /* Optional: e.g. 'p9abc123xyz' from clarity.microsoft.com */
   },
 
   experience: [
