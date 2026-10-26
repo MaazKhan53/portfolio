@@ -72,29 +72,43 @@
   })();
 
   /* ---------- 3. Analytics & Visitor Intelligence ---------- */
-  function trackEvent(name, data) {
-    try {
-      if (typeof window.va === 'function') {
-        window.va('event', { name: name, data: data || {} });
-      }
-    } catch (e) {}
-  }
-
-  if (S.analytics && S.analytics.clarityId) {
-    try {
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", S.analytics.clarityId);
-    } catch (e) {}
-  }
-
+ /* ---------- 3. Analytics & Visitor Intelligence ---------- */
+function trackEvent(name, data) {
   try {
-    var params = new URLSearchParams(window.location.search);
-    var refTag = params.get('ref') || params.get('from') || params.get('utm_source');
-    if (refTag) trackEvent('inbound_ref', { source: refTag });
+    if (typeof window.va === 'function') {
+      window.va('event', { name: name, data: data || {} });
+    }
+    if (typeof window.clarity === 'function') {
+      window.clarity('event', name);
+      if (data) {
+        Object.keys(data).forEach(function (k) {
+          if (data[k]) window.clarity('set', name + '_' + k, String(data[k]));
+        });
+      }
+    }
   } catch (e) {}
+}
+
+if (S.analytics && S.analytics.clarityId) {
+  try {
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", S.analytics.clarityId);
+  } catch (e) {}
+}
+
+try {
+  var params = new URLSearchParams(window.location.search);
+  var refTag = params.get('ref') || params.get('from') || params.get('utm_source');
+  if (refTag) {
+    trackEvent('inbound_ref', { source: refTag });
+    if (typeof window.clarity === 'function') {
+      window.clarity('set', 'visitor_source', refTag);
+    }
+  }
+} catch (e) {}
 
   $$('[data-track]').forEach(function (el) {
     el.addEventListener('click', function () {
