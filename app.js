@@ -24,7 +24,6 @@
     }
   }
   initAnimations();
-  // Failsafe: ensure no section ever stays stuck at opacity 0
   setTimeout(function () {
     $$('[data-aos]').forEach(function (el) {
       if (window.getComputedStyle(el).opacity === '0' && !el.classList.contains('aos-animate')) {
@@ -33,72 +32,173 @@
         el.style.transform = 'none';
       }
     });
-  }, 900);
+  }, 850);
 
-  /* ---------- 2. Self-Healing CSS & PDF.js Loader ---------- */
-  (function ensureDependencies() {
-    if (!$('#certDynamicStyles')) {
-      var st = document.createElement('style');
-      st.id = 'certDynamicStyles';
-      st.textContent =
-        '.cert-viewport{overflow:hidden;position:relative;user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:grab;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}' +
-        '.cert-viewport.is-dragging{cursor:grabbing}' +
-        '.cert-track{display:flex;gap:20px;width:max-content;will-change:transform;padding:8px 0}' +
-        '.cert-card{flex:none;width:310px;border-radius:16px;background:rgba(30,41,59,0.85);border:1px solid rgba(71,85,105,0.7);overflow:hidden;transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;cursor:pointer}' +
-        '@media (max-width:640px){.cert-card{width:260px}}' +
-        '.cert-card:hover{border-color:rgba(34,211,238,0.65);box-shadow:0 12px 28px -8px rgba(6,182,212,0.25);transform:translateY(-3px)}' +
-        '.cert-preview-box{position:relative;width:100%;aspect-ratio:1.414/1;background:#0f172a;display:flex;align-items:center;justify-content:center;overflow:hidden}' +
-        '.cert-preview-box canvas{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}' +
-        '#certLightbox{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.86);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .32s cubic-bezier(0.16,1,0.3,1);touch-action:pinch-zoom}' +
-        '#certLightbox.is-open{opacity:1;pointer-events:auto}' +
-        '#certLightboxCard{position:relative;width:min(92vw,960px);max-height:88vh;border-radius:18px;background:#0f172a;border:1px solid rgba(56,189,248,0.35);box-shadow:0 25px 60px -15px rgba(0,0,0,0.85);overflow:hidden;transform-origin:center center;transition:transform .36s cubic-bezier(0.16,1,0.3,1),opacity .32s ease;display:flex;flex-direction:column}';
-      document.head.appendChild(st);
-    }
+  /* ---------- 2. Three.js 3D Architectural Data Constellation ---------- */
+  (function initHeroThreeJS() {
+    var canvas = $('#heroCanvas');
+    if (!canvas || !window.THREE || reduce) return;
 
-    if (!window.pdfjsLib && !$('#pdfjsScript')) {
-      var sc = document.createElement('script');
-      sc.id = 'pdfjsScript';
-      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-      sc.onload = function () {
-        if (window.pdfjsLib) {
-          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-          window.dispatchEvent(new Event('pdfjsReady'));
+    try {
+      var THREE = window.THREE;
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 28;
+
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      var group = new THREE.Group();
+      scene.add(group);
+
+      // Architectural Data Nodes
+      var nodeCount = window.innerWidth < 640 ? 55 : 95;
+      var positions = new Float32Array(nodeCount * 3);
+      var velocities = [];
+      var spreadX = 46, spreadY = 28, spreadZ = 18;
+
+      for (var i = 0; i < nodeCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * spreadX;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * spreadY;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * spreadZ;
+        velocities.push({
+          vx: (Math.random() - 0.5) * 0.018,
+          vy: (Math.random() - 0.5) * 0.018,
+          vz: (Math.random() - 0.5) * 0.012
+        });
+      }
+
+      var pointsGeo = new THREE.BufferGeometry();
+      pointsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      var pointsMat = new THREE.PointsMaterial({
+        color: 0x38bdf8,
+        size: 0.22,
+        transparent: true,
+        opacity: 0.85
+      });
+      var pointCloud = new THREE.Points(pointsGeo, pointsMat);
+      group.add(pointCloud);
+
+      // Dynamic Pipeline Connections
+      var maxLines = nodeCount * 6;
+      var linePositions = new Float32Array(maxLines * 6);
+      var lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+      var lineMat = new THREE.LineBasicMaterial({
+        color: 0x0284c7,
+        transparent: true,
+        opacity: 0.18
+      });
+      var lineSegments = new THREE.LineSegments(lineGeo, lineMat);
+      group.add(lineSegments);
+
+      // Subtle Wireframe Glass Icosahedron Accent
+      var icoGeo = new THREE.IcosahedronGeometry(9.5, 1);
+      var icoMat = new THREE.MeshBasicMaterial({
+        color: 0x22d3ee,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.06
+      });
+      var icoMesh = new THREE.Mesh(icoGeo, icoMat);
+      group.add(icoMesh);
+
+      var mouseX = 0, mouseY = 0;
+      window.addEventListener('pointermove', function (e) {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      }, { passive: true });
+
+      window.addEventListener('resize', function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      function animateThree() {
+        requestAnimationFrame(animateThree);
+        // Only render when Hero is near viewport
+        if (window.scrollY > window.innerHeight * 1.3) return;
+
+        var posArr = pointsGeo.attributes.position.array;
+        for (var i = 0; i < nodeCount; i++) {
+          var ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
+          posArr[ix] += velocities[i].vx;
+          posArr[iy] += velocities[i].vy;
+          posArr[iz] += velocities[i].vz;
+
+          if (Math.abs(posArr[ix]) > spreadX / 2) velocities[i].vx *= -1;
+          if (Math.abs(posArr[iy]) > spreadY / 2) velocities[i].vy *= -1;
+          if (Math.abs(posArr[iz]) > spreadZ / 2) velocities[i].vz *= -1;
         }
-      };
-      document.head.appendChild(sc);
-    } else if (window.pdfjsLib) {
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
+        pointsGeo.attributes.position.needsUpdate = true;
+
+        // Connect nearby nodes into data pipelines
+        var lineIdx = 0;
+        var connectDistSq = 48;
+        for (var a = 0; a < nodeCount; a++) {
+          for (var b = a + 1; b < nodeCount; b++) {
+            if (lineIdx >= maxLines) break;
+            var dx = posArr[a * 3] - posArr[b * 3];
+            var dy = posArr[a * 3 + 1] - posArr[b * 3 + 1];
+            var dz = posArr[a * 3 + 2] - posArr[b * 3 + 2];
+            var distSq = dx * dx + dy * dy + dz * dz;
+            if (distSq < connectDistSq) {
+              var lBase = lineIdx * 6;
+              linePositions[lBase] = posArr[a * 3];
+              linePositions[lBase + 1] = posArr[a * 3 + 1];
+              linePositions[lBase + 2] = posArr[a * 3 + 2];
+              linePositions[lBase + 3] = posArr[b * 3];
+              linePositions[lBase + 4] = posArr[b * 3 + 1];
+              linePositions[lBase + 5] = posArr[b * 3 + 2];
+              lineIdx++;
+            }
+          }
+        }
+        lineGeo.setDrawRange(0, lineIdx * 2);
+        lineGeo.attributes.position.needsUpdate = true;
+
+        icoMesh.rotation.y += 0.0012;
+        icoMesh.rotation.x += 0.0007;
+
+        // Smooth camera & constellation parallax with mouse
+        group.rotation.y += (mouseX * 0.22 - group.rotation.y) * 0.04;
+        group.rotation.x += (-mouseY * 0.16 - group.rotation.x) * 0.04;
+
+        renderer.render(scene, camera);
+      }
+      animateThree();
+    } catch (e) {}
   })();
 
   /* ---------- 3. Analytics & Visitor Intelligence ---------- */
- /* ---------- 3. Analytics & Visitor Intelligence ---------- */
-function trackEvent(name, data) {
+  function trackEvent(name, data) {
+    try {
+      if (typeof window.va === 'function') {
+        window.va('event', { name: name, data: data || {} });
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', name);
+        if (data) {
+          Object.keys(data).forEach(function (k) {
+            if (data[k]) window.clarity('set', name + '_' + k, String(data[k]));
+          });
+        }
+      }
+    } catch (e) {}
+  }
+
   try {
-    if (typeof window.va === 'function') {
-      window.va('event', { name: name, data: data || {} });
-    }
-    if (typeof window.clarity === 'function') {
-      window.clarity('event', name);
-      if (data) {
-        Object.keys(data).forEach(function (k) {
-          if (data[k]) window.clarity('set', name + '_' + k, String(data[k]));
-        });
+    var params = new URLSearchParams(window.location.search);
+    var refTag = params.get('ref') || params.get('from') || params.get('utm_source');
+    if (refTag) {
+      trackEvent('inbound_ref', { source: refTag });
+      if (typeof window.clarity === 'function') {
+        window.clarity('set', 'visitor_source', refTag);
       }
     }
   } catch (e) {}
-}
-
-try {
-  var params = new URLSearchParams(window.location.search);
-  var refTag = params.get('ref') || params.get('from') || params.get('utm_source');
-  if (refTag) {
-    trackEvent('inbound_ref', { source: refTag });
-    if (typeof window.clarity === 'function') {
-      window.clarity('set', 'visitor_source', refTag);
-    }
-  }
-} catch (e) {}
 
   $$('[data-track]').forEach(function (el) {
     el.addEventListener('click', function () {
@@ -110,6 +210,19 @@ try {
   if (pepsicoDetails) {
     pepsicoDetails.addEventListener('toggle', function () {
       if (pepsicoDetails.open) trackEvent('pepsico_tools_expand');
+    });
+  }
+
+  /* ---------- 4. Liquid Glass Cursor Specular Sheen ---------- */
+  function bindLiquidGlassHover() {
+    $$('.liquid-card').forEach(function (card) {
+      if (card._glassBound) return;
+      card._glassBound = true;
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      }, { passive: true });
     });
   }
 
@@ -164,14 +277,14 @@ try {
   if (expGrid && Array.isArray(S.experience)) {
     S.experience.forEach(function (e) {
       var card = document.createElement('article');
-      card.className = 'rounded-2xl border border-slate-700 bg-slate-800/60 p-6 flex gap-5 hover:border-blue-500/40 transition duration-300';
+      card.className = 'liquid-card rounded-3xl p-6 flex gap-5';
       card.setAttribute('data-aos', 'fade-up');
 
       var chip = document.createElement('div');
-      chip.className = 'w-14 h-14 shrink-0 rounded-xl bg-white flex items-center justify-center p-2 overflow-hidden';
+      chip.className = 'w-14 h-14 shrink-0 rounded-2xl bg-white flex items-center justify-center p-2 overflow-hidden shadow-md';
       var img = loadImage('logos/' + e.key, function (bad) {
         bad.remove();
-        chip.className = 'w-14 h-14 shrink-0 rounded-xl bg-slate-700 text-white font-bold flex items-center justify-center';
+        chip.className = 'w-14 h-14 shrink-0 rounded-2xl bg-slate-800/90 border border-white/10 text-cyan-300 font-display font-bold flex items-center justify-center';
         chip.textContent = initials(e.company);
       });
       img.className = 'max-w-full max-h-full object-contain';
@@ -182,16 +295,18 @@ try {
       body.innerHTML =
         '<div class="flex flex-wrap items-center gap-2">' +
           '<h3 class="text-lg font-bold text-white leading-snug">' + e.role + '</h3>' +
-          (e.ongoing ? '<span class="px-2 py-0.5 rounded-full bg-emerald-400/10 text-emerald-300 text-[11px] font-semibold uppercase tracking-wider">Ongoing</span>' : '') +
+          (e.ongoing ? '<span class="mono-tag px-2.5 py-0.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-[10px] font-semibold uppercase tracking-wider">Ongoing</span>' : '') +
         '</div>' +
-        '<p class="text-cyan-300 font-medium">' + e.company + '</p>' +
-        '<p class="text-xs text-slate-500 mt-0.5">' + e.dates + ' &middot; ' + e.place + '</p>' +
-        '<p class="text-sm text-slate-400 mt-3 leading-relaxed">' + e.impact + '</p>';
+        '<p class="text-cyan-300 font-medium text-sm mt-0.5">' + e.company + '</p>' +
+        '<p class="mono-tag text-[11px] text-slate-500 mt-0.5">' + e.dates + ' &middot; ' + e.place + '</p>' +
+        '<p class="text-sm text-slate-300/85 mt-3 leading-relaxed">' + e.impact + '</p>';
 
       card.appendChild(chip); card.appendChild(body);
       expGrid.appendChild(card);
     });
   }
+
+  bindLiquidGlassHover();
 
   /* ---------- skill map ---------- */
   var all = {};
@@ -236,12 +351,12 @@ try {
       if (!s || !panel) return;
       var adv = s.tier === 'Advanced Practitioner';
       panel.innerHTML =
-        '<span class="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest ' +
-          (adv ? 'bg-cyan-400/10 text-cyan-300' : 'bg-slate-600/40 text-slate-300') + '">' + s.tier + '</span>' +
+        '<span class="mono-tag inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest ' +
+          (adv ? 'bg-cyan-400/10 border border-cyan-400/25 text-cyan-300' : 'bg-white/5 border border-white/10 text-slate-300') + '">' + s.tier + '</span>' +
         '<h3 class="text-2xl font-bold text-white mt-3">' + s.name + '</h3>' +
-        '<p class="text-slate-400 mt-2 leading-relaxed">' + s.summary + '</p>' +
-        '<p class="mt-4 text-sm text-slate-500">Proof: ' +
-          s.proof.map(function (p) { return '<a class="text-blue-400 hover:text-blue-300 underline underline-offset-4" href="' + p.href + '">' + p.label + '</a>'; }).join(', ') + '</p>';
+        '<p class="text-slate-300/90 mt-2 leading-relaxed">' + s.summary + '</p>' +
+        '<p class="mt-4 text-sm text-slate-400 mono-tag">Verified in: ' +
+          s.proof.map(function (p) { return '<a class="text-cyan-300 hover:text-white underline underline-offset-4" href="' + p.href + '">' + p.label + '</a>'; }).join(', ') + '</p>';
     }
 
     function renderMap(force) {
@@ -256,38 +371,11 @@ try {
     window.addEventListener('resize', function () { renderMap(false); });
   }
 
-  /* ---------- Self-Healing Lightbox Modal Builder ---------- */
-  function ensureLightboxDOM() {
-    var lb = $('#certLightbox');
-    if (!lb) {
-      lb = document.createElement('div');
-      lb.id = 'certLightbox';
-      lb.setAttribute('role', 'dialog');
-      lb.setAttribute('aria-modal', 'true');
-      lb.innerHTML =
-        '<div id="certLightboxCard">' +
-          '<div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-slate-900/90">' +
-            '<div>' +
-              '<span class="text-[10px] uppercase tracking-widest text-cyan-400 font-semibold block">Anthropic Verified Credential</span>' +
-              '<h3 id="certModalTitle" class="text-sm md:text-base font-bold text-white truncate max-w-xs sm:max-w-md md:max-w-xl">Certificate</h3>' +
-            '</div>' +
-            '<div class="flex items-center gap-2">' +
-              '<button id="certZoomBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition">Zoom +</button>' +
-              '<button id="certCloseBtn" type="button" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition" aria-label="Close modal">' +
-                '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
-              '</button>' +
-            '</div>' +
-          '</div>' +
-          '<div id="certModalViewport" class="relative overflow-auto flex-1 flex items-center justify-center bg-slate-950 p-3 md:p-6 select-none">' +
-            '<canvas id="certModalCanvas" class="max-w-full max-h-[75vh] w-auto h-auto rounded shadow-lg transition-transform duration-200 origin-center"></canvas>' +
-          '</div>' +
-        '</div>';
-      document.body.appendChild(lb);
-    }
-    return lb;
+  /* ---------- PDF.js Setup & Frameless Certificate Renderer ---------- */
+  if (window.pdfjsLib) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
 
-  /* ---------- Exact Filename Resolver for GitHub Root & /certs ---------- */
   var EXACT_FILE_MAP = {
     'ai-fluency-frameworks-and-foundations.pdf': 'AI-Fluency-Frameworks-and-Foundation.pdf',
     'ai-capabilities-and-limitations.pdf': 'AI-Capabilities-and-Limitations.pdf',
@@ -306,7 +394,6 @@ try {
   };
 
   var pdfPageCache = {};
-  var pendingCanvasRenders = [];
 
   function getPdfPage(certItem) {
     var key = certItem.file;
@@ -341,13 +428,9 @@ try {
   }
 
   function renderCertToCanvas(certItem, canvas, targetWidth) {
-    if (!window.pdfjsLib) {
-      pendingCanvasRenders.push({ item: certItem, canvas: canvas, width: targetWidth });
-      return;
-    }
     getPdfPage(certItem).then(function (page) {
       var baseVp = page.getViewport({ scale: 1 });
-      var dpr = Math.min(window.devicePixelRatio || 1, 2.2);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2.4);
       var scale = (targetWidth / baseVp.width) * dpr;
       var vp = page.getViewport({ scale: scale });
       canvas.width = vp.width;
@@ -355,25 +438,18 @@ try {
       var ctx = canvas.getContext('2d');
       page.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
         var ph = canvas.parentNode && canvas.parentNode.querySelector('.cert-fallback');
-        if (ph) ph.style.opacity = '0';
+        if (ph) ph.remove();
       });
     }).catch(function () {
       delete pdfPageCache[certItem.file];
     });
   }
 
-  window.addEventListener('pdfjsReady', function () {
-    var q = pendingCanvasRenders.slice();
-    pendingCanvasRenders = [];
-    q.forEach(function (job) { renderCertToCanvas(job.item, job.canvas, job.width); });
-  });
-
-  /* ---------- Certificates: 2 Balanced Rows of 7 + Physics Glide ---------- */
+  /* ---------- Certificates: Pure Unbordered Gliding Rows ---------- */
   var certWrap = $('#certRows');
   var rowControllers = [];
 
   if (certWrap && Array.isArray(S.certs)) {
-    // Automatically balance into 2 rows of 7 even if data.js still has the old 10 + 4 grouping
     var allCertsFlat = [];
     S.certs.forEach(function (g) {
       (g.items || []).forEach(function (it) { allCertsFlat.push(it); });
@@ -382,53 +458,43 @@ try {
     var balancedGroups = S.certs.length === 2 && S.certs[0].items.length === 7
       ? S.certs
       : [
-          { group: 'Row 01 · AI Fluency & Applied Foundations', direction: -1, items: allCertsFlat.slice(0, 7) },
-          { group: 'Row 02 · Claude Code, Subagents & Workflows', direction: 1, items: allCertsFlat.slice(7, 14) }
+          { direction: -1, items: allCertsFlat.slice(0, 7) },
+          { direction: 1, items: allCertsFlat.slice(7, 14) }
         ];
 
+    // Pure frameless certificate element: zero outer box, zero bottom bar, zero zoom button
     function createCertCard(c) {
       var card = document.createElement('div');
-      card.className = 'cert-card group';
+      card.className = 'cert-card';
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
-      card.setAttribute('aria-label', 'Enlarge certificate: ' + c.title);
+      card.setAttribute('aria-label', c.title);
 
       card.innerHTML =
         '<div class="cert-preview-box">' +
-          '<div class="cert-fallback absolute inset-0 flex flex-col justify-between p-5 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 transition-opacity duration-300">' +
-            '<div class="flex items-center justify-between">' +
-              '<span class="text-[10px] tracking-widest uppercase text-cyan-300 font-bold">Anthropic</span>' +
-              '<span class="px-2 py-0.5 rounded bg-cyan-400/10 text-cyan-300 text-[10px] font-medium">Verified Credential</span>' +
+          '<div class="cert-fallback absolute inset-0 flex flex-col justify-between p-6 bg-[#f8fafc] text-slate-900 rounded-[6px]">' +
+            '<div class="flex items-center justify-between border-b border-slate-200 pb-2">' +
+              '<span class="mono-tag text-[9px] tracking-widest uppercase text-slate-500 font-bold">Anthropic</span>' +
+              '<span class="mono-tag text-[9px] text-slate-400">Certificate</span>' +
             '</div>' +
-            '<div class="my-auto py-2">' +
-              '<p class="text-white font-bold text-base leading-snug">' + c.title + '</p>' +
-              '<p class="text-xs text-slate-400 mt-1">Maaz Khan</p>' +
+            '<div class="my-auto py-2 text-left">' +
+              '<p class="font-display font-bold text-slate-900 text-sm leading-snug">' + c.title + '</p>' +
+              '<p class="text-[11px] text-slate-500 mt-1">Awarded to Maaz Khan</p>' +
             '</div>' +
-            '<div class="text-[11px] text-slate-400 flex items-center justify-between border-t border-slate-800 pt-2">' +
-              '<span>Certificate of Completion</span>' +
-              '<span class="text-cyan-300">Click to zoom</span>' +
-            '</div>' +
+            '<div class="text-[9px] mono-tag text-slate-400 text-right">Verified Credential</div>' +
           '</div>' +
           '<canvas></canvas>' +
-        '</div>' +
-        '<div class="px-4 py-3 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between gap-2">' +
-          '<span class="text-xs font-semibold text-slate-200 truncate">' + c.title + '</span>' +
-          '<span class="text-[11px] text-cyan-400 shrink-0">Zoom +</span>' +
         '</div>';
 
       var canvas = card.querySelector('canvas');
-      renderCertToCanvas(c, canvas, 340);
+      renderCertToCanvas(c, canvas, 360);
       card._certData = c;
       return card;
     }
 
     balancedGroups.forEach(function (g, gi) {
-      var label = document.createElement('p');
-      label.className = 'text-xs uppercase tracking-widest text-slate-400 font-semibold mb-2 px-6 max-w-6xl mx-auto';
-      label.textContent = g.group;
-
       var viewport = document.createElement('div');
-      viewport.className = 'cert-viewport mb-8';
+      viewport.className = 'cert-viewport';
       var track = document.createElement('div');
       track.className = 'cert-track';
 
@@ -445,7 +511,6 @@ try {
       }
 
       viewport.appendChild(track);
-      certWrap.appendChild(label);
       certWrap.appendChild(viewport);
 
       var baseSpeed = (g.direction || (gi % 2 === 0 ? -1 : 1)) * 0.55;
@@ -517,6 +582,16 @@ try {
       viewport.addEventListener('pointerup', endDrag);
       viewport.addEventListener('pointercancel', endDrag);
 
+      track.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          var card = e.target.closest('.cert-card');
+          if (card && card._certData) {
+            e.preventDefault();
+            openCertModal(card._certData, card);
+          }
+        }
+      });
+
       ctrl.measure = measureSetWidth;
       rowControllers.push(ctrl);
     });
@@ -546,35 +621,40 @@ try {
     requestAnimationFrame(tickCerts);
   }
 
-  /* ---------- Fluid FLIP Lightbox Modal Controller ---------- */
-  var lightbox = ensureLightboxDOM();
+  /* ---------- Frameless Fluid FLIP Lightbox Controller ---------- */
+  var lightbox = $('#certLightbox');
   var lightboxCard = $('#certLightboxCard');
-  var modalTitle = $('#certModalTitle');
   var modalCanvas = $('#certModalCanvas');
-  var zoomBtn = $('#certZoomBtn');
-  var closeBtn = $('#certCloseBtn');
   var activeOriginCard = null;
   var zoomLevel = 1;
 
   function computeFlipDelta(originEl) {
-    if (!originEl) return { dx: 0, dy: 0, scale: 0.75 };
+    if (!originEl) return { dx: 0, dy: 0, scale: 0.4 };
     var rect = originEl.getBoundingClientRect();
     var vw = window.innerWidth, vh = window.innerHeight;
     var dx = (rect.left + rect.width / 2) - vw / 2;
     var dy = (rect.top + rect.height / 2) - vh / 2;
-    var scale = Math.max(0.25, Math.min(rect.width / Math.min(vw * 0.92, 960), 0.85));
+    var targetW = Math.min(vw * 0.92, 980);
+    var scale = Math.max(0.22, Math.min(rect.width / targetW, 0.85));
     return { dx: dx, dy: dy, scale: scale };
   }
 
   function openCertModal(certItem, originCard) {
+    if (!lightbox || !lightboxCard || !modalCanvas) return;
     activeOriginCard = originCard;
     zoomLevel = 1;
-    if (modalCanvas) modalCanvas.style.transform = 'scale(1)';
-    if (zoomBtn) zoomBtn.textContent = 'Zoom +';
-    if (modalTitle) modalTitle.textContent = certItem.title;
+    modalCanvas.style.transform = 'scale(1)';
 
     trackEvent('certificate_zoom_open', { certificate: certItem.title });
-    if (modalCanvas) renderCertToCanvas(certItem, modalCanvas, 1100);
+
+    // Instant visual copy from clicked card's canvas before upgrading to ultra-high DPI
+    var thumbCanvas = originCard ? originCard.querySelector('canvas') : null;
+    if (thumbCanvas && thumbCanvas.width > 0) {
+      modalCanvas.width = thumbCanvas.width;
+      modalCanvas.height = thumbCanvas.height;
+      modalCanvas.getContext('2d').drawImage(thumbCanvas, 0, 0);
+    }
+    renderCertToCanvas(certItem, modalCanvas, 1200);
 
     var flip = computeFlipDelta(originCard);
     lightboxCard.style.transition = 'none';
@@ -583,7 +663,7 @@ try {
 
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        lightboxCard.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)';
+        lightboxCard.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
         lightboxCard.style.transform = 'translate3d(0, 0, 0) scale(1)';
       });
     });
@@ -591,32 +671,34 @@ try {
 
   function closeCertModal() {
     if (!lightbox || !lightbox.classList.contains('is-open')) return;
+    zoomLevel = 1;
+    if (modalCanvas) modalCanvas.style.transform = 'scale(1)';
     var flip = computeFlipDelta(activeOriginCard);
-    lightboxCard.style.transition = 'transform 0.34s cubic-bezier(0.16, 1, 0.3, 1)';
+    lightboxCard.style.transition = 'transform 0.36s cubic-bezier(0.16, 1, 0.3, 1)';
     lightboxCard.style.transform = 'translate3d(' + flip.dx + 'px, ' + flip.dy + 'px, 0) scale(' + flip.scale + ')';
     lightbox.classList.remove('is-open');
     activeOriginCard = null;
   }
 
-  if (zoomBtn) {
-    zoomBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      zoomLevel = zoomLevel === 1 ? 1.65 : 1;
-      if (modalCanvas) modalCanvas.style.transform = 'scale(' + zoomLevel + ')';
-      zoomBtn.textContent = zoomLevel === 1 ? 'Zoom +' : 'Reset Zoom';
-    });
-  }
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      closeCertModal();
-    });
-  }
+  // Clicking anywhere outside the certificate closes it back into its gliding place
   if (lightbox) {
     lightbox.addEventListener('click', function (e) {
-      if (lightboxCard && !lightboxCard.contains(e.target)) closeCertModal();
+      if (e.target !== modalCanvas) {
+        closeCertModal();
+      }
     });
   }
+
+  // Double-clicking the enlarged certificate toggles desktop zoom
+  if (modalCanvas) {
+    modalCanvas.addEventListener('dblclick', function (e) {
+      e.stopPropagation();
+      zoomLevel = zoomLevel === 1 ? 1.65 : 1;
+      modalCanvas.style.transform = 'scale(' + zoomLevel + ')';
+      modalCanvas.style.cursor = zoomLevel === 1 ? 'zoom-in' : 'zoom-out';
+    });
+  }
+
   window.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeCertModal();
   });
@@ -645,7 +727,16 @@ try {
     photo.onload = function () { fig.appendChild(photo); fig.classList.remove('hidden'); };
   }
 
-  /* ---------- Contact form reset ---------- */
+  /* ---------- Contact form submit & reset ---------- */
+  var contactForm = $('#contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function () {
+      trackEvent('contact_form_submit');
+      var btn = $('#submitBtn');
+      if (btn) { btn.disabled = true; btn.innerText = 'Sending...'; }
+    });
+  }
+
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       var btn = $('#submitBtn');
@@ -653,7 +744,6 @@ try {
     }
   });
 
-  // Refresh AOS after dynamic sections are populated
   if (window.AOS) {
     setTimeout(function () { window.AOS.refresh(); }, 200);
   }
