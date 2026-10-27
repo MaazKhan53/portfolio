@@ -89,16 +89,6 @@ function trackEvent(name, data) {
   } catch (e) {}
 }
 
-if (S.analytics && S.analytics.clarityId) {
-  try {
-    (function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", S.analytics.clarityId);
-  } catch (e) {}
-}
-
 try {
   var params = new URLSearchParams(window.location.search);
   var refTag = params.get('ref') || params.get('from') || params.get('utm_source');
