@@ -88,7 +88,7 @@
         }
         .mono-meta { font-family: 'JetBrains Mono', monospace; }
 
-        /* ---------- 1. High-Contrast Reading Protection (Zero Visual Noise Behind Text) ---------- */
+        /* ---------- 1. High-Contrast Reading Protection ---------- */
         .reading-halo {
             position: relative;
             z-index: 10;
@@ -122,7 +122,7 @@
         }
         @media (pointer: coarse) { #cursorHalo { display: none; } }
 
-        /* ---------- 2. Prominent Magnetic CTAs with Conic Border Beams & Liquid Fill ---------- */
+        /* ---------- 2. Prominent Magnetic CTAs ---------- */
         .cta-primary {
             position: relative;
             display: inline-flex;
@@ -179,7 +179,6 @@
             transform: rotate(45deg) scale(1.1);
         }
 
-        /* Glowing Border-Beam Secondary CTA */
         .cta-beam {
             position: relative;
             display: inline-flex;
@@ -248,7 +247,6 @@
             border: 1px dashed rgba(250, 246, 240, 0.14);
             pointer-events: none;
         }
-        /* Enlarged 84px Logo Medallions (104px when active) */
         .dial-node {
             position: absolute;
             top: 50%;
@@ -474,10 +472,10 @@
     <!-- Interactive Cursor Follower -->
     <div id="cursorHalo" aria-hidden="true"></div>
 
-    <!-- 1. Lit 3D Architectural Sculpture Canvas (Positioned in Negative Space — Zero Clutter Behind Text) -->
+    <!-- 1. Lit 3D Architectural Sculpture Canvas -->
     <canvas id="bgCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0" aria-hidden="true"></canvas>
 
-    <!-- Persistent Floating Magnetic CTA Dock (Bottom Center-Right) -->
+    <!-- Persistent Floating Magnetic CTA Dock -->
     <aside class="fixed bottom-6 right-6 z-40 flex items-center gap-3 p-2 rounded-full bg-espresso/90 backdrop-blur-xl border border-amberGlow/30 shadow-2xl">
         <span id="compassLabel" class="hidden md:inline-block mono-meta text-[11px] uppercase tracking-[0.18em] text-amberGlow pl-4 pr-2">00 / Opening</span>
         <a href="https://drive.google.com/drive/folders/1HMkirMmnzI4PltyYpzQxqKNEyUM6md-Q?usp=sharing" data-track="dock_cv" target="_blank" rel="noopener noreferrer" data-magnetic class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-semibold text-ivory transition">
@@ -489,11 +487,10 @@
     </aside>
 
     <!-- =====================================================================
-         CHAPTER 00 · THE OPEN-CANVAS LANDING (Mask-Split Typography + Prominent Magnetic CTAs)
+         CHAPTER 00 · THE OPEN-CANVAS LANDING
          ===================================================================== -->
     <section id="top" data-chapter="00 / Opening" class="min-h-screen relative z-10 flex flex-col justify-between px-6 sm:px-12 md:px-20 py-14 md:py-20 section-scrim">
 
-        <!-- Upper-Left Identity with Mask-Split Reveal -->
         <div id="heroTopLeft" class="max-w-4xl reading-halo">
             <div class="inline-flex items-center gap-3 mb-5">
                 <span class="w-2.5 h-2.5 rounded-full bg-amberGlow animate-pulse"></span>
@@ -507,7 +504,6 @@
             </h1>
         </div>
 
-        <!-- Lower-Left / Center-Right Thesis & Prominent Magnetic CTAs -->
         <div id="heroBottomRight" class="max-w-2xl my-auto pt-12 reading-halo">
             <h2 class="split-mask font-editorial text-3xl sm:text-5xl md:text-6xl text-ivory leading-[1.1] tracking-tight mb-6">
                 <span class="split-line">Architecting systems that</span>
@@ -517,7 +513,6 @@
                 Companies lose thousands of hours to work a machine should be doing. I design the software that gives people their evenings back.
             </p>
 
-            <!-- High-Impact Magnetic CTA Bar -->
             <div class="flex flex-wrap gap-5 items-center">
                 <a href="#projects" data-track="hero_view_work" data-magnetic class="cta-primary">
                     <span>Explore Selected Work</span>
@@ -533,7 +528,6 @@
             </div>
         </div>
 
-        <!-- Bottom Scroll Cue -->
         <div class="flex items-center gap-4 text-xs mono-meta uppercase tracking-[0.24em] text-sand/70 reading-halo">
             <span>Scroll to enter the 3D timeline</span>
             <span class="w-16 h-[1px] bg-amberGlow/50"></span>
@@ -547,12 +541,11 @@
     </svg>
 
     <!-- =====================================================================
-         CHAPTER 01 · SELECTED WORK (3D Timeline + Mask-Split Typography + Prominent CTAs)
+         CHAPTER 01 · SELECTED WORK
          ===================================================================== -->
     <section id="projects" data-chapter="01 / Selected Work" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
         <div class="max-w-6xl mx-auto space-y-40 md:space-y-52 reading-halo">
 
-            <!-- Chapter Title -->
             <div class="gsap-section-header max-w-3xl">
                 <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">01 / Selected Work</p>
                 <h2 class="split-mask font-editorial text-5xl sm:text-7xl text-ivory tracking-tight leading-[1.02]">
@@ -563,7 +556,6 @@
 
             <!-- SPREAD 01 · PEPSICO -->
             <article id="pepsico" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-                <!-- Left: Plain-English Narrative -->
                 <div class="lg:col-span-7 space-y-6">
                     <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
                         <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 01</span>
@@ -579,7 +571,6 @@
                         PepsiCo teams were spending <strong class="text-amberGlow font-semibold">61 hours every month</strong> cross-checking thousands of sales, barcode, and tax rows by hand. I built seven custom one-click tools directly inside Excel that automated the entire workflow across two departments—and presented the results to the COO and CFO.
                     </p>
 
-                    <!-- Prominent Interactive Drawer Button -->
                     <details id="pepsicoToolsDetails" class="pt-3 group">
                         <summary class="list-none cursor-pointer inline-flex items-center gap-4 px-7 py-4 rounded-full bg-espresso border-2 border-amberGlow/50 hover:border-amberGlow text-ivory font-semibold text-sm tracking-wide shadow-xl transition">
                             <span class="w-2.5 h-2.5 rounded-full bg-amberGlow"></span>
@@ -598,7 +589,6 @@
                     </details>
                 </div>
 
-                <!-- Right: High-Contrast Time Compression Meter -->
                 <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
                     <div>
                         <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">Monthly Time Returned</span>
@@ -631,7 +621,7 @@
                 </div>
             </article>
 
-            <!-- SPREAD 02 · FLYRANK AI -->
+            <!-- SPREAD 02 · FLYRANK AI (Updated with Maaz-Khan-FlyRank-AI-Internship URL) -->
             <article id="flyrank" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 space-y-6">
                     <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
@@ -648,9 +638,9 @@
                         When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. I trained a machine learning system across 32 enterprise companies that spots decaying pages <strong class="text-amberGlow font-semibold">3.5&times; more accurately</strong> on completely unseen websites.
                     </p>
 
-                    <!-- Prominent Magnetic CTA Buttons -->
+                    <!-- Updated Research Paper & Verification Links -->
                     <div class="flex flex-wrap gap-4 pt-3">
-                        <a href="https://maazkhan53.github.io/ML-01-Run-the-Starter-Notebooks/" data-track="flyrank_paper_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-primary">
+                        <a href="https://maazkhan53.github.io/Maaz-Khan-FlyRank-AI-Internship/" data-track="flyrank_paper_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-primary">
                             <span>Read Published Research Paper</span>
                             <span class="cta-arrow-circle">&nearr;</span>
                         </a>
@@ -661,7 +651,6 @@
                     </div>
                 </div>
 
-                <!-- Right: Signal vs Noise Sculpture -->
                 <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
                     <div>
                         <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">Top-10 Triage Accuracy</span>
@@ -719,7 +708,6 @@
                     </div>
                 </div>
 
-                <!-- Right: Autonomous Daily Systems -->
                 <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-6">
                     <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block">Autonomous Personal Agents</span>
                     <div>
@@ -747,19 +735,16 @@
     </svg>
 
     <!-- =====================================================================
-         CHAPTER 02 · EXPERIENCE (Rotating Architectural Dial with Oversized 84px–98px Logos)
+         CHAPTER 02 · EXPERIENCE
          ===================================================================== -->
     <section id="experience" data-chapter="02 / Track Record" class="relative z-10 h-[320vh] section-scrim">
         <div class="sticky top-0 min-h-screen flex items-center px-6 sm:px-12 md:px-20 py-12 overflow-hidden">
             <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center reading-halo">
 
-                <!-- Left 5 Cols: The Rotating Architectural Wheel with Big Company Logos -->
                 <div class="lg:col-span-5 flex flex-col items-center lg:items-start">
                     <div class="dial-wheel-wrap">
-                        <!-- Fixed 3-o'clock Golden Indicator Needle -->
                         <div class="absolute top-1/2 -right-7 w-12 h-[3px] bg-amberGlow z-20 pointer-events-none shadow-lg"></div>
 
-                        <!-- Center Hub Label -->
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
                             <span class="mono-meta text-[11px] uppercase tracking-[0.24em] text-amberGlow">Track Record</span>
                             <span id="dialCounter" class="font-editorial text-4xl sm:text-5xl text-ivory mt-1">01 / 08</span>
@@ -771,7 +756,6 @@
                     </div>
                 </div>
 
-                <!-- Right 7 Cols: High-Contrast Open-Canvas Role Story -->
                 <div class="lg:col-span-7 space-y-5 lg:pl-6">
                     <div class="flex flex-wrap items-center gap-3 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
                         <span id="expActiveDates">Jul 2026 to Sep 2026</span>
@@ -791,7 +775,6 @@
                         Engineered a content decay triage pipeline across 30,000 production URLs (32 clients), achieving 70.0% Precision@10 on unseen domains (3.5x lift over baseline) with a deliberate leakage harness.
                     </p>
 
-                    <!-- Interactive Role Selector Pills -->
                     <div id="expStepDots" class="flex flex-wrap items-center gap-3 pt-6"></div>
                 </div>
 
@@ -800,7 +783,7 @@
     </section>
 
     <!-- =====================================================================
-         CHAPTER 03 · CRAFT ("The Typographic Split-Curtain")
+         CHAPTER 03 · CRAFT
          ===================================================================== -->
     <section id="skills" data-chapter="03 / Craft" class="py-28 md:py-40 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
         <div class="max-w-6xl mx-auto reading-halo">
@@ -817,7 +800,7 @@
     </section>
 
     <!-- =====================================================================
-         CHAPTER 04 · CREDENTIALS ("The 3D Perspective Gallery Arc")
+         CHAPTER 04 · CREDENTIALS
          ===================================================================== -->
     <section id="certificates" data-chapter="04 / Credentials" class="py-28 md:py-36 relative z-10 overflow-hidden section-scrim">
         <div class="max-w-6xl mx-auto px-6 sm:px-12 md:px-20 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 reading-halo">
@@ -845,19 +828,17 @@
     </div>
 
     <!-- =====================================================================
-         CHAPTER 05 · OPERATING PRINCIPLE & PROMINENT DIRECT CHANNEL
+         CHAPTER 05 · OPERATING PRINCIPLE & DIRECT CHANNEL
          ===================================================================== -->
     <section id="about" data-chapter="05 / Dialogue" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start reading-halo">
 
-            <!-- Left 6 Cols: Operating Principle & Prominent Action Links -->
             <div class="lg:col-span-6 space-y-8">
                 <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow">05 / Operating Principle</p>
                 <blockquote id="aboutBelief" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-ivory leading-[1.18] tracking-tight"></blockquote>
                 <div id="aboutStory" class="space-y-4 text-ivory/85 leading-relaxed text-lg"></div>
                 <ul id="aboutFacts" class="space-y-3 text-ivory/90 text-base sm:text-lg pt-4 border-t border-white/15"></ul>
 
-                <!-- Prominent Action Buttons for LinkedIn, GitHub & CV -->
                 <div class="flex flex-wrap gap-4 pt-6">
                     <a href="https://drive.google.com/drive/folders/1HMkirMmnzI4PltyYpzQxqKNEyUM6md-Q?usp=sharing" data-track="cv_folder_open" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-primary">
                         <span>Access Curriculum Vitae</span>
@@ -874,7 +855,6 @@
                 </div>
             </div>
 
-            <!-- Right 6 Cols: High-Contrast Direct Note Card -->
             <div id="contact" class="lg:col-span-6 p-8 sm:p-12 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
                 <div>
                     <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">06 / Direct Channel</p>
