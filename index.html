@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#090807">
+    <meta name="theme-color" content="#0E0B09">
 
-    <!-- Basic SEO & Favicon -->
-    <title>Maaz Khan | Automation & Data Engineering</title>
+    <!-- Basic SEO & Warm Gold Inline SVG Favicon -->
+    <title>Maaz Khan | Automation & Data Architecture</title>
     <meta name="description" content="Architecting systems that save people's time. 59+ monthly hours returned across enterprise analytics, tax reconciliation, and predictive search pipelines.">
     <meta name="author" content="Maaz Khan">
     <link rel="canonical" href="https://maazkhan--portfolio.vercel.app/">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2314100D' stroke='%23E5A93C' stroke-width='3'/%3E%3Cpath d='M16 45V19h6.5l9.5 16.5L41.5 19H48v26h-6V29.5L33.5 44h-3L22 29.5V45h-6z' fill='%23FAF6F0'/%3E%3Ccircle cx='50' cy='43' r='3.5' fill='%23E5A93C'/%3E%3C/svg%3E">
 
     <!-- Open Graph / Social Share Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://maazkhan--portfolio.vercel.app/">
-    <meta property="og:title" content="Maaz Khan | Automation & Data Engineering">
+    <meta property="og:title" content="Maaz Khan | Automation & Data Architecture">
     <meta property="og:description" content="Architecting systems that save people's time. 59+ monthly hours returned across enterprise analytics, tax reconciliation, and predictive search pipelines.">
     <meta property="og:image" content="https://maazkhan--portfolio.vercel.app/preview.png">
     <meta property="og:image:type" content="image/png">
@@ -25,21 +25,21 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Maaz Khan | Automation & Data Engineering">
+    <meta name="twitter:title" content="Maaz Khan | Automation & Data Architecture">
     <meta name="twitter:description" content="Architecting systems that save people's time. 59+ monthly hours returned across enterprise analytics, tax reconciliation, and predictive search pipelines.">
     <meta name="twitter:image" content="https://maazkhan--portfolio.vercel.app/preview.png">
     <meta name="twitter:image:alt" content="Hi, I'm Maaz Khan. Architecting systems that save people's time.">
 
-    <!-- Google Fonts: Fraunces (Warm Curved Editorial Display) + Plus Jakarta Sans + JetBrains Mono -->
+    <!-- Google Fonts: Fraunces (Warm Curved Editorial Serif) + Plus Jakarta Sans + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,600..700,50&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,500..700,60;1,9..144,400..600,60&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <!-- AOS Animation Library CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Three.js for Full-Page Living Warm Ambient Canvas -->
+    <!-- Three.js for Cozy Studio Bokeh & Warm Embers -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- PDF.js for Live Frameless Certificate Rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -49,11 +49,12 @@
             theme: {
                 extend: {
                     colors: {
-                        obsidian: '#090807',
+                        obsidian: '#0E0B09',
+                        espresso: '#16110E',
                         ivory: '#FAF6F0',
-                        sand: '#B8AFA6',
+                        sand: '#BFB5AA',
                         amberGlow: '#E5A93C',
-                        copper: '#D97736'
+                        terracotta: '#C86D44'
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -67,73 +68,94 @@
 
     <style>
         :root {
-            --cx: -1000px;
-            --cy: -1000px;
+            --cx: 50vw;
+            --cy: 40vh;
             --spring: cubic-bezier(0.22, 1, 0.36, 1);
         }
         html {
             scroll-padding-top: 6rem;
-            background-color: #090807;
+            background-color: #0E0B09;
             color: #FAF6F0;
         }
         body {
-            background-color: #090807;
+            background-color: #0E0B09;
             overflow-x: hidden;
         }
 
-        /* Editorial Curved Display Font */
         .font-editorial {
             font-family: 'Fraunces', Georgia, serif;
-            font-variation-settings: "SOFT" 50;
+            font-variation-settings: "SOFT" 60;
         }
         .mono-tag { font-family: 'JetBrains Mono', monospace; }
 
-        /* ---------- Full-Page Seamless Ambient Light Beams ---------- */
-        .ambient-beams {
+        /* ---------- 1. Cozy Detailed Studio Background System ---------- */
+        .cozy-studio-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             pointer-events: none;
             background:
-                radial-gradient(55% 45% at 18% 18%, rgba(229, 169, 60, 0.11) 0%, transparent 70%),
-                radial-gradient(50% 42% at 84% 28%, rgba(217, 119, 54, 0.08) 0%, transparent 72%),
-                radial-gradient(60% 50% at 50% 82%, rgba(229, 169, 60, 0.06) 0%, transparent 75%);
+                radial-gradient(65% 55% at 15% 15%, rgba(229, 169, 60, 0.14) 0%, transparent 68%),
+                radial-gradient(55% 50% at 85% 22%, rgba(200, 109, 68, 0.11) 0%, transparent 70%),
+                radial-gradient(70% 60% at 50% 88%, rgba(180, 115, 55, 0.09) 0%, transparent 75%),
+                linear-gradient(180deg, #120E0B 0%, #0E0B09 50%, #130F0C 100%);
         }
 
-        /* ---------- Cursor-Revealed Ultra-Fine Architectural Grid ---------- */
-        .cursor-grid {
+        /* Intricate Architectural Topographic & Curatorial Rings */
+        .topographic-art {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.42;
+            background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23E5A93C' stroke-width='0.75' stroke-opacity='0.14'%3E%3Cpath d='M-100 200 C 150 80, 450 320, 900 150'/%3E%3Cpath d='M-100 240 C 180 110, 480 350, 900 190'/%3E%3Cpath d='M-100 280 C 210 140, 510 380, 900 230'/%3E%3Cpath d='M-100 580 C 250 440, 550 700, 900 520'/%3E%3Cpath d='M-100 620 C 280 480, 580 740, 900 560'/%3E%3Ccircle cx='680' cy='180' r='180' stroke-dasharray='4 8'/%3E%3Ccircle cx='680' cy='180' r='260'/%3E%3Ccircle cx='120' cy='640' r='220'/%3E%3Ccircle cx='120' cy='640' r='310' stroke-dasharray='3 6'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 900px 900px;
+        }
+
+        /* Warm Cursor Lamp Pool & Subtle Atelier Grid */
+        .cursor-atelier {
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            background-size: 56px 56px;
+            background-size: 64px 64px;
             background-image:
-                linear-gradient(to right, rgba(250, 246, 240, 0.055) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(250, 246, 240, 0.055) 1px, transparent 1px);
-            -webkit-mask-image: radial-gradient(260px circle at var(--cx) var(--cy), rgba(0,0,0,0.95) 0%, transparent 100%);
-            mask-image: radial-gradient(260px circle at var(--cx) var(--cy), rgba(0,0,0,0.95) 0%, transparent 100%);
+                linear-gradient(to right, rgba(229, 169, 60, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 169, 60, 0.06) 1px, transparent 1px);
+            -webkit-mask-image: radial-gradient(300px circle at var(--cx) var(--cy), rgba(0,0,0,0.9) 0%, transparent 100%);
+            mask-image: radial-gradient(300px circle at var(--cx) var(--cy), rgba(0,0,0,0.9) 0%, transparent 100%);
         }
 
-        /* ---------- Warm Smoked Liquid Glass System ---------- */
+        /* Tactile Analog Film Grain Overlay (5S Content Aesthetic) */
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* ---------- 2. Warm Curated Glass & Museum Plaque Cards ---------- */
         .warm-pill-nav {
-            background: linear-gradient(135deg, rgba(24, 21, 18, 0.72) 0%, rgba(14, 12, 10, 0.58) 100%);
+            background: linear-gradient(135deg, rgba(28, 22, 18, 0.78) 0%, rgba(16, 13, 10, 0.65) 100%);
             backdrop-filter: blur(22px) saturate(160%);
             -webkit-backdrop-filter: blur(22px) saturate(160%);
-            border: 1px solid rgba(250, 246, 240, 0.11);
+            border: 1px solid rgba(229, 169, 60, 0.18);
             box-shadow:
-                0 20px 45px -15px rgba(0, 0, 0, 0.75),
-                inset 0 1px 0 0 rgba(250, 246, 240, 0.18);
+                0 20px 45px -15px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 0 rgba(250, 246, 240, 0.16);
         }
 
         .warm-glass {
             position: relative;
-            background: linear-gradient(160deg, rgba(28, 24, 21, 0.62) 0%, rgba(14, 12, 10, 0.78) 100%);
-            backdrop-filter: blur(18px) saturate(150%);
-            -webkit-backdrop-filter: blur(18px) saturate(150%);
-            border: 1px solid rgba(250, 246, 240, 0.08);
+            background: linear-gradient(160deg, rgba(31, 25, 20, 0.68) 0%, rgba(16, 13, 10, 0.84) 100%);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid rgba(250, 246, 240, 0.09);
             box-shadow:
-                0 22px 55px -20px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 0 rgba(250, 246, 240, 0.12);
+                0 24px 60px -20px rgba(0, 0, 0, 0.85),
+                inset 0 1px 0 0 rgba(250, 246, 240, 0.14);
             transition: transform 0.45s var(--spring), border-color 0.4s ease, box-shadow 0.45s ease;
             overflow: hidden;
         }
@@ -141,46 +163,101 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(480px circle at var(--mx, 50%) var(--my, 0%), rgba(229, 169, 60, 0.11), transparent 45%);
+            background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 0%), rgba(229, 169, 60, 0.12), transparent 45%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
         }
         .warm-glass:hover::before { opacity: 1; }
         .warm-glass:hover {
-            border-color: rgba(229, 169, 60, 0.28);
-            box-shadow:
-                0 28px 65px -18px rgba(217, 119, 54, 0.14),
-                inset 0 1px 0 0 rgba(250, 246, 240, 0.22);
+            border-color: rgba(229, 169, 60, 0.3);
+        }
+
+        /* Subtle Curatorial CornerTicks (Frans Hals Detail) */
+        .corner-plaque {
+            position: relative;
+        }
+        .corner-plaque::after {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border: 1px solid rgba(229, 169, 60, 0.08);
+            border-radius: 18px;
+            pointer-events: none;
         }
 
         /* Tactile Warm Buttons */
         .btn-warm-primary {
             background: linear-gradient(180deg, #FAF6F0 0%, #E8DFD1 100%);
-            color: #090807;
+            color: #0E0B09;
             box-shadow:
-                0 12px 28px -6px rgba(229, 169, 60, 0.28),
+                0 12px 28px -6px rgba(229, 169, 60, 0.3),
                 inset 0 1px 0 #FFFFFF;
             transition: transform 0.35s var(--spring), box-shadow 0.35s ease;
         }
         .btn-warm-primary:hover {
             transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 18px 36px -6px rgba(229, 169, 60, 0.42);
+            box-shadow: 0 18px 36px -6px rgba(229, 169, 60, 0.45);
         }
 
         .btn-warm-secondary {
             background: rgba(250, 246, 240, 0.04);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(250, 246, 240, 0.14);
+            border: 1px solid rgba(250, 246, 240, 0.15);
             color: #FAF6F0;
             box-shadow: inset 0 1px 0 rgba(250, 246, 240, 0.12);
             transition: transform 0.35s var(--spring), border-color 0.3s ease, background 0.3s ease;
         }
         .btn-warm-secondary:hover {
-            background: rgba(250, 246, 240, 0.08);
+            background: rgba(229, 169, 60, 0.09);
             border-color: rgba(229, 169, 60, 0.45);
             transform: translateY(-2px);
+        }
+
+        /* ---------- 3. Exhibition Stage Tabs (Selected Work Switcher) ---------- */
+        .exhibit-tab {
+            padding: 12px 20px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #BFB5AA;
+            background: rgba(250, 246, 240, 0.03);
+            border: 1px solid rgba(250, 246, 240, 0.08);
+            transition: all 0.35s var(--spring);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .exhibit-tab:hover {
+            color: #FAF6F0;
+            border-color: rgba(229, 169, 60, 0.35);
+            transform: translateY(-1px);
+        }
+        .exhibit-tab.is-active {
+            background: linear-gradient(135deg, #FAF6F0 0%, #E8DFD1 100%);
+            color: #0E0B09;
+            border-color: #FAF6F0;
+            box-shadow: 0 12px 26px -6px rgba(229, 169, 60, 0.32);
+        }
+
+        .beat-btn {
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-family: 'JetBrains Mono', monospace;
+            color: #BFB5AA;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s var(--spring);
+            cursor: pointer;
+        }
+        .beat-btn:hover { color: #FAF6F0; border-color: rgba(229, 169, 60, 0.35); }
+        .beat-btn.is-active {
+            background: rgba(229, 169, 60, 0.16);
+            color: #E5A93C;
+            border-color: rgba(229, 169, 60, 0.55);
         }
 
         /* ---------- Self-Drawing Animated SVG Icons ---------- */
@@ -200,7 +277,7 @@
             100% { stroke-dashoffset: 0; }
         }
 
-        /* ---------- Tactile Skill Pills (Warm Editorial Deck) ---------- */
+        /* ---------- Tactile Skill Pills ---------- */
         .skill-pill {
             display: inline-flex;
             align-items: center;
@@ -222,7 +299,7 @@
             color: #FAF6F0;
         }
         .skill-pill.is-active {
-            background: linear-gradient(135deg, rgba(229, 169, 60, 0.16) 0%, rgba(217, 119, 54, 0.08) 100%);
+            background: linear-gradient(135deg, rgba(229, 169, 60, 0.16) 0%, rgba(200, 109, 68, 0.08) 100%);
             border-color: rgba(229, 169, 60, 0.65);
             color: #FAF6F0;
             box-shadow: 0 10px 25px -8px rgba(229, 169, 60, 0.25);
@@ -232,12 +309,12 @@
         /* ---------- Experience Accordion Filmstrip ---------- */
         .exp-row {
             border-bottom: 1px solid rgba(250, 246, 240, 0.08);
-            transition: background 0.35s ease, padding 0.35s var(--spring);
+            transition: background 0.35s ease;
             cursor: pointer;
         }
         .exp-row:first-child { border-top: 1px solid rgba(250, 246, 240, 0.08); }
         .exp-row:hover, .exp-row.is-open {
-            background: linear-gradient(90deg, rgba(229, 169, 60, 0.06) 0%, rgba(250, 246, 240, 0.02) 50%, transparent 100%);
+            background: linear-gradient(90deg, rgba(229, 169, 60, 0.07) 0%, rgba(250, 246, 240, 0.02) 55%, transparent 100%);
         }
         .exp-details {
             display: grid;
@@ -274,7 +351,7 @@
             padding: 0;
             cursor: pointer;
             transition: transform 0.4s var(--spring), filter 0.35s ease;
-            filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.72));
+            filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.75));
         }
         @media (max-width: 640px) { .cert-card { width: 255px; } }
         .cert-card:hover {
@@ -306,7 +383,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(9, 8, 7, 0.86);
+            background: rgba(14, 11, 9, 0.88);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             opacity: 0;
@@ -366,16 +443,25 @@
 </head>
 <body class="text-sand font-sans antialiased selection:bg-amberGlow selection:text-obsidian">
 
-    <!-- 1. Fixed Full-Page Living 3D Canvas & Warm Ambient Beams (Zero Section Cuts) -->
-    <div class="ambient-beams" aria-hidden="true"></div>
+    <!-- 1. Cozy Detailed Studio Background Layers -->
+    <div class="cozy-studio-bg" aria-hidden="true"></div>
+    <div class="topographic-art" aria-hidden="true"></div>
     <canvas id="bgCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0" aria-hidden="true"></canvas>
-    <div class="cursor-grid" aria-hidden="true"></div>
+    <div class="cursor-atelier" aria-hidden="true"></div>
+    <div class="film-grain" aria-hidden="true"></div>
 
-    <!-- 2. Floating Warm Glass Capsule Navbar -->
+    <!-- 2. Floating Warm Glass Capsule Navbar (With Custom Warm Gold Monogram) -->
     <header class="fixed top-5 inset-x-0 z-50 px-4 md:px-6 pointer-events-none">
         <nav class="warm-pill-nav max-w-5xl mx-auto rounded-full px-5 h-14 flex items-center justify-between pointer-events-auto" aria-label="Main">
-            <a href="#top" class="flex items-center gap-2.5 text-ivory font-editorial font-semibold tracking-tight text-base md:text-lg">
-                <img src="favicon.svg" alt="" class="w-7 h-7 rounded-full"><span>Maaz Khan</span>
+            <a href="#top" class="flex items-center gap-3 text-ivory font-editorial font-semibold tracking-tight text-base md:text-lg group">
+                <!-- Custom Warm Espresso & Champagne Gold Monogram (Replaces Blue Favicon) -->
+                <span class="w-8 h-8 rounded-full bg-espresso border border-amberGlow/45 flex items-center justify-center shadow-inner group-hover:border-amberGlow transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M4 18V6h2.6l5.4 9.2L17.4 6H20v12h-2.4v-7.8L13 18h-2l-4.6-7.8V18H4z" fill="#FAF6F0"/>
+                        <circle cx="20.5" cy="17.5" r="1.6" fill="#E5A93C"/>
+                    </svg>
+                </span>
+                <span>Maaz Khan</span>
             </a>
             <div class="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.18em] mono-tag text-sand">
                 <a href="#projects" class="hover:text-ivory transition">Work</a>
@@ -401,7 +487,7 @@
         </div>
     </header>
 
-    <!-- 3. Asymmetric Editorial Hero (Crafted for LinkedIn First-Page Screenshot) -->
+    <!-- 3. Asymmetric Editorial Hero -->
     <section id="top" class="min-h-screen flex items-center px-6 pt-28 pb-16 relative z-10">
         <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
 
@@ -412,7 +498,7 @@
                     <span class="mono-tag text-[11px] uppercase tracking-[0.2em] text-amberGlow font-medium">Automation &amp; Data Architecture</span>
                 </div>
 
-                <p class="text-lg md:text-2xl text-sand font-normal mb-1 tracking-tight">Hi, I'm</p>
+                <p class="font-editorial italic text-xl md:text-2xl text-sand font-normal mb-1">Hi, I'm</p>
                 <h1 class="font-editorial font-semibold text-6xl sm:text-7xl md:text-8xl text-ivory tracking-[-0.02em] leading-[1.02] mb-6">
                     Maaz Khan<span class="text-amberGlow">.</span>
                 </h1>
@@ -436,19 +522,19 @@
                 </div>
             </div>
 
-            <!-- Right Column: Cozy Atmospheric "Live Impact Ledger" -->
+            <!-- Right Column: Curated Museum-Plaque Impact Ledger -->
             <div class="lg:col-span-5" data-aos="fade-up" data-aos-delay="120" data-aos-duration="900">
-                <div class="warm-glass rounded-3xl p-6 md:p-8 space-y-6">
+                <div class="warm-glass corner-plaque rounded-3xl p-7 md:p-9 space-y-5">
                     <div class="flex items-center justify-between border-b border-white/10 pb-4">
                         <div>
-                            <span class="mono-tag text-[10px] uppercase tracking-[0.22em] text-amberGlow block">Verified Impact Ledger</span>
+                            <span class="mono-tag text-[10px] uppercase tracking-[0.22em] text-amberGlow block">Curated Ledger</span>
                             <h2 class="font-editorial text-lg text-ivory mt-0.5">Production Systems in Use</h2>
                         </div>
                         <span class="px-2.5 py-1 rounded-full bg-amberGlow/10 border border-amberGlow/30 mono-tag text-[10px] text-amberGlow uppercase tracking-wider">Karachi &middot; Global</span>
                     </div>
 
-                    <!-- Proof Item 1 -->
-                    <a href="#pepsico" class="group flex items-start gap-4 p-3.5 rounded-2xl hover:bg-white/[0.03] transition">
+                    <!-- Ledger Row 1 -->
+                    <a href="#projects" data-exhibit-jump="pepsico" class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/[0.03] transition">
                         <div class="w-11 h-11 rounded-xl bg-amberGlow/10 border border-amberGlow/25 flex items-center justify-center shrink-0 text-amberGlow">
                             <svg class="w-5 h-5 draw-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                 <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>
@@ -456,15 +542,15 @@
                         </div>
                         <div class="min-w-0 flex-1">
                             <div class="flex items-baseline justify-between gap-2">
-                                <span class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="59" data-suffix="+">59+</span> <span class="text-base font-sans font-normal text-amberGlow">hrs/mo</span></span>
-                                <span class="mono-tag text-[10px] uppercase tracking-wider text-sand group-hover:text-ivory transition">PepsiCo &rarr;</span>
+                                <span class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="59" data-suffix="+">59+</span> <span class="text-sm font-sans font-normal text-amberGlow">hrs/mo</span></span>
+                                <span class="mono-tag text-[10px] uppercase tracking-wider text-sand group-hover:text-amberGlow transition">01 &middot; PepsiCo &rarr;</span>
                             </div>
-                            <p class="text-xs text-sand mt-1 leading-relaxed">Returned across GTM &amp; Tax via 7 in-memory Excel VBA add-in engines.</p>
+                            <p class="text-xs text-sand mt-0.5 truncate">7 in-memory VBA engines live in GTM &amp; Tax</p>
                         </div>
                     </a>
 
-                    <!-- Proof Item 2 -->
-                    <a href="#flyrank" class="group flex items-start gap-4 p-3.5 rounded-2xl hover:bg-white/[0.03] transition">
+                    <!-- Ledger Row 2 -->
+                    <a href="#projects" data-exhibit-jump="flyrank" class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/[0.03] transition">
                         <div class="w-11 h-11 rounded-xl bg-amberGlow/10 border border-amberGlow/25 flex items-center justify-center shrink-0 text-amberGlow">
                             <svg class="w-5 h-5 draw-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 7h7v7"/>
@@ -472,15 +558,15 @@
                         </div>
                         <div class="min-w-0 flex-1">
                             <div class="flex items-baseline justify-between gap-2">
-                                <span class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="70">70</span><span class="text-base font-sans font-normal text-amberGlow">% P@10</span></span>
-                                <span class="mono-tag text-[10px] uppercase tracking-wider text-sand group-hover:text-ivory transition">FlyRank AI &rarr;</span>
+                                <span class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="70">70</span><span class="text-sm font-sans font-normal text-amberGlow">% P@10</span></span>
+                                <span class="mono-tag text-[10px] uppercase tracking-wider text-sand group-hover:text-amberGlow transition">02 &middot; FlyRank AI &rarr;</span>
                             </div>
-                            <p class="text-xs text-sand mt-1 leading-relaxed">3.5&times; lift over heuristic baseline across 30,000 production URLs &amp; 32 clients.</p>
+                            <p class="text-xs text-sand mt-0.5 truncate">3.5&times; lift across 30,000 production URLs</p>
                         </div>
                     </a>
 
-                    <!-- Proof Item 3 -->
-                    <a href="#pepsico" class="group flex items-start gap-4 p-3.5 rounded-2xl hover:bg-white/[0.03] transition">
+                    <!-- Ledger Row 3 -->
+                    <a href="#projects" data-exhibit-jump="pepsico" class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/[0.03] transition">
                         <div class="w-11 h-11 rounded-xl bg-amberGlow/10 border border-amberGlow/25 flex items-center justify-center shrink-0 text-amberGlow">
                             <svg class="w-5 h-5 draw-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -488,10 +574,10 @@
                         </div>
                         <div class="min-w-0 flex-1">
                             <div class="flex items-baseline justify-between gap-2">
-                                <span class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="192">192</span> <span class="text-base font-sans font-normal text-amberGlow">sec</span></span>
-                                <span class="mono-tag text-[10px] uppercase tracking-wider text-sand group-hover:text-ivory transition">Tax Engine &rarr;</span>
+                                <span class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="192">192</span> <span class="text-sm font-sans font-normal text-amberGlow">sec</span></span>
+                                <span class="mono-tag text-[10px] uppercase tracking-wider text-sand group-hover:text-amberGlow transition">Tax Engine &rarr;</span>
                             </div>
-                            <p class="text-xs text-sand mt-1 leading-relaxed">Replaced a 26-hour line-by-line SAP &amp; FBR tax reconciliation cycle.</p>
+                            <p class="text-xs text-sand mt-0.5 truncate">Replaced a 26-hour SAP &amp; FBR reconciliation</p>
                         </div>
                     </a>
                 </div>
@@ -500,226 +586,60 @@
         </div>
     </section>
 
-    <!-- 4. Selected Work: Sticky Scroll-Story + Digestible Spring Cards -->
-    <section id="projects" class="py-28 px-6 relative z-10">
+    <!-- 4. Selected Work: Curated Exhibition Stage (Zero Text Overload — One Focused Story at a Time) -->
+    <section id="projects" class="py-24 px-6 relative z-10">
         <div class="max-w-6xl mx-auto">
-            <div class="max-w-2xl mb-16" data-aos="fade-up">
-                <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">01 / Selected Work</span>
-                <h2 class="font-editorial text-4xl md:text-5xl text-ivory tracking-tight">Systems Built for Human Leverage.</h2>
-                <p class="text-sand mt-3 text-base md:text-lg">Every build is measured by a single standard: how much repetitive work did it take off someone's desk?</p>
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6" data-aos="fade-up">
+                <div>
+                    <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">01 / Curated Exhibition</span>
+                    <h2 class="font-editorial text-4xl md:text-5xl text-ivory tracking-tight">Selected Work.</h2>
+                </div>
+                <p class="text-sand text-sm md:text-base max-w-md">
+                    Select a system below. Each case is distilled into three short beats so you only read what matters.
+                </p>
             </div>
 
-            <!-- Flagship 01: PepsiCo Sticky Scroll-Story Layout -->
-            <article id="pepsico" class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-20">
-                <!-- Left Sticky Column: The Core Claim & KPIs -->
-                <div class="lg:col-span-5 lg:sticky lg:top-28 warm-glass rounded-3xl p-7 md:p-9" data-aos="fade-up">
-                    <div class="flex items-center gap-2.5 mb-4">
-                        <span class="mono-tag px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/30 text-amberGlow text-[11px] font-semibold uppercase tracking-wider">01 &middot; Flagship</span>
-                        <span class="text-xs mono-tag text-sand">PepsiCo Pakistan</span>
-                    </div>
-                    <h3 class="font-editorial text-3xl md:text-4xl text-ivory leading-tight mb-4">
-                        Giving two departments 59.4 net hours back every month.
-                    </h3>
-                    <p class="text-sm md:text-base text-sand leading-relaxed mb-7">
-                        Seven custom VBA engines packaged as one-click Excel ribbon add-ins for Go-To-Market and Tax teams, presented directly to the COO and CFO.
-                    </p>
-
-                    <div class="grid grid-cols-2 gap-3.5 mb-6">
-                        <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                            <div class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="33">33</span><span class="text-sm font-sans text-amberGlow ml-1">hrs/mo</span></div>
-                            <p class="text-xs text-sand mt-1">Net saved in GTM reporting</p>
-                        </div>
-                        <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                            <div class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="26.4" data-decimals="1">26.4</span><span class="text-sm font-sans text-amberGlow ml-1">hrs/mo</span></div>
-                            <p class="text-xs text-sand mt-1">Net saved in Tax reconciliation</p>
-                        </div>
-                        <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                            <div class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="100">100</span><span class="text-sm font-sans text-amberGlow ml-1">%</span></div>
-                            <p class="text-xs text-sand mt-1">CNIC &amp; barcode audit accuracy</p>
-                        </div>
-                        <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                            <div class="kpi-num font-editorial text-3xl font-semibold text-ivory"><span data-count="60" data-prefix="&lt;">&lt;60</span><span class="text-sm font-sans text-amberGlow ml-1">sec</span></div>
-                            <p class="text-xs text-sand mt-1">Self-serve laptop install</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 text-[11px] mono-tag text-sand">
-                        <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">Excel VBA</span>
-                        <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">Scripting.Dictionary</span>
-                        <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">Memory Arrays</span>
-                        <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10">.xlam Ribbon</span>
-                    </div>
-                </div>
-
-                <!-- Right Scroll-Story Column: 3 Digestible Beats -->
-                <div class="lg:col-span-7 space-y-6">
-                    <!-- Beat 1: The Bottleneck -->
-                    <div class="warm-glass rounded-3xl p-7 md:p-8" data-aos="fade-up">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-lg bg-amberGlow/15 border border-amberGlow/30 flex items-center justify-center mono-tag text-xs text-amberGlow font-bold">01</span>
-                            <h4 class="font-editorial text-xl text-ivory">The Human Bottleneck</h4>
-                        </div>
-                        <p class="text-sand leading-relaxed text-sm md:text-base">
-                            GTM analysts spent 36 hours every month manually compiling master-data reports and checking thousands of customer records. Simultaneously, the Tax team spent over 25 hours reconciling SAP ledgers against the FBR portal line by line. Skilled operators were trapped in copy-paste loops where fatigue invited costly compliance errors.
-                        </p>
-                    </div>
-
-                    <!-- Beat 2: The Engineering Architecture -->
-                    <div class="warm-glass rounded-3xl p-7 md:p-8" data-aos="fade-up">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-lg bg-amberGlow/15 border border-amberGlow/30 flex items-center justify-center mono-tag text-xs text-amberGlow font-bold">02</span>
-                            <h4 class="font-editorial text-xl text-ivory">In-Memory Architecture</h4>
-                        </div>
-                        <p class="text-sand leading-relaxed text-sm md:text-base">
-                            Instead of fragile worksheet formulas that freeze corporate laptops, I engineered seven tools running entirely in RAM using <code class="text-ivory mono-tag text-xs bg-white/5 px-1.5 py-0.5 rounded">Scripting.Dictionary</code> hash tables and dynamic arrays. I packaged the suite into portable <code class="text-ivory mono-tag text-xs bg-white/5 px-1.5 py-0.5 rounded">.xlam</code> add-ins with a custom XML ribbon and a 4-phase visual guide so any supervisor could install it in under a minute without IT tickets.
-                        </p>
-                    </div>
-
-                    <!-- Beat 3: The ROI & Interactive 7-Tool Drawer -->
-                    <div class="warm-glass rounded-3xl p-7 md:p-8" data-aos="fade-up">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-8 h-8 rounded-lg bg-amberGlow/15 border border-amberGlow/30 flex items-center justify-center mono-tag text-xs text-amberGlow font-bold">03</span>
-                            <h4 class="font-editorial text-xl text-ivory">Executive Adoption &amp; The 7 Engines</h4>
-                        </div>
-                        <p class="text-sand leading-relaxed text-sm md:text-base mb-5">
-                            The suite cut GTM reporting down to under 15 minutes (saving 33 net hours/month) and compressed a 26-hour Tax reconciliation into 192 seconds (saving 26.4 net hours/month). After presenting the ROI to the COO and CFO, the tools remained in permanent production across both departments.
-                        </p>
-
-                        <details id="pepsicoToolsDetails" class="group">
-                            <summary class="cursor-pointer list-none inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full btn-warm-secondary text-xs mono-tag uppercase tracking-wider text-amberGlow">
-                                <span>Inspect All 7 Production Engines</span>
-                                <span class="group-open:rotate-180 transition-transform duration-300">&#9662;</span>
-                            </summary>
-                            <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-xs md:text-sm">
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4"><strong class="text-ivory block mb-1">1. CNIC &amp; Cell Audit Engine</strong><span class="text-sand">Validates 13-digit CNICs and mobile network codes, isolating invalid rows in red.</span></li>
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4"><strong class="text-ivory block mb-1">2. YTD Reports Generator</strong><span class="text-sand">Consolidates multi-period data safely across active filters with zero double counting.</span></li>
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4"><strong class="text-ivory block mb-1">3. Pending Transfers Module</strong><span class="text-sand">Flags stalled inventory transfers across thousands of rows in under a second.</span></li>
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4"><strong class="text-ivory block mb-1">4. Barcode Summary Engine</strong><span class="text-sand">Groups high-volume scan logs by SKU and region entirely in memory.</span></li>
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4"><strong class="text-ivory block mb-1">5. Invalid Barcode %</strong><span class="text-sand">Isolates duplicate/counterfeit scans and reports exact contamination rates.</span></li>
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4"><strong class="text-ivory block mb-1">6. FBR &amp; SAP Reconciliation</strong><span class="text-sand">Tolerance-based tax matching with automated green, amber, and red output.</span></li>
-                                <li class="rounded-2xl bg-black/40 border border-white/10 p-4 sm:col-span-2"><strong class="text-ivory block mb-1">7. CPR Standardization Protocol</strong><span class="text-sand">Normalizes thousands of tax CPR numbers in place in a single click.</span></li>
-                            </ul>
-                        </details>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Secondary Projects Grid: FlyRank & Outfield -->
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- 02 FlyRank ML Research -->
-                <article id="flyrank" class="warm-glass rounded-3xl p-7 md:p-9 flex flex-col justify-between" data-aos="fade-up">
-                    <div>
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
-                            <span class="mono-tag px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/30 text-amberGlow text-[11px] font-semibold uppercase tracking-wider">02 &middot; Applied Machine Learning</span>
-                            <span class="mono-tag text-xs text-sand">FlyRank AI &middot; 30,000 URLs</span>
-                        </div>
-                        <h3 class="font-editorial text-2xl md:text-3xl text-ivory mb-2">Predictive Content Triage at Scale</h3>
-                        <p class="text-sand text-sm md:text-base mb-6">Prioritizing decaying organic search pages across 32 enterprise client domains under finite editorial bandwidth.</p>
-
-                        <div class="grid grid-cols-2 gap-3.5 mb-6">
-                            <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                                <div class="kpi-num font-editorial text-3xl font-semibold text-ivory">70.0%</div>
-                                <p class="text-xs text-sand mt-1">Precision@10 on unseen clients (3.5&times; over 20% baseline)</p>
-                            </div>
-                            <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                                <div class="kpi-num font-editorial text-3xl font-semibold text-amberGlow">0.5758</div>
-                                <p class="text-xs text-sand mt-1">Honest client-grouped AP vs 0.7197 random split</p>
-                            </div>
-                        </div>
-
-                        <p class="text-sm text-sand leading-relaxed">
-                            Built a calibrated Logistic Regression and Random Forest pipeline evaluated under strict client-grouped holdout splits (25 train clients, 7 unseen test clients) with a deliberate leakage harness purging 13 circular columns. Routed 10,670 actionable pages into a 4-archetype Action Playbook with human-in-the-loop safety guardrails.
-                        </p>
-                    </div>
-                    <div class="mt-7 pt-5 border-t border-white/10 flex flex-wrap gap-5 items-center justify-between">
-                        <a href="https://maazkhan53.github.io/ML-01-Run-the-Starter-Notebooks/" data-track="flyrank_paper_click" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-amberGlow hover:text-ivory transition">Read Research Paper &rarr;</a>
-                        <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="flyrank_verify_click" target="_blank" rel="noopener noreferrer" class="text-xs mono-tag text-sand hover:text-ivory transition">Verified Credential &rarr;</a>
-                    </div>
-                </article>
-
-                <!-- 03 Outfield -->
-                <article id="outfield" class="warm-glass rounded-3xl p-7 md:p-9 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
-                    <div>
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
-                            <span class="mono-tag px-3 py-1 rounded-full bg-white/10 border border-white/15 text-ivory text-[11px] font-semibold uppercase tracking-wider">03 &middot; Founder &amp; Lead Dev</span>
-                            <span class="mono-tag px-2.5 py-0.5 rounded-full bg-amberGlow/10 border border-amberGlow/30 text-amberGlow text-[10px] uppercase">In Development</span>
-                        </div>
-                        <h3 class="font-editorial text-2xl md:text-3xl text-ivory mb-2">Outfield</h3>
-                        <p class="text-sand text-sm md:text-base mb-6">A two-sided sports ground discovery and booking platform built for Karachi.</p>
-
-                        <div class="space-y-3.5 text-sm">
-                            <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                                <span class="mono-tag text-[10px] uppercase tracking-widest text-amberGlow block mb-1">The Friction</span>
-                                <p class="text-sand leading-relaxed">Players and venue owners in Karachi coordinate turf bookings through fragmented WhatsApp threads and manual phone calls.</p>
-                            </div>
-                            <div class="rounded-2xl bg-black/35 border border-white/10 p-4">
-                                <span class="mono-tag text-[10px] uppercase tracking-widest text-amberGlow block mb-1">The System</span>
-                                <p class="text-sand leading-relaxed">A unified web application where players inspect live slot availability and venue owners manage reservations. Engineered with React, Vite, Supabase, and Vercel.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-7 pt-5 border-t border-white/10 flex items-center justify-between">
-                        <span class="text-xs mono-tag text-sand">Replaces call chains with single-tap booking</span>
-                        <a href="https://github.com/MaazKhan53/outfield" data-track="outfield_repo_click" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-amberGlow hover:text-ivory transition">View Repository &rarr;</a>
-                    </div>
-                </article>
+            <!-- Exhibition Selector Bar (Frans Hals + 5S Content Inspired) -->
+            <div id="exhibitTabs" class="flex items-center gap-3 overflow-x-auto pb-4 mb-6 no-scrollbar" data-aos="fade-up">
+                <button type="button" data-exhibit="pepsico" class="exhibit-tab is-active">01 &middot; PepsiCo Suite (59.4 hrs/mo)</button>
+                <button type="button" data-exhibit="flyrank" class="exhibit-tab">02 &middot; FlyRank ML (70% P@10)</button>
+                <button type="button" data-exhibit="outfield" class="exhibit-tab">03 &middot; Outfield App</button>
+                <button type="button" data-exhibit="agents" class="exhibit-tab">04 &middot; Autonomous Agents</button>
             </div>
 
-            <!-- Also Built Strip -->
-            <div id="also-built" class="mt-8 grid md:grid-cols-2 gap-6">
-                <div class="warm-glass rounded-3xl p-6 flex items-start gap-4" data-aos="fade-up">
-                    <div class="w-10 h-10 rounded-xl bg-amberGlow/10 border border-amberGlow/25 flex items-center justify-center shrink-0 text-amberGlow mt-0.5">
-                        <svg class="w-5 h-5 draw-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2"/></svg>
-                    </div>
-                    <div>
-                        <span class="mono-tag text-[10px] uppercase tracking-widest text-amberGlow">Autonomous Briefing</span>
-                        <h4 class="font-editorial text-lg text-ivory mt-0.5">AI Financial Newsletter Pipeline</h4>
-                        <p class="text-sand mt-1.5 text-sm leading-relaxed">Self-hosted n8n workflow in Docker that scrapes daily market news, synthesizes executive digests via the Groq LLM API, and emails them every morning.</p>
-                    </div>
-                </div>
-                <div class="warm-glass rounded-3xl p-6 flex items-start gap-4" data-aos="fade-up" data-aos-delay="80">
-                    <div class="w-10 h-10 rounded-xl bg-amberGlow/10 border border-amberGlow/25 flex items-center justify-center shrink-0 text-amberGlow mt-0.5">
-                        <svg class="w-5 h-5 draw-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    </div>
-                    <div>
-                        <span class="mono-tag text-[10px] uppercase tracking-widest text-amberGlow">Agentic Workflow</span>
-                        <h4 class="font-editorial text-lg text-ivory mt-0.5">Dynamic Resume Tailor Agent</h4>
-                        <p class="text-sand mt-1.5 text-sm leading-relaxed">Local Claude agent running on the MCP filesystem server that maps verified engineering metrics directly to target job descriptions.</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Single Spacious Exhibition Stage -->
+            <div id="exhibitStage" class="warm-glass corner-plaque rounded-3xl p-7 sm:p-10 md:p-12 transition-all duration-300" data-aos="fade-up"></div>
         </div>
     </section>
 
     <!-- 5. Experience: All-At-Once Interactive Accordion Filmstrip -->
-    <section id="experience" class="py-28 px-6 relative z-10">
+    <section id="experience" class="py-24 px-6 relative z-10">
         <div class="max-w-5xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4" data-aos="fade-up">
                 <div>
                     <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">02 / Track Record</span>
                     <h2 class="font-editorial text-4xl md:text-5xl text-ivory tracking-tight">Where I've Worked.</h2>
                 </div>
-                <p class="text-sand text-sm md:text-base max-w-md">Six corporate internships, one teaching role, and an independent equity desk. Hover or tap any role to inspect the impact.</p>
+                <p class="text-sand text-sm md:text-base max-w-md">Six internships, one teaching role, and an independent equity desk. Hover or tap any row to unfold the details.</p>
             </div>
 
             <div id="experienceList" class="warm-glass rounded-3xl px-4 sm:px-8 py-2" data-aos="fade-up"></div>
         </div>
     </section>
 
-    <!-- 6. Craft & Capabilities (Warm Editorial Deck Replacing Hexagons) -->
-    <section id="skills" class="py-28 px-6 relative z-10">
+    <!-- 6. Craft & Capabilities -->
+    <section id="skills" class="py-24 px-6 relative z-10">
         <div class="max-w-6xl mx-auto">
-            <div class="max-w-2xl mb-14" data-aos="fade-up">
+            <div class="max-w-2xl mb-12" data-aos="fade-up">
                 <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">03 / Craft &amp; Capabilities</span>
                 <h2 class="font-editorial text-4xl md:text-5xl text-ivory tracking-tight">How I Give Time Back.</h2>
-                <p class="text-sand mt-3 text-base">Select any capability below to inspect how it was used in production and jump directly to the proof.</p>
+                <p class="text-sand mt-2 text-sm md:text-base">Tap or hover any capability to see where it was proved in production.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" data-aos="fade-up">
-                <!-- Left 7 Columns: Grouped Capability Pills -->
-                <div class="lg:col-span-7 space-y-8">
+                <div class="lg:col-span-7 space-y-7">
                     <div>
-                        <div class="flex items-center gap-2 mb-3.5">
+                        <div class="flex items-center gap-2 mb-3">
                             <span class="w-2 h-2 rounded-full bg-amberGlow"></span>
                             <span class="mono-tag text-xs uppercase tracking-widest text-ivory font-semibold">Advanced Practitioner &middot; Shipped &amp; Used by Teams</span>
                         </div>
@@ -727,7 +647,7 @@
                     </div>
 
                     <div>
-                        <div class="flex items-center gap-2 mb-3.5">
+                        <div class="flex items-center gap-2 mb-3">
                             <span class="w-2 h-2 rounded-full bg-sand"></span>
                             <span class="mono-tag text-xs uppercase tracking-widest text-sand font-semibold">Practitioner &middot; Built &amp; Shipped Independently</span>
                         </div>
@@ -735,22 +655,21 @@
                     </div>
                 </div>
 
-                <!-- Right 5 Columns: Sticky Spring Proof Inspector -->
                 <div class="lg:col-span-5 lg:sticky lg:top-28">
-                    <div id="skillPanel" class="warm-glass rounded-3xl p-7 md:p-9 transition-all duration-300" aria-live="polite"></div>
+                    <div id="skillPanel" class="warm-glass corner-plaque rounded-3xl p-7 md:p-9 transition-all duration-300" aria-live="polite"></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 7. Frameless Gliding Certificates -->
-    <section id="certificates" class="py-28 overflow-hidden relative z-10">
+    <section id="certificates" class="py-24 overflow-hidden relative z-10">
         <div class="max-w-6xl mx-auto px-6 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4" data-aos="fade-up">
             <div>
                 <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">04 / Verified Credentials</span>
                 <h2 class="font-editorial text-4xl md:text-5xl text-ivory tracking-tight">Anthropic Certificates.</h2>
             </div>
-            <p class="text-sand text-sm md:text-base max-w-md">14 verified credentials across AI Fluency, Claude Code, and Agentic Workflows. Drag either row or click any document to inspect.</p>
+            <p class="text-sand text-sm md:text-base max-w-md">14 credentials in AI Fluency, Claude Code, and Agentic Workflows. Drag either row or click any certificate to enlarge.</p>
         </div>
         <div id="certRows" class="space-y-6"></div>
     </section>
@@ -763,23 +682,23 @@
     </div>
 
     <!-- 8. About Section -->
-    <section id="about" class="py-24 px-6 relative z-10">
-        <div class="max-w-4xl mx-auto warm-glass rounded-3xl p-8 md:p-12" data-aos="fade-up">
-            <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">05 / Philosophy</span>
-            <h2 class="font-editorial text-3xl md:text-4xl text-ivory mb-8">Why I Build</h2>
+    <section id="about" class="py-20 px-6 relative z-10">
+        <div class="max-w-4xl mx-auto warm-glass corner-plaque rounded-3xl p-8 md:p-12" data-aos="fade-up">
+            <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">05 / Operating Principle</span>
+            <h2 class="font-editorial text-3xl md:text-4xl text-ivory mb-6">Why I Build</h2>
             <div class="flex flex-col md:flex-row gap-10 items-center md:items-start">
                 <figure id="aboutPhoto" class="hidden w-44 h-44 md:w-52 md:h-52 shrink-0 rounded-3xl overflow-hidden border border-white/10"></figure>
                 <div class="space-y-5">
                     <p id="aboutBelief" class="font-editorial text-xl md:text-2xl text-ivory leading-relaxed"></p>
                     <div id="aboutStory" class="space-y-4"></div>
-                    <ul id="aboutFacts" class="space-y-2.5 text-sand text-sm md:text-base pt-2"></ul>
+                    <ul id="aboutFacts" class="space-y-2 text-sand text-sm md:text-base pt-1"></ul>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 9. Connect / Contact Section -->
-    <section id="contact" class="py-28 px-6 relative z-10">
+    <section id="contact" class="py-24 px-6 relative z-10">
         <div class="max-w-3xl mx-auto" data-aos="fade-up">
             <div class="text-center mb-10">
                 <span class="mono-tag text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">06 / Direct Channel</span>
@@ -816,21 +735,24 @@
         </div>
     </section>
 
-    <!-- 10. Footer with Updated FlyRank Graduate Badge Link -->
+    <!-- 10. Footer with Theme-Matched Warm Gold & Espresso FlyRank Verification Card -->
     <footer class="py-14 text-center relative z-10">
-        <div class="mb-6 flex justify-center">
+        <div class="mb-6 flex justify-center px-4">
             <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="footer_flyrank_badge" target="_blank" rel="noopener noreferrer"
                aria-label="Verify Maaz Khan's FlyRank AI Internship credential"
-               class="transition duration-300 transform hover:scale-105"
-               style="box-sizing:border-box;margin:0;padding:0;border:0;background:none;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-style:normal;line-height:1.25;text-transform:none;float:none;-webkit-font-smoothing:antialiased;display:inline-flex;align-items:center;gap:14px;padding:14px 18px;background:#051F21;border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 1px 2px rgba(0,0,0,0.35);max-width:100%">
-              <svg width="40" height="40" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display:block;flex:none;opacity:1;transform:none;max-width:none"><rect width="96" height="96" rx="22" fill="#54E399" /><path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#051F21" /></svg>
-              <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left;">
-                <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55)">FlyRank AI Internship</span>
-                <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;font-size:15px;font-weight:600;color:#FFFFFF;letter-spacing:-0.01em;white-space:nowrap">Verified credential</span>
-                <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;font-size:11.5px;color:rgba(255,255,255,0.55);white-space:nowrap">Machine Learning</span>
+               class="transition duration-300 transform hover:-translate-y-1"
+               style="display:inline-flex;align-items:center;gap:14px;padding:14px 20px;background:linear-gradient(145deg, #1B1511 0%, #100C0A 100%);border:1px solid rgba(229,169,60,0.32);border-radius:20px;box-shadow:0 18px 40px -12px rgba(0,0,0,0.85), inset 0 1px 0 rgba(250,246,240,0.12);max-width:100%;text-decoration:none;">
+              <svg width="40" height="40" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;flex:none;">
+                <rect width="96" height="96" rx="22" fill="#E5A93C" />
+                <path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#0E0B09" />
+              </svg>
+              <span style="display:flex;flex-direction:column;gap:3px;min-width:0;text-align:left;">
+                <span class="mono-tag" style="font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E5A93C;">FlyRank AI Internship</span>
+                <span class="font-editorial" style="font-size:15px;font-weight:600;color:#FAF6F0;letter-spacing:-0.01em;white-space:nowrap;">Verified Credential</span>
+                <span style="font-size:11.5px;color:#BFB5AA;white-space:nowrap;">Machine Learning &amp; AI Fluency</span>
               </span>
-              <span style="margin:0;padding:0;border:0;background:none;color:inherit;font-weight:400;font-style:normal;letter-spacing:normal;text-transform:none;text-decoration:none;white-space:normal;float:none;display:flex;align-items:center;gap:6px;margin-left:8px;padding:6px 12px;background:rgba(84,227,153,0.12);border:1px solid rgba(84,227,153,0.25);border-radius:9999px;font-size:12px;font-weight:600;color:#54E399;flex:none">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display:block;flex:none;opacity:1;transform:none;max-width:none"><circle cx="12" cy="12" r="10" stroke="#54E399" stroke-width="1.5" /><path d="M7.9 12.3l2.8 2.8 5.4-5.8" stroke="#54E399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>Verify
+              <span class="mono-tag" style="display:flex;align-items:center;gap:6px;margin-left:8px;padding:6px 12px;background:rgba(229,169,60,0.14);border:1px solid rgba(229,169,60,0.38);border-radius:9999px;font-size:11px;font-weight:600;color:#E5A93C;flex:none;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="#E5A93C" stroke-width="1.6" /><path d="M7.9 12.3l2.8 2.8 5.4-5.8" stroke="#E5A93C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>Verify
               </span>
             </a>
         </div>
