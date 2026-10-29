@@ -28,7 +28,7 @@
     });
   }, 800);
 
-  /* ---------- 2. Subtle Cursor-Revealed Blueprint Grid & Card Sheen ---------- */
+  /* ---------- 2. Cursor-Revealed Atelier Grid & Card Sheen ---------- */
   window.addEventListener('pointermove', function (e) {
     document.documentElement.style.setProperty('--cx', e.clientX + 'px');
     document.documentElement.style.setProperty('--cy', e.clientY + 'px');
@@ -46,64 +46,66 @@
     });
   }
 
-  /* ---------- 3. Full-Page Living Warm 3D Canvas (Scroll + Cursor Reactive) ---------- */
-  (function initFullPageThreeJS() {
+  /* ---------- 3. Cozy Studio Bokeh & Warm Floating Embers (No Robotic Lines) ---------- */
+  (function initCozyStudioBokeh() {
     var canvas = $('#bgCanvas');
     if (!canvas || !window.THREE || reduce) return;
 
     try {
       var THREE = window.THREE;
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 30;
+      var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 26;
 
       var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
+      // Create a soft radial glow texture for warm studio bokeh orbs
+      var spriteCanvas = document.createElement('canvas');
+      spriteCanvas.width = 64;
+      spriteCanvas.height = 64;
+      var sCtx = spriteCanvas.getContext('2d');
+      var grad = sCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, 'rgba(250, 246, 240, 1)');
+      grad.addColorStop(0.35, 'rgba(229, 169, 60, 0.65)');
+      grad.addColorStop(0.7, 'rgba(200, 109, 68, 0.18)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(0, 0, 64, 64);
+      var bokehTexture = new THREE.CanvasTexture(spriteCanvas);
+
       var group = new THREE.Group();
       scene.add(group);
 
-      // Warm Golden/Champagne Ambient Motes
-      var count = window.innerWidth < 640 ? 48 : 85;
+      var count = window.innerWidth < 640 ? 36 : 65;
       var positions = new Float32Array(count * 3);
       var velocities = [];
-      var spreadX = 52, spreadY = 36, spreadZ = 24;
+      var spreadX = 50, spreadY = 34, spreadZ = 22;
 
       for (var i = 0; i < count; i++) {
         positions[i * 3] = (Math.random() - 0.5) * spreadX;
         positions[i * 3 + 1] = (Math.random() - 0.5) * spreadY;
         positions[i * 3 + 2] = (Math.random() - 0.5) * spreadZ;
         velocities.push({
-          vx: (Math.random() - 0.5) * 0.011,
-          vy: (Math.random() - 0.5) * 0.011,
-          vz: (Math.random() - 0.5) * 0.008
+          vx: (Math.random() - 0.5) * 0.006,
+          vy: (Math.random() * 0.006) + 0.002,
+          vz: (Math.random() - 0.5) * 0.005
         });
       }
 
       var pointsGeo = new THREE.BufferGeometry();
       pointsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       var pointsMat = new THREE.PointsMaterial({
-        color: 0xe5a93c,
-        size: 0.21,
+        size: 1.45,
+        map: bokehTexture,
         transparent: true,
-        opacity: 0.65
+        opacity: 0.55,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
       });
-      var pointCloud = new THREE.Points(pointsGeo, pointsMat);
-      group.add(pointCloud);
-
-      // Delicate Warm Filament Threads
-      var maxLines = count * 4;
-      var linePositions = new Float32Array(maxLines * 6);
-      var lineGeo = new THREE.BufferGeometry();
-      lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-      var lineMat = new THREE.LineBasicMaterial({
-        color: 0xd97736,
-        transparent: true,
-        opacity: 0.11
-      });
-      var lineSegments = new THREE.LineSegments(lineGeo, lineMat);
-      group.add(lineSegments);
+      var embers = new THREE.Points(pointsGeo, pointsMat);
+      group.add(embers);
 
       var mouseX = 0, mouseY = 0;
       window.addEventListener('pointermove', function (e) {
@@ -117,9 +119,8 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
 
-      function animateBg() {
-        requestAnimationFrame(animateBg);
-
+      function animateStudio() {
+        requestAnimationFrame(animateStudio);
         var posArr = pointsGeo.attributes.position.array;
         for (var i = 0; i < count; i++) {
           var ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
@@ -127,46 +128,19 @@
           posArr[iy] += velocities[i].vy;
           posArr[iz] += velocities[i].vz;
 
+          if (posArr[iy] > spreadY / 2) posArr[iy] = -spreadY / 2;
           if (Math.abs(posArr[ix]) > spreadX / 2) velocities[i].vx *= -1;
-          if (Math.abs(posArr[iy]) > spreadY / 2) velocities[i].vy *= -1;
           if (Math.abs(posArr[iz]) > spreadZ / 2) velocities[i].vz *= -1;
         }
         pointsGeo.attributes.position.needsUpdate = true;
 
-        var lineIdx = 0;
-        var connectDistSq = 44;
-        for (var a = 0; a < count; a++) {
-          for (var b = a + 1; b < count; b++) {
-            if (lineIdx >= maxLines) break;
-            var dx = posArr[a * 3] - posArr[b * 3];
-            var dy = posArr[a * 3 + 1] - posArr[b * 3 + 1];
-            var dz = posArr[a * 3 + 2] - posArr[b * 3 + 2];
-            if (dx * dx + dy * dy + dz * dz < connectDistSq) {
-              var lBase = lineIdx * 6;
-              linePositions[lBase] = posArr[a * 3];
-              linePositions[lBase + 1] = posArr[a * 3 + 1];
-              linePositions[lBase + 2] = posArr[a * 3 + 2];
-              linePositions[lBase + 3] = posArr[b * 3];
-              linePositions[lBase + 4] = posArr[b * 3 + 1];
-              linePositions[lBase + 5] = posArr[b * 3 + 2];
-              lineIdx++;
-            }
-          }
-        }
-        lineGeo.setDrawRange(0, lineIdx * 2);
-        lineGeo.attributes.position.needsUpdate = true;
-
-        // Continuous scroll-linked camera depth across the entire page
         var scrollProgress = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
-        var targetRotY = mouseX * 0.16 + scrollProgress * 0.85;
-        var targetRotX = -mouseY * 0.12 + scrollProgress * 0.35;
-
-        group.rotation.y += (targetRotY - group.rotation.y) * 0.035;
-        group.rotation.x += (targetRotX - group.rotation.x) * 0.035;
+        group.rotation.y += (mouseX * 0.08 + scrollProgress * 0.35 - group.rotation.y) * 0.03;
+        group.rotation.x += (-mouseY * 0.06 + scrollProgress * 0.15 - group.rotation.x) * 0.03;
 
         renderer.render(scene, camera);
       }
-      animateBg();
+      animateStudio();
     } catch (e) {}
   })();
 
@@ -204,12 +178,268 @@
     });
   });
 
-  var pepsicoDetails = $('#pepsicoToolsDetails');
-  if (pepsicoDetails) {
-    pepsicoDetails.addEventListener('toggle', function () {
-      if (pepsicoDetails.open) trackEvent('pepsico_tools_expand');
+  /* ---------- 5. Curated Exhibition Stage (Selected Work — Concise & Interactive) ---------- */
+  var EXHIBITS = {
+    pepsico: {
+      tag: '01 · Flagship Architecture',
+      context: 'PepsiCo Pakistan · Roshan Kal GTM & Tax',
+      title: '59.4 net hours returned to two departments every month.',
+      subtitle: 'Seven in-memory VBA engines packaged onto a custom Excel ribbon, installable on any corporate laptop in under 60 seconds.',
+      kpis: [
+        { val: '33 hrs', label: 'Saved monthly in GTM' },
+        { val: '26.4 hrs', label: 'Saved monthly in Tax' },
+        { val: '192 sec', label: 'vs. 26-hr reconciliation' },
+        { val: '100%', label: 'Audit validation accuracy' }
+      ],
+      beats: [
+        {
+          id: 'problem',
+          label: 'I. The Friction',
+          heading: '61 gross hours lost every month to manual spreadsheets.',
+          body: 'GTM spent 36 hours a month compiling master-data reports by hand, while Tax spent 25+ hours reconciling SAP ledgers against the FBR portal line by line.'
+        },
+        {
+          id: 'craft',
+          label: 'II. The Craft',
+          heading: 'In-memory hash tables instead of heavy worksheet formulas.',
+          body: 'Built seven engines on Scripting.Dictionary lookups and dynamic RAM arrays inside portable .xlam add-ins, complete with a 4-phase self-serve guide so executives install without IT tickets.'
+        },
+        {
+          id: 'return',
+          label: 'III. The Return',
+          heading: 'Presented to the COO & CFO; permanently adopted in production.',
+          body: 'GTM reporting dropped to under 15 minutes and Tax reconciliation dropped to 192 seconds. All 7 tools continue running across both departments post-internship.'
+        }
+      ],
+      tools: [
+        '01. CNIC & Cell Audit Engine',
+        '02. YTD Reports Generator',
+        '03. Pending Transfers Module',
+        '04. Barcode Summary Engine',
+        '05. Invalid Barcode % Detector',
+        '06. FBR & SAP Reconciliation Engine',
+        '07. CPR Standardization Protocol'
+      ],
+      stack: ['Excel VBA', 'Scripting.Dictionary', 'In-Memory Arrays', 'Custom Ribbon XML']
+    },
+    flyrank: {
+      tag: '02 · Applied Machine Learning',
+      context: 'FlyRank AI · 30,000 Production URLs · 32 Clients',
+      title: '3.5× precision lift on unseen enterprise domains.',
+      subtitle: 'A decision-support triage pipeline that ranks decaying search content under strict editorial bandwidth constraints.',
+      kpis: [
+        { val: '70.0%', label: 'Precision@10 (Unseen)' },
+        { val: '3.5×', label: 'Lift over 20% heuristic' },
+        { val: '0.5758', label: 'Honest grouped PR-AUC' },
+        { val: '10,670', label: 'Ranked playbook URLs' }
+      ],
+      beats: [
+        {
+          id: 'problem',
+          label: 'I. The Friction',
+          heading: '80% of top-10 heuristic alerts were false alarms.',
+          body: 'Enterprise teams manage 30,000+ URLs but can only audit 10 to 50 pages per sprint. Standard striking-distance rules waste human hours on stable pages.'
+        },
+        {
+          id: 'craft',
+          label: 'II. The Craft',
+          heading: 'Client-grouped validation backed by a deliberate leakage harness.',
+          body: 'Trained calibrated Logistic Regression and Random Forest models across 25 train clients and 7 unseen test clients, purging 13 formula-leaking columns.'
+        },
+        {
+          id: 'return',
+          label: 'III. The Return',
+          heading: 'A 4-archetype Action Playbook with human safety guardrails.',
+          body: 'Weighted decay probability by 90-day impression demand and enforced automated prune-safety and 60-day cooldown checks before any editorial action.'
+        }
+      ],
+      links: [
+        { label: 'Read Research Paper →', href: 'https://maazkhan53.github.io/ML-01-Run-the-Starter-Notebooks/', primary: true, track: 'flyrank_paper_click' },
+        { label: 'Verified Credential →', href: 'https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz', primary: false, track: 'flyrank_verify_click' }
+      ],
+      stack: ['Python', 'scikit-learn', 'GroupShuffleSplit', 'Leakage Harness', 'NIST AI RMF']
+    },
+    outfield: {
+      tag: '03 · Product Engineering',
+      context: 'Founder & Lead Developer · Karachi',
+      title: 'Replacing fragmented WhatsApp chains with instant turf booking.',
+      subtitle: 'Outfield is a two-sided sports ground discovery and reservation platform built for players and venue owners in Karachi.',
+      kpis: [
+        { val: '2-Sided', label: 'Players & Venue Owners' },
+        { val: 'Live', label: 'Slot availability engine' },
+        { val: '1-Tap', label: 'Reservation workflow' }
+      ],
+      beats: [
+        {
+          id: 'problem',
+          label: 'I. The Friction',
+          heading: 'Booking a pitch in Karachi takes a dozen phone calls.',
+          body: 'Players have no central place to see open slots across venues, and facility owners manage overlapping reservations in manual notebooks and chat threads.'
+        },
+        {
+          id: 'craft',
+          label: 'II. The Craft',
+          heading: 'Real-time relational state on React & Supabase.',
+          body: 'Engineered a responsive web platform where players filter grounds by time and area while owners manage slot inventory from a single dashboard.'
+        },
+        {
+          id: 'return',
+          label: 'III. The Return',
+          heading: 'Currently being rebuilt for public launch.',
+          body: 'The core relational schema and frontend architecture are open-sourced on GitHub as the v2 production build nears completion.'
+        }
+      ],
+      links: [
+        { label: 'Inspect GitHub Repository →', href: 'https://github.com/MaazKhan53/outfield', primary: true, track: 'outfield_repo_click' }
+      ],
+      stack: ['React', 'Vite', 'Supabase', 'PostgreSQL', 'Vercel']
+    },
+    agents: {
+      tag: '04 · Autonomous Workflows',
+      context: 'Personal Engineering Systems · Docker & MCP',
+      title: 'Handing daily market briefings and resume tailoring to agents.',
+      subtitle: 'Two self-hosted automation pipelines built to eliminate repetitive personal research and document formatting.',
+      kpis: [
+        { val: 'Daily', label: 'Automated morning digest' },
+        { val: '0-Touch', label: 'n8n + Groq + Docker' },
+        { val: 'MCP', label: 'Local filesystem agent' }
+      ],
+      beats: [
+        {
+          id: 'problem',
+          label: 'I. Financial Pipeline',
+          heading: 'The morning market scan, automated end-to-end.',
+          body: 'A self-hosted n8n workflow inside Docker scrapes daily financial news, synthesizes an executive briefing via the Groq LLM API, and delivers it via SMTP every morning.'
+        },
+        {
+          id: 'craft',
+          label: 'II. Resume Tailor Agent',
+          heading: 'Local Claude agent wired to the MCP filesystem server.',
+          body: 'Reads verified project metrics from my local master database and rewrites resume bullet points to align with target job descriptions in seconds.'
+        },
+        {
+          id: 'return',
+          label: 'III. The Return',
+          heading: 'Hours of weekly reading and formatting reclaimed.',
+          body: 'Both workflows run locally with zero manual copy-pasting, turning multi-step research routines into background utilities.'
+        }
+      ],
+      stack: ['n8n', 'Docker', 'Groq LLM API', 'Model Context Protocol (MCP)', 'Claude Code']
+    }
+  };
+
+  var currentExhibitKey = 'pepsico';
+  var currentBeatIdx = 0;
+
+  function renderExhibitStage(key, beatIdx) {
+    var stage = $('#exhibitStage');
+    if (!stage || !EXHIBITS[key]) return;
+    currentExhibitKey = key;
+    currentBeatIdx = beatIdx || 0;
+    var ex = EXHIBITS[key];
+    var activeBeat = ex.beats[currentBeatIdx] || ex.beats[0];
+
+    $$('#exhibitTabs .exhibit-tab').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-exhibit') === key);
+    });
+
+    var kpisHtml = ex.kpis.map(function (k) {
+      return '<div class="rounded-2xl bg-black/35 border border-white/10 p-4">' +
+        '<div class="kpi-num font-editorial text-2xl sm:text-3xl font-semibold text-ivory">' + k.val + '</div>' +
+        '<p class="text-xs text-sand mt-1">' + k.label + '</p>' +
+      '</div>';
+    }).join('');
+
+    var beatsNavHtml = ex.beats.map(function (b, idx) {
+      return '<button type="button" data-beat-idx="' + idx + '" class="beat-btn ' + (idx === currentBeatIdx ? 'is-active' : '') + '">' + b.label + '</button>';
+    }).join('');
+
+    var toolsHtml = '';
+    if (ex.tools) {
+      toolsHtml =
+        '<details class="mt-5 pt-4 border-t border-white/10 group">' +
+          '<summary class="cursor-pointer list-none inline-flex items-center gap-2 text-xs mono-tag uppercase tracking-wider text-amberGlow hover:text-ivory transition">' +
+            '<span>View All 7 Production VBA Engines</span>' +
+            '<span class="group-open:rotate-180 transition-transform">&#9662;</span>' +
+          '</summary>' +
+          '<div class="mt-3 grid sm:grid-cols-2 gap-2 text-xs text-ivory/90">' +
+            ex.tools.map(function (t) {
+              return '<div class="px-3 py-2 rounded-xl bg-black/40 border border-white/10">' + t + '</div>';
+            }).join('') +
+          '</div>' +
+        '</details>';
+    }
+
+    var linksHtml = '';
+    if (ex.links) {
+      linksHtml = '<div class="mt-6 pt-4 border-t border-white/10 flex flex-wrap gap-4 items-center">' +
+        ex.links.map(function (l) {
+          return '<a href="' + l.href + '" target="_blank" rel="noopener noreferrer" class="' +
+            (l.primary ? 'text-sm font-semibold text-amberGlow hover:text-ivory transition' : 'text-xs mono-tag text-sand hover:text-ivory transition') + '">' + l.label + '</a>';
+        }).join('') +
+      '</div>';
+    }
+
+    var stackHtml = (ex.stack || []).map(function (s) {
+      return '<span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[11px] mono-tag text-sand">' + s + '</span>';
+    }).join('');
+
+    stage.innerHTML =
+      '<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">' +
+        '<!-- Left 6 Cols: Headline & Sculpted Numbers -->' +
+        '<div class="lg:col-span-6 space-y-6">' +
+          '<div>' +
+            '<div class="flex flex-wrap items-center gap-2.5 mb-3">' +
+              '<span class="mono-tag px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/30 text-amberGlow text-[11px] font-semibold uppercase tracking-wider">' + ex.tag + '</span>' +
+              '<span class="mono-tag text-xs text-sand">' + ex.context + '</span>' +
+            '</div>' +
+            '<h3 class="font-editorial text-2xl sm:text-3xl md:text-4xl text-ivory leading-tight">' + ex.title + '</h3>' +
+            '<p class="text-sand text-sm md:text-base mt-3 leading-relaxed">' + ex.subtitle + '</p>' +
+          '</div>' +
+          '<div class="grid grid-cols-2 gap-3">' + kpisHtml + '</div>' +
+          '<div class="flex flex-wrap gap-2 pt-1">' + stackHtml + '</div>' +
+        '</div>' +
+
+        '<!-- Right 6 Cols: Interactive 3-Beat Story Switcher (1 Short Card at a Time) -->' +
+        '<div class="lg:col-span-6">' +
+          '<div class="rounded-3xl bg-black/40 border border-white/10 p-6 sm:p-8">' +
+            '<div class="flex flex-wrap items-center gap-2 mb-6">' + beatsNavHtml + '</div>' +
+            '<div id="beatCardContent" class="space-y-3 min-h-[130px]">' +
+              '<span class="mono-tag text-[11px] uppercase tracking-widest text-amberGlow block">' + activeBeat.label + '</span>' +
+              '<h4 class="font-editorial text-xl sm:text-2xl text-ivory leading-snug">' + activeBeat.heading + '</h4>' +
+              '<p class="text-sand text-sm sm:text-base leading-relaxed">' + activeBeat.body + '</p>' +
+            '</div>' +
+            toolsHtml +
+            linksHtml +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    $$('#exhibitStage [data-beat-idx]').forEach(function (bBtn) {
+      bBtn.addEventListener('click', function () {
+        var nextIdx = parseInt(bBtn.getAttribute('data-beat-idx'), 10);
+        renderExhibitStage(currentExhibitKey, nextIdx);
+        trackEvent('exhibit_beat_switch', { project: currentExhibitKey, beat: nextIdx + 1 });
+      });
     });
   }
+
+  $$('#exhibitTabs .exhibit-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var k = tab.getAttribute('data-exhibit');
+      renderExhibitStage(k, 0);
+      trackEvent('exhibit_project_switch', { project: k });
+    });
+  });
+
+  $$('[data-exhibit-jump]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var k = link.getAttribute('data-exhibit-jump');
+      if (EXHIBITS[k]) renderExhibitStage(k, 0);
+    });
+  });
+
+  renderExhibitStage('pepsico', 0);
 
   /* ---------- Helpers ---------- */
   function initials(name) {
@@ -257,13 +487,13 @@
     counters.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- 5. Experience: All-At-Once Interactive Accordion Filmstrip ---------- */
+  /* ---------- 6. Experience: All-At-Once Interactive Accordion Filmstrip ---------- */
   var expList = $('#experienceList') || $('#experienceGrid');
   if (expList && Array.isArray(S.experience)) {
     expList.innerHTML = '';
     S.experience.forEach(function (e, idx) {
       var row = document.createElement('article');
-      row.className = 'exp-row py-5 px-2 sm:px-4' + (idx === 0 ? ' is-open' : '');
+      row.className = 'exp-row py-4.5 px-2 sm:px-4' + (idx === 0 ? ' is-open' : '');
 
       var chip = document.createElement('div');
       chip.className = 'w-11 h-11 shrink-0 rounded-xl bg-white flex items-center justify-center p-1.5 overflow-hidden shadow-sm';
@@ -276,7 +506,7 @@
       chip.appendChild(img);
 
       var header = document.createElement('div');
-      header.className = 'flex items-center justify-between gap-4';
+      header.className = 'flex items-center justify-between gap-4 py-4';
 
       var left = document.createElement('div');
       left.className = 'flex items-center gap-4 min-w-0';
@@ -305,8 +535,8 @@
       var details = document.createElement('div');
       details.className = 'exp-details';
       details.innerHTML =
-        '<div class="exp-details-inner pl-15 sm:pl-16 pt-3 pr-2">' +
-          '<p class="mono-tag text-[11px] text-amberGlow/90 mb-1.5">' + e.dates + ' &middot; ' + e.place + '</p>' +
+        '<div class="exp-details-inner pl-14 sm:pl-16 pb-4 pr-2">' +
+          '<p class="mono-tag text-[11px] text-amberGlow/90 mb-1">' + e.dates + ' &middot; ' + e.place + '</p>' +
           '<p class="text-sm text-sand leading-relaxed max-w-3xl">' + e.impact + '</p>' +
         '</div>';
 
@@ -324,7 +554,7 @@
     });
   }
 
-  /* ---------- 6. Tactile Editorial Capability Deck (With Animated SVG Icons) ---------- */
+  /* ---------- 7. Tactile Editorial Capability Deck ---------- */
   var SKILL_ICONS = {
     'vba': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
     'validation': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
@@ -382,10 +612,19 @@
           '<span class="mono-tag text-xs text-sand">Verified in:</span>' +
           '<div class="flex flex-wrap gap-3">' +
             s.proof.map(function (p) {
-              return '<a class="text-sm font-semibold text-amberGlow hover:text-ivory transition" href="' + p.href + '">' + p.label + ' &rarr;</a>';
+              var jumpMap = { '#pepsico': 'pepsico', '#flyrank': 'flyrank', '#outfield': 'outfield', '#also-built': 'agents' };
+              var exKey = jumpMap[p.href] || '';
+              return '<a class="text-sm font-semibold text-amberGlow hover:text-ivory transition" ' +
+                (exKey ? 'data-skill-exhibit="' + exKey + '" href="#projects"' : 'href="' + p.href + '"') + '>' + p.label + ' &rarr;</a>';
             }).join('') +
           '</div>' +
         '</div>';
+
+      $$('[data-skill-exhibit]', panel).forEach(function (a) {
+        a.addEventListener('click', function () {
+          renderExhibitStage(a.getAttribute('data-skill-exhibit'), 0);
+        });
+      });
     }
 
     buildSkillPills($('#clusterA'), S.skills.advanced);
@@ -395,7 +634,7 @@
 
   bindWarmGlassHover();
 
-  /* ---------- 7. PDF.js Setup & Frameless Certificate Renderer ---------- */
+  /* ---------- 8. PDF.js Setup & Frameless Certificate Renderer ---------- */
   if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
@@ -469,7 +708,7 @@
     });
   }
 
-  /* ---------- 8. Certificates: Pure Unbordered Gliding Rows ---------- */
+  /* ---------- 9. Certificates: Pure Unbordered Gliding Rows ---------- */
   var certWrap = $('#certRows');
   var rowControllers = [];
 
@@ -644,7 +883,7 @@
     requestAnimationFrame(tickCerts);
   }
 
-  /* ---------- 9. Frameless Fluid FLIP Lightbox Controller ---------- */
+  /* ---------- 10. Frameless Fluid FLIP Lightbox Controller ---------- */
   var lightbox = $('#certLightbox');
   var lightboxCard = $('#certLightboxCard');
   var modalCanvas = $('#certModalCanvas');
@@ -723,7 +962,7 @@
     if (e.key === 'Escape') closeCertModal();
   });
 
-  /* ---------- 10. About & Contact ---------- */
+  /* ---------- 11. About & Contact ---------- */
   var factsEl = $('#aboutFacts');
   if (factsEl && S.about && Array.isArray(S.about.facts)) {
     S.about.facts.forEach(function (f) {
