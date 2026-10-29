@@ -46,105 +46,121 @@
     });
   }
 
-  /* ---------- 2. Cursor Lamp Tracking ---------- */
+  /* ---------- 2. Interactive Cursor Follower & Magnetic CTA Physics ---------- */
+  var cursorHalo = $('#cursorHalo');
   var mouseNormX = 0, mouseNormY = 0;
+  var cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
+  var haloX = cursorX, haloY = cursorY;
+
   window.addEventListener('pointermove', function (e) {
-    document.documentElement.style.setProperty('--cx', e.clientX + 'px');
-    document.documentElement.style.setProperty('--cy', e.clientY + 'px');
+    cursorX = e.clientX;
+    cursorY = e.clientY;
     mouseNormX = (e.clientX / window.innerWidth - 0.5) * 2;
     mouseNormY = (e.clientY / window.innerHeight - 0.5) * 2;
   }, { passive: true });
 
-  /* ---------- 3. Morphing 4-State 3D WebGL Sculpture ---------- */
-  (function initMorphingSculpture() {
+  if (cursorHalo && !reduce) {
+    (function tickCursor() {
+      haloX += (cursorX - haloX) * 0.18;
+      haloY += (cursorY - haloY) * 0.18;
+      cursorHalo.style.transform = 'translate3d(' + haloX.toFixed(1) + 'px, ' + haloY.toFixed(1) + 'px, 0)';
+      requestAnimationFrame(tickCursor);
+    })();
+  }
+
+  function bindMagneticElements() {
+    $$('[data-magnetic], .cta-primary, .cta-beam, .dial-node').forEach(function (el) {
+      if (el._magBound) return;
+      el._magBound = true;
+      el.addEventListener('pointerenter', function () {
+        if (cursorHalo) cursorHalo.classList.add('is-hovering');
+      });
+      el.addEventListener('pointerleave', function () {
+        if (cursorHalo) cursorHalo.classList.remove('is-hovering');
+        if (!el.classList.contains('dial-node')) {
+          el.style.transform = 'translate3d(0px, 0px, 0px)';
+        }
+      });
+      if (!el.classList.contains('dial-node')) {
+        el.addEventListener('pointermove', function (e) {
+          if (reduce) return;
+          var r = el.getBoundingClientRect();
+          var dx = (e.clientX - (r.left + r.width / 2)) * 0.28;
+          var dy = (e.clientY - (r.top + r.height / 2)) * 0.28;
+          el.style.transform = 'translate3d(' + dx.toFixed(1) + 'px, ' + dy.toFixed(1) + 'px, 0)';
+        });
+      }
+    });
+  }
+  bindMagneticElements();
+
+  /* ---------- 3. Lusion-Style Lit 3D Architectural Sculpture (Positioned in Negative Space) ---------- */
+  (function initLit3DSculpture() {
     var canvas = $('#bgCanvas');
     if (!canvas || !window.THREE) return;
 
     try {
       var THREE = window.THREE;
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 32;
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 26);
 
       var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-      // Soft warm glowing dot texture
-      var sc = document.createElement('canvas');
-      sc.width = 64; sc.height = 64;
-      var ctx = sc.getContext('2d');
-      var g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      g.addColorStop(0, 'rgba(250, 246, 240, 1)');
-      g.addColorStop(0.35, 'rgba(229, 169, 60, 0.78)');
-      g.addColorStop(0.75, 'rgba(200, 109, 68, 0.2)');
-      g.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, 64, 64);
-      var dotTexture = new THREE.CanvasTexture(sc);
+      // Warm studio lighting (Gold key light + Copper rim light + Deep espresso ambient)
+      var ambientLight = new THREE.AmbientLight(0x1a1410, 1.4);
+      scene.add(ambientLight);
 
-      var N = window.innerWidth < 640 ? 550 : 1050;
-      var currentPos = new Float32Array(N * 3);
+      var keyLight = new THREE.DirectionalLight(0xe5a93c, 2.2);
+      keyLight.position.set(12, 16, 14);
+      scene.add(keyLight);
 
-      // 4 Distinct 3D Sculptural Formations
-      var s0_eclipse = new Float32Array(N * 3);   // Chapter 00: Golden Eclipse Ring
-      var s1_streams = new Float32Array(N * 3);   // Chapter 01: Chaos -> Parallel Order Streams
-      var s2_helix = new Float32Array(N * 3);     // Chapter 02: Orbital Architectural Dial Helix
-      var s3_horizon = new Float32Array(N * 3);   // Chapter 03-05: Calm Warm Horizon Floor
+      var rimLight = new THREE.PointLight(0xc86d44, 2.6, 50);
+      rimLight.position.set(-14, -10, 8);
+      scene.add(rimLight);
 
-      for (var i = 0; i < N; i++) {
-        var idx = i * 3;
-        var t = i / N;
-        var angle = t * Math.PI * 2 * 12;
+      var artifactGroup = new THREE.Group();
+      // Start positioned on the right side of the screen so left-aligned hero text is 100% clear
+      artifactGroup.position.set(6.5, 0.5, 0);
+      scene.add(artifactGroup);
 
-        // State 0: Off-center Golden Eclipse Torus
-        var r0 = 11.5 + (Math.random() - 0.5) * 2.4;
-        var a0 = t * Math.PI * 2;
-        s0_eclipse[idx] = Math.cos(a0) * r0 + 4.5;
-        s0_eclipse[idx + 1] = Math.sin(a0) * r0 * 0.82 + 1.0;
-        s0_eclipse[idx + 2] = (Math.random() - 0.5) * 4.5;
-
-        // State 1: Left Chaotic Cloud snapping into 5 Parallel Right Streams
-        var x1 = (t - 0.5) * 48;
-        var streamLane = (i % 5 - 2) * 3.2;
-        var chaosFactor = Math.max(0, (1 - t * 1.35));
-        s1_streams[idx] = x1;
-        s1_streams[idx + 1] = streamLane + Math.sin(t * 14 + i) * 9.5 * chaosFactor;
-        s1_streams[idx + 2] = Math.cos(t * 10 + i) * 7.0 * chaosFactor;
-
-        // State 2: Architectural Double Helix / Wheel
-        var r2 = 12.5;
-        var a2 = t * Math.PI * 6;
-        s2_helix[idx] = Math.cos(a2) * r2 - 7.5;
-        s2_helix[idx + 1] = (t - 0.5) * 34;
-        s2_helix[idx + 2] = Math.sin(a2) * r2 * 0.65;
-
-        // State 3: Wide Undulating Horizon Floor
-        var gx = ((i % 35) / 35 - 0.5) * 54;
-        var gz = (Math.floor(i / 35) / (N / 35) - 0.5) * 28;
-        s3_horizon[idx] = gx;
-        s3_horizon[idx + 1] = -8.5 + Math.sin(gx * 0.25) * 1.6 + Math.cos(gz * 0.3) * 1.4;
-        s3_horizon[idx + 2] = gz;
-
-        currentPos[idx] = s0_eclipse[idx];
-        currentPos[idx + 1] = s0_eclipse[idx + 1];
-        currentPos[idx + 2] = s0_eclipse[idx + 2];
-      }
-
-      var geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(currentPos, 3));
-
-      var mat = new THREE.PointsMaterial({
-        size: 0.72,
-        map: dotTexture,
+      // Core Sculptural Mobius / TorusKnot Ribbon (Smooth Dark Bronze Physical Material)
+      var knotGeo = new THREE.TorusKnotGeometry(4.2, 1.05, 180, 32, 2, 3);
+      var knotMat = new THREE.MeshStandardMaterial({
+        color: 0x18130e,
+        roughness: 0.24,
+        metalness: 0.88,
         transparent: true,
-        opacity: 0.78,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending
+        opacity: 0.92
       });
+      var knotMesh = new THREE.Mesh(knotGeo, knotMat);
+      artifactGroup.add(knotMesh);
 
-      var sculpture = new THREE.Points(geo, mat);
-      scene.add(sculpture);
+      // Delicate Golden Wireframe Halo Cage around the sculpture
+      var cageGeo = new THREE.TorusKnotGeometry(4.26, 1.08, 90, 16, 2, 3);
+      var cageMat = new THREE.MeshBasicMaterial({
+        color: 0xe5a93c,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.08
+      });
+      var cageMesh = new THREE.Mesh(cageGeo, cageMat);
+      artifactGroup.add(cageMesh);
+
+      // Outer Gyroscopic Architectural Rings
+      var ringGeo1 = new THREE.TorusGeometry(6.8, 0.035, 16, 120);
+      var ringMat1 = new THREE.MeshBasicMaterial({ color: 0xe5a93c, transparent: true, opacity: 0.28 });
+      var ring1 = new THREE.Mesh(ringGeo1, ringMat1);
+      ring1.rotation.x = Math.PI / 3;
+      artifactGroup.add(ring1);
+
+      var ringGeo2 = new THREE.TorusGeometry(8.2, 0.025, 16, 120);
+      var ringMat2 = new THREE.MeshBasicMaterial({ color: 0xfaf6f0, transparent: true, opacity: 0.14 });
+      var ring2 = new THREE.Mesh(ringGeo2, ringMat2);
+      ring2.rotation.y = Math.PI / 4;
+      artifactGroup.add(ring2);
 
       window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -155,70 +171,140 @@
       var smoothScroll = 0;
       var clock = 0;
 
-      function lerp(a, b, f) { return a + (b - a) * f; }
-
-      function animateSculpture() {
-        requestAnimationFrame(animateSculpture);
-        clock += 0.008;
+      function animate3D() {
+        requestAnimationFrame(animate3D);
+        clock += 0.006;
 
         var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-        var rawProgress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-        smoothScroll += (rawProgress - smoothScroll) * 0.06;
+        var rawScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+        smoothScroll += (rawScroll - smoothScroll) * 0.05;
 
-        // Map smoothScroll [0..1] across the 4 sculptural states (0->1, 1->2, 2->3)
-        var scaled = smoothScroll * 3;
-        var stageIdx = Math.min(2, Math.floor(scaled));
-        var stageFrac = scaled - stageIdx;
-        // Smoothstep easing between sculptures
-        var easeF = stageFrac * stageFrac * (3 - 2 * stageFrac);
+        // 3D Timeline Choreography: Move sculpture gracefully across negative space as user scrolls
+        var isMobile = window.innerWidth < 768;
+        var targetX = isMobile ? 0 : Math.cos(smoothScroll * Math.PI * 2.5) * 6.8;
+        var targetY = Math.sin(smoothScroll * Math.PI * 2) * 2.2;
+        var targetZ = -Math.sin(smoothScroll * Math.PI) * 5.5;
 
-        var states = [s0_eclipse, s1_streams, s2_helix, s3_horizon];
-        var fromArr = states[stageIdx];
-        var toArr = states[stageIdx + 1];
+        artifactGroup.position.x += (targetX + mouseNormX * 1.1 - artifactGroup.position.x) * 0.04;
+        artifactGroup.position.y += (targetY - mouseNormY * 0.9 - artifactGroup.position.y) * 0.04;
+        artifactGroup.position.z += (targetZ - artifactGroup.position.z) * 0.04;
 
-        var pos = geo.attributes.position.array;
-        for (var i = 0; i < N; i++) {
-          var ix = i * 3, iy = ix + 1, iz = ix + 2;
-          var tx = lerp(fromArr[ix], toArr[ix], easeF);
-          var ty = lerp(fromArr[iy], toArr[iy], easeF);
-          var tz = lerp(fromArr[iz], toArr[iz], easeF);
+        // Scroll-driven sculptural rotation + subtle idle spin
+        knotMesh.rotation.x = smoothScroll * Math.PI * 3.5 + clock * 0.7;
+        knotMesh.rotation.y = smoothScroll * Math.PI * 2.2 + clock * 0.5;
+        cageMesh.rotation.copy(knotMesh.rotation);
 
-          // Subtle organic breathing motion
-          pos[ix] = tx + Math.sin(clock + i * 0.15) * 0.18;
-          pos[iy] = ty + Math.cos(clock + i * 0.12) * 0.18;
-          pos[iz] = tz;
-        }
-        geo.attributes.position.needsUpdate = true;
-
-        sculpture.rotation.y += (mouseNormX * 0.18 + clock * 0.08 - sculpture.rotation.y) * 0.04;
-        sculpture.rotation.x += (-mouseNormY * 0.12 - sculpture.rotation.x) * 0.04;
+        ring1.rotation.z = clock * 0.8 + smoothScroll * 4;
+        ring2.rotation.x = -clock * 0.6 + smoothScroll * 3;
 
         renderer.render(scene, camera);
       }
-      animateSculpture();
+      animate3D();
     } catch (e) {}
   })();
 
-  /* ---------- 4. Scroll Choreography: Hero Curtain Split, Reveal & Compression Bars ---------- */
-  var heroTopLeft = $('#heroTopLeft');
-  var heroBottomRight = $('#heroBottomRight');
+  /* ---------- 4. GSAP ScrollTrigger Choreography & Mask-Split Typography ---------- */
+  function initGSAPChoreography() {
+    if (!window.gsap) return;
+    var gsap = window.gsap;
+    if (window.ScrollTrigger) {
+      gsap.registerPlugin(window.ScrollTrigger);
+    }
+
+    if (reduce) return;
+
+    // 1. Hero Opening Mask-Split Stagger
+    gsap.fromTo(
+      '#top .split-line',
+      { yPercent: 115, rotateZ: 2, opacity: 0 },
+      { yPercent: 0, rotateZ: 0, opacity: 1, duration: 1.15, stagger: 0.12, ease: 'power4.out', delay: 0.1 }
+    );
+
+    // 2. Section Header Mask-Split Reveals on Scroll
+    $$('.gsap-section-header').forEach(function (header) {
+      var lines = $$('.split-line', header);
+      if (lines.length) {
+        gsap.fromTo(
+          lines,
+          { yPercent: 115, rotateZ: 1.5, opacity: 0 },
+          {
+            yPercent: 0,
+            rotateZ: 0,
+            opacity: 1,
+            duration: 1.05,
+            stagger: 0.1,
+            ease: 'power4.out',
+            scrollTrigger: { trigger: header, start: 'top 84%' }
+          }
+        );
+      }
+    });
+
+    // 3. Project Spreads 3D Perspective Entry + Compression Bar Trigger
+    $$('.gsap-spread').forEach(function (spread) {
+      var lines = $$('.split-line', spread);
+      if (lines.length) {
+        gsap.fromTo(
+          lines,
+          { yPercent: 110, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 1.0,
+            stagger: 0.1,
+            ease: 'power4.out',
+            scrollTrigger: { trigger: spread, start: 'top 82%' }
+          }
+        );
+      }
+
+      gsap.fromTo(
+        spread,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: spread,
+            start: 'top 82%',
+            onEnter: function () {
+              $$('.compression-bar', spread).forEach(function (bar) {
+                var w = bar.getAttribute('data-target-width');
+                if (w) gsap.to(bar, { width: w, duration: 1.35, ease: 'power3.out' });
+              });
+            }
+          }
+        }
+      );
+    });
+
+    // 4. Liquid SVG Morphing Wave Dividers on Scroll
+    $$('.liquid-divider').forEach(function (svg) {
+      var wave = $('.morph-wave', svg);
+      var line = $('.morph-line', svg);
+      if (wave && line && window.ScrollTrigger) {
+        gsap.to([wave, line], {
+          attr: { d: 'M0,80 C480,0 960,120 1440,30 L1440,120 L0,120 Z' },
+          ease: 'none',
+          scrollTrigger: {
+            trigger: svg,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        });
+      }
+    });
+  }
+
+  /* ---------- 5. Chapter Compass & Scroll Listener ---------- */
   var compassLabel = $('#compassLabel');
   var chapters = $$('[data-chapter]');
 
-  function onScrollChoreography() {
-    var sy = window.scrollY;
+  function onScrollUpdate() {
     var vh = window.innerHeight;
-
-    // 1. Hero Curtain-Split Physics
-    if (heroTopLeft && heroBottomRight && sy < vh * 1.2 && !reduce) {
-      var p = Math.min(1, sy / (vh * 0.85));
-      heroTopLeft.style.transform = 'translate3d(' + (-p * 110).toFixed(1) + 'px, ' + (-p * 35).toFixed(1) + 'px, 0)';
-      heroTopLeft.style.opacity = String(Math.max(0, 1 - p * 1.25));
-      heroBottomRight.style.transform = 'translate3d(' + (p * 110).toFixed(1) + 'px, ' + (p * 35).toFixed(1) + 'px, 0)';
-      heroBottomRight.style.opacity = String(Math.max(0, 1 - p * 1.25));
-    }
-
-    // 2. Update Bottom-Right Chapter Compass
     if (compassLabel && chapters.length) {
       var currentName = chapters[0].getAttribute('data-chapter');
       chapters.forEach(function (sec) {
@@ -228,33 +314,11 @@
       });
       compassLabel.textContent = currentName;
     }
-
-    // 3. Rotate the Architectural Experience Dial on Scroll
     updateExperienceDialFromScroll();
   }
+  window.addEventListener('scroll', onScrollUpdate, { passive: true });
 
-  window.addEventListener('scroll', onScrollChoreography, { passive: true });
-
-  // IntersectionObserver for .choreo-reveal & .compression-bar
-  if ('IntersectionObserver' in window) {
-    var revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('is-visible');
-          $$('.compression-bar', en.target).forEach(function (bar) {
-            var targetW = bar.getAttribute('data-target-width');
-            if (targetW) bar.style.width = targetW;
-          });
-        }
-      });
-    }, { threshold: 0.18 });
-
-    $$('.choreo-reveal').forEach(function (el) { revealObserver.observe(el); });
-  } else {
-    $$('.choreo-reveal').forEach(function (el) { el.classList.add('is-visible'); });
-  }
-
-  /* ---------- 5. Experience (Direction A: The Rotating Architectural Dial) ---------- */
+  /* ---------- 6. Experience (Rotating Architectural Dial with Oversized 82px–98px Logos) ---------- */
   function initials(name) {
     return (name || '').split(/\s+/).filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   }
@@ -282,9 +346,6 @@
     var totalExp = S.experience.length;
 
     S.experience.forEach(function (e, i) {
-      var angleDeg = (i / totalExp) * 360;
-      var angleRad = (angleDeg * Math.PI) / 180;
-
       var node = document.createElement('button');
       node.type = 'button';
       node.className = 'dial-node';
@@ -296,28 +357,28 @@
 
       var img = loadImage('logos/' + e.key, function (bad) {
         bad.remove();
-        upright.innerHTML = '<span class="mono-meta text-xs font-semibold">' + initials(e.company) + '</span>';
+        upright.innerHTML = '<span class="font-editorial text-xl sm:text-2xl font-bold text-obsidian">' + initials(e.company) + '</span>';
       });
-      img.className = 'max-w-full max-h-full object-contain';
+      img.className = 'w-full h-full object-contain';
       upright.appendChild(img);
       node.appendChild(upright);
 
       node.addEventListener('click', function () {
-        manualLockUntil = performance.now() + 1800;
+        manualLockUntil = performance.now() + 2200;
         setActiveExperience(i);
         trackEvent('experience_dial_click', { company: e.company });
       });
 
       dialRing.appendChild(node);
 
-      // Step dot indicator
       if (expStepDots) {
         var dot = document.createElement('button');
         dot.type = 'button';
-        dot.className = 'h-1.5 rounded-full transition-all duration-300 ' + (i === 0 ? 'w-8 bg-amberGlow' : 'w-2 bg-white/20');
-        dot.setAttribute('aria-label', 'Go to ' + e.company);
+        dot.className = 'px-3 py-1.5 rounded-full mono-meta text-xs transition-all duration-300 ' +
+          (i === 0 ? 'bg-amberGlow text-obsidian font-bold' : 'bg-white/10 text-sand hover:bg-white/20');
+        dot.textContent = e.company;
         dot.addEventListener('click', function () {
-          manualLockUntil = performance.now() + 1800;
+          manualLockUntil = performance.now() + 2200;
           setActiveExperience(i);
         });
         expStepDots.appendChild(dot);
@@ -352,27 +413,30 @@
       if (dialCounter) dialCounter.textContent = '0' + (idx + 1) + ' / 0' + totalExp;
 
       if (expCompany) {
-        expCompany.style.opacity = '0.25';
-        expCompany.style.transform = 'translateY(8px)';
-        setTimeout(function () {
-          expDates.textContent = item.dates;
-          expPlace.textContent = item.place + (item.ongoing ? ' · Ongoing' : '');
-          expCompany.textContent = item.company;
-          expRole.textContent = item.role;
-          expImpact.textContent = item.impact;
-          expCompany.style.opacity = '1';
-          expCompany.style.transform = 'translateY(0)';
-        }, 120);
+        if (window.gsap && !reduce) {
+          window.gsap.fromTo(
+            [expCompany, expRole, expImpact],
+            { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.45, stagger: 0.05, ease: 'power3.out' }
+          );
+        }
+        expDates.textContent = item.dates;
+        expPlace.textContent = item.place + (item.ongoing ? ' · Ongoing' : '');
+        expCompany.textContent = item.company;
+        expRole.textContent = item.role;
+        expImpact.textContent = item.impact;
       }
 
       if (expStepDots) {
         $$('button', expStepDots).forEach(function (d, i) {
-          d.className = 'h-1.5 rounded-full transition-all duration-300 ' + (i === idx ? 'w-8 bg-amberGlow' : 'w-2 bg-white/20');
+          d.className = 'px-3 py-1.5 rounded-full mono-meta text-xs transition-all duration-300 ' +
+            (i === idx ? 'bg-amberGlow text-obsidian font-bold shadow-lg' : 'bg-white/10 text-sand hover:bg-white/20');
         });
       }
     }
 
     setActiveExperience(0);
+    window._setActiveExp = setActiveExperience;
   }
 
   function updateExperienceDialFromScroll() {
@@ -384,38 +448,13 @@
     if (rect.top <= 0 && rect.bottom >= window.innerHeight * 0.5) {
       var p = Math.min(0.999, Math.max(0, -rect.top / scrollable));
       var idx = Math.floor(p * S.experience.length);
-      if (idx !== activeExpIdx) {
-        var clickables = $$('.dial-node', dialRing);
-        if (clickables[idx]) {
-          // Trigger dial update smoothly
-          activeExpIdx = -1;
-          var item = S.experience[idx];
-          var totalExp = S.experience.length;
-          activeExpIdx = idx;
-          var targetRot = -((idx / totalExp) * 360);
-          dialRing.style.transform = 'rotate(' + targetRot + 'deg)';
-          clickables.forEach(function (node, i) {
-            node.classList.toggle('is-active', i === idx);
-            var up = $('.dial-node-upright', node);
-            if (up) up.style.transform = 'rotate(' + (-targetRot) + 'deg)';
-          });
-          if (dialCounter) dialCounter.textContent = '0' + (idx + 1) + ' / 0' + totalExp;
-          if (expDates) expDates.textContent = item.dates;
-          if (expPlace) expPlace.textContent = item.place + (item.ongoing ? ' · Ongoing' : '');
-          if (expCompany) expCompany.textContent = item.company;
-          if (expRole) expRole.textContent = item.role;
-          if (expImpact) expImpact.textContent = item.impact;
-          if (expStepDots) {
-            $$('button', expStepDots).forEach(function (d, i) {
-              d.className = 'h-1.5 rounded-full transition-all duration-300 ' + (i === idx ? 'w-8 bg-amberGlow' : 'w-2 bg-white/20');
-            });
-          }
-        }
+      if (idx !== activeExpIdx && typeof window._setActiveExp === 'function') {
+        window._setActiveExp(idx);
       }
     }
   }
 
-  /* ---------- 6. Craft: The Typographic Split-Curtain ---------- */
+  /* ---------- 7. Craft: The Typographic Split-Curtain ---------- */
   var CURTAINS = [
     {
       num: '01',
@@ -429,7 +468,7 @@
     {
       num: '02',
       title: 'Predictive Machine Learning',
-      headline: ' Models that generalize to unseen companies instead of flattering themselves.',
+      headline: 'Models that generalize to unseen companies instead of flattering themselves.',
       body: 'Engineered L2 Logistic Regression and Random Forest triage pipelines evaluated under strict client-grouped holdout splits (GroupShuffleSplit) and a quarantined leakage harness across 30,000 URLs.',
       tools: 'Python · pandas · scikit-learn · Client-Grouped Validation · NIST AI RMF Governance',
       proofLabel: 'Inspect FlyRank Research ↑',
@@ -468,24 +507,24 @@
   if (curtainList) {
     CURTAINS.forEach(function (c, i) {
       var band = document.createElement('article');
-      band.className = 'curtain-band py-7 sm:py-9' + (i === 0 ? ' is-open' : '');
+      band.className = 'curtain-band py-7 sm:py-9 px-4 rounded-2xl' + (i === 0 ? ' is-open' : '');
       band.innerHTML =
         '<div class="flex items-baseline justify-between gap-6">' +
           '<div class="flex items-baseline gap-5 sm:gap-8 min-w-0">' +
-            '<span class="mono-meta text-xs text-amberGlow shrink-0">' + c.num + '</span>' +
+            '<span class="mono-meta text-sm text-amberGlow font-bold shrink-0">' + c.num + '</span>' +
             '<h3 class="curtain-title font-editorial text-2xl sm:text-4xl md:text-5xl text-ivory tracking-tight truncate">' + c.title + '</h3>' +
           '</div>' +
-          '<span class="mono-meta text-xs uppercase tracking-widest text-sand/60 shrink-0 hidden sm:inline">Inspect +</span>' +
+          '<span class="mono-meta text-xs uppercase tracking-widest text-amberGlow shrink-0 hidden sm:inline">Expand +</span>' +
         '</div>' +
         '<div class="curtain-drawer">' +
           '<div class="curtain-drawer-inner pl-8 sm:pl-14 pt-6 pr-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">' +
             '<div class="lg:col-span-8 space-y-2">' +
               '<h4 class="font-editorial text-xl sm:text-2xl text-ivory">' + c.headline + '</h4>' +
-              '<p class="text-sm sm:text-base text-sand leading-relaxed max-w-2xl">' + c.body + '</p>' +
-              '<p class="mono-meta text-xs text-amberGlow/90 pt-2">' + c.tools + '</p>' +
+              '<p class="text-base sm:text-lg text-ivory/85 leading-relaxed max-w-2xl">' + c.body + '</p>' +
+              '<p class="mono-meta text-xs text-amberGlow pt-2">' + c.tools + '</p>' +
             '</div>' +
             '<div class="lg:col-span-4 lg:text-right">' +
-              '<a href="' + c.proofHref + '" class="editorial-link text-sm font-medium text-ivory">' + c.proofLabel + '</a>' +
+              '<a href="' + c.proofHref + '" class="cta-beam text-xs py-3 px-5">' + c.proofLabel + '</a>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -501,7 +540,7 @@
     });
   }
 
-  /* ---------- 7. PDF.js & 3D Perspective Gallery Arc for Certificates ---------- */
+  /* ---------- 8. PDF.js & 3D Perspective Gallery Arc for Certificates ---------- */
   if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
@@ -739,7 +778,7 @@
     requestAnimationFrame(tickCerts);
   }
 
-  /* ---------- 8. Frameless Fluid FLIP Lightbox Controller ---------- */
+  /* ---------- 9. Frameless Fluid FLIP Lightbox Controller ---------- */
   var lightbox = $('#certLightbox');
   var lightboxCard = $('#certLightboxCard');
   var modalCanvas = $('#certModalCanvas');
@@ -816,13 +855,13 @@
     if (e.key === 'Escape') closeCertModal();
   });
 
-  /* ---------- 9. About & Contact ---------- */
+  /* ---------- 10. About & Contact ---------- */
   var factsEl = $('#aboutFacts');
   if (factsEl && S.about && Array.isArray(S.about.facts)) {
     S.about.facts.forEach(function (f) {
       var li = document.createElement('li');
       li.className = 'flex items-center gap-3';
-      li.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amberGlow shrink-0"></span><span>' + f + '</span>';
+      li.innerHTML = '<span class="w-2 h-2 rounded-full bg-amberGlow shrink-0"></span><span>' + f + '</span>';
       factsEl.appendChild(li);
     });
   }
@@ -849,7 +888,14 @@
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       var btn = $('#submitBtn');
-      if (btn) { btn.disabled = false; btn.innerHTML = '<span>Dispatch Note</span><span>&rarr;</span>'; }
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Dispatch Direct Note</span><span class="cta-arrow-circle">&rarr;</span>';
+      }
     }
   });
+
+  // Initialize GSAP ScrollTrigger choreography after DOM population
+  bindMagneticElements();
+  initGSAPChoreography();
 })();
