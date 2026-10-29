@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0B0907">
+    <meta name="theme-color" content="#070605">
 
     <!-- Basic SEO & Warm Gold Monogram Favicon -->
     <title>Maaz Khan — Systems & Data Architecture</title>
@@ -33,11 +33,14 @@
     <!-- Google Fonts: Fraunces (Sculpted Curved Serif) + Plus Jakarta Sans + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,60;1,9..144,400..600,60&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,60;1,9..144,400..600,60&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <!-- Three.js for Morphing 3D Sculpture Background -->
+    <!-- GSAP & ScrollTrigger for Awwwards Scrollytelling & Mask-Split Typography -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Three.js for Lit 3D Architectural Sculpture -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- PDF.js for Live Frameless Certificate Rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -47,10 +50,10 @@
             theme: {
                 extend: {
                     colors: {
-                        obsidian: '#0B0907',
-                        espresso: '#14100C',
+                        obsidian: '#070605',
+                        espresso: '#120E0B',
                         ivory: '#FAF6F0',
-                        sand: '#C2B7AA',
+                        sand: '#D4CBC0',
                         amberGlow: '#E5A93C',
                         terracotta: '#C86D44'
                     },
@@ -71,12 +74,12 @@
             --spring: cubic-bezier(0.16, 1, 0.3, 1);
         }
         html {
-            background-color: #0B0907;
+            background-color: #070605;
             color: #FAF6F0;
             scroll-behavior: smooth;
         }
         body {
-            background-color: #0B0907;
+            background-color: #070605;
             overflow-x: hidden;
         }
         .font-editorial {
@@ -85,115 +88,201 @@
         }
         .mono-meta { font-family: 'JetBrains Mono', monospace; }
 
-        /* ---------- 1. Morphing Studio Atmosphere & Analog Grain ---------- */
-        .studio-vignette {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(65% 55% at var(--cx) var(--cy), rgba(229, 169, 60, 0.07) 0%, transparent 60%),
-                radial-gradient(80% 70% at 50% 50%, transparent 35%, rgba(6, 4, 3, 0.78) 100%);
+        /* ---------- 1. High-Contrast Reading Protection (Zero Visual Noise Behind Text) ---------- */
+        .reading-halo {
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 4px 28px rgba(7, 6, 5, 0.95);
         }
-        .film-grain {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.038;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        .section-scrim {
+            background: radial-gradient(75% 75% at 32% 50%, rgba(7, 6, 5, 0.88) 0%, rgba(7, 6, 5, 0.45) 75%, transparent 100%);
         }
 
-        /* ---------- 2. Editorial Underline Links (No Pills / No Boxes) ---------- */
-        .editorial-link {
+        /* Custom Interactive Cursor Follower */
+        #cursorHalo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 36px;
+            height: 36px;
+            margin: -18px 0 0 -18px;
+            border-radius: 50%;
+            border: 1px solid rgba(229, 169, 60, 0.45);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s var(--spring), height 0.3s var(--spring), margin 0.3s var(--spring), background 0.3s ease, border-color 0.3s ease;
+            mix-blend-mode: exclusion;
+        }
+        #cursorHalo.is-hovering {
+            width: 68px;
+            height: 68px;
+            margin: -34px 0 0 -34px;
+            background: rgba(229, 169, 60, 0.18);
+            border-color: #E5A93C;
+        }
+        @media (pointer: coarse) { #cursorHalo { display: none; } }
+
+        /* ---------- 2. Prominent Magnetic CTAs with Conic Border Beams & Liquid Fill ---------- */
+        .cta-primary {
             position: relative;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            color: #FAF6F0;
-            padding-bottom: 6px;
-            transition: color 0.35s ease;
+            gap: 14px;
+            padding: 18px 34px;
+            border-radius: 9999px;
+            background: #FAF6F0;
+            color: #070605;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.01em;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(229, 169, 60, 0.4),
+                0 18px 40px -10px rgba(229, 169, 60, 0.38);
+            transition: color 0.4s var(--spring), box-shadow 0.4s ease;
+            will-change: transform;
         }
-        .editorial-link::after {
+        .cta-primary::before {
             content: '';
             position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 1px;
-            background: rgba(229, 169, 60, 0.45);
-            transform-origin: left center;
-            transition: transform 0.45s var(--spring), background 0.35s ease;
-        }
-        .editorial-link:hover { color: #E5A93C; }
-        .editorial-link:hover::after {
+            inset: 0;
             background: #E5A93C;
-            transform: scaleX(1.06);
+            border-radius: 9999px;
+            transform: translateY(102%);
+            transition: transform 0.45s var(--spring);
+            z-index: 0;
+        }
+        .cta-primary:hover::before {
+            transform: translateY(0%);
+        }
+        .cta-primary:hover {
+            box-shadow:
+                0 0 0 2px #FAF6F0,
+                0 22px 50px -8px rgba(229, 169, 60, 0.6);
+        }
+        .cta-primary > * {
+            position: relative;
+            z-index: 1;
+        }
+        .cta-arrow-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #070605;
+            color: #FAF6F0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s var(--spring);
+        }
+        .cta-primary:hover .cta-arrow-circle {
+            transform: rotate(45deg) scale(1.1);
         }
 
-        /* ---------- 3. Scroll-Driven Reveal Physics ---------- */
-        .choreo-reveal {
-            opacity: 0;
-            transform: translate3d(0, 42px, 0) rotate(0.8deg);
-            transition: opacity 0.95s var(--spring), transform 1.05s var(--spring);
-            will-change: opacity, transform;
+        /* Glowing Border-Beam Secondary CTA */
+        .cta-beam {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 32px;
+            border-radius: 9999px;
+            background: rgba(18, 14, 11, 0.9);
+            color: #FAF6F0;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid rgba(229, 169, 60, 0.45);
+            box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
+            transition: border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+            will-change: transform;
         }
-        .choreo-reveal.is-visible {
-            opacity: 1;
-            transform: translate3d(0, 0, 0) rotate(0deg);
+        .cta-beam:hover {
+            background: rgba(229, 169, 60, 0.15);
+            border-color: #E5A93C;
+            box-shadow: 0 0 32px rgba(229, 169, 60, 0.32);
         }
 
-        /* ---------- 4. Experience: The Rotating Architectural Dial ---------- */
+        /* ---------- 3. Expressive Mask-Split Typography ---------- */
+        .split-mask {
+            overflow: hidden;
+            display: block;
+            padding-bottom: 0.08em;
+        }
+        .split-line {
+            display: block;
+            will-change: transform, opacity;
+        }
+
+        /* ---------- 4. Liquid SVG Morph Dividers Between Chapters ---------- */
+        .liquid-divider {
+            width: 100%;
+            height: 90px;
+            display: block;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        /* ---------- 5. Experience: Oversized Architectural Dial & Big Company Logos ---------- */
         .dial-wheel-wrap {
             position: relative;
-            width: 390px;
-            height: 390px;
+            width: 440px;
+            height: 440px;
             flex: none;
         }
         @media (max-width: 640px) {
-            .dial-wheel-wrap { width: 290px; height: 290px; }
+            .dial-wheel-wrap { width: 310px; height: 310px; }
         }
         .dial-ring {
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: 1px solid rgba(229, 169, 60, 0.22);
-            transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1.5px solid rgba(229, 169, 60, 0.28);
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform;
         }
         .dial-ring-inner {
             position: absolute;
-            inset: 52px;
+            inset: 70px;
             border-radius: 50%;
-            border: 1px dashed rgba(250, 246, 240, 0.11);
+            border: 1px dashed rgba(250, 246, 240, 0.14);
             pointer-events: none;
         }
+        /* Enlarged 84px Logo Medallions (104px when active) */
         .dial-node {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 54px;
-            height: 54px;
-            margin: -27px 0 0 -27px;
-            border-radius: 50%;
-            background: #14100C;
-            border: 1px solid rgba(250, 246, 240, 0.18);
+            width: 82px;
+            height: 82px;
+            margin: -41px 0 0 -41px;
+            border-radius: 22px;
+            background: #FAF6F0;
+            color: #070605;
+            border: 2px solid rgba(250, 246, 240, 0.35);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s var(--spring);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, width 0.4s var(--spring), height 0.4s var(--spring), margin 0.4s var(--spring);
             overflow: hidden;
-            padding: 8px;
+            padding: 12px;
         }
         @media (max-width: 640px) {
-            .dial-node { width: 44px; height: 44px; margin: -22px 0 0 -22px; padding: 6px; }
+            .dial-node { width: 62px; height: 62px; margin: -31px 0 0 -31px; padding: 9px; border-radius: 16px; }
         }
         .dial-node.is-active {
-            border-color: #E5A93C;
-            box-shadow: 0 0 28px rgba(229, 169, 60, 0.45);
-            background: #FAF6F0;
-            color: #0B0907;
+            width: 98px;
+            height: 98px;
+            margin: -49px 0 0 -49px;
+            border: 3px solid #E5A93C;
+            box-shadow: 0 0 42px rgba(229, 169, 60, 0.65), 0 18px 40px rgba(0, 0, 0, 0.9);
+            background: #FFFFFF;
+            z-index: 10;
+        }
+        @media (max-width: 640px) {
+            .dial-node.is-active { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
         }
         .dial-node-upright {
             width: 100%;
@@ -201,20 +290,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ---------- 5. Craft: Typographic Split-Curtain Bands ---------- */
+        /* ---------- 6. Craft: Typographic Split-Curtain Bands ---------- */
         .curtain-band {
-            border-bottom: 1px solid rgba(250, 246, 240, 0.12);
+            border-bottom: 1px solid rgba(250, 246, 240, 0.15);
             cursor: pointer;
-            transition: border-color 0.4s ease;
+            transition: border-color 0.4s ease, background 0.4s ease;
         }
         .curtain-band:first-child {
-            border-top: 1px solid rgba(250, 246, 240, 0.12);
+            border-top: 1px solid rgba(250, 246, 240, 0.15);
         }
         .curtain-band:hover, .curtain-band.is-open {
-            border-color: rgba(229, 169, 60, 0.55);
+            border-color: rgba(229, 169, 60, 0.65);
+            background: linear-gradient(90deg, rgba(229, 169, 60, 0.06) 0%, transparent 80%);
         }
         .curtain-title {
             transition: transform 0.55s var(--spring), color 0.35s ease;
@@ -223,7 +313,7 @@
         .curtain-band.is-open .curtain-title {
             color: #E5A93C;
             font-style: italic;
-            transform: translateX(14px);
+            transform: translateX(16px);
         }
         .curtain-drawer {
             display: grid;
@@ -238,7 +328,7 @@
         }
         .curtain-drawer-inner { overflow: hidden; }
 
-        /* ---------- 6. Certificates: 3D Perspective Gallery Arc ---------- */
+        /* ---------- 7. Certificates: 3D Perspective Gallery Arc ---------- */
         .cert-3d-stage {
             perspective: 1500px;
             overflow: hidden;
@@ -248,11 +338,11 @@
         }
         .cert-3d-tilt {
             transform-style: preserve-3d;
-            transform: rotateX(7deg) rotateZ(-1.4deg);
+            transform: rotateX(6deg) rotateZ(-1deg);
             transition: transform 0.6s var(--spring);
         }
         .cert-3d-stage:hover .cert-3d-tilt {
-            transform: rotateX(2deg) rotateZ(0deg);
+            transform: rotateX(0deg) rotateZ(0deg);
         }
         .cert-viewport {
             overflow: visible;
@@ -272,18 +362,18 @@
         }
         .cert-card {
             flex: none;
-            width: 330px;
+            width: 340px;
             background: transparent;
             border: none;
             padding: 0;
             cursor: pointer;
             transition: transform 0.45s var(--spring), filter 0.4s ease;
-            filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.82));
+            filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.88));
         }
-        @media (max-width: 640px) { .cert-card { width: 250px; } }
+        @media (max-width: 640px) { .cert-card { width: 260px; } }
         .cert-card:hover {
-            transform: translateY(-10px) scale(1.05) rotateY(0deg) !important;
-            filter: drop-shadow(0 30px 48px rgba(229, 169, 60, 0.28));
+            transform: translateY(-10px) scale(1.05) !important;
+            filter: drop-shadow(0 30px 48px rgba(229, 169, 60, 0.32));
         }
         .cert-preview-box {
             position: relative;
@@ -309,7 +399,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(11, 9, 7, 0.9);
+            background: rgba(7, 6, 5, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             opacity: 0;
@@ -345,15 +435,15 @@
             cursor: zoom-in;
         }
 
-        /* Minimalist Underline Inputs */
+        /* High-Contrast Form Inputs */
         .minimal-input {
             width: 100%;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(250, 246, 240, 0.2);
-            padding: 14px 0;
+            border-bottom: 1.5px solid rgba(250, 246, 240, 0.28);
+            padding: 16px 0;
             color: #FAF6F0;
-            font-size: 16px;
+            font-size: 17px;
             transition: border-color 0.35s ease;
         }
         .minimal-input:focus {
@@ -381,138 +471,160 @@
 </head>
 <body class="text-sand font-sans antialiased selection:bg-amberGlow selection:text-obsidian">
 
-    <!-- 1. Fixed Morphing 3D Sculpture Canvas (Evolves Across All Chapters) -->
-    <canvas id="bgCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0" aria-hidden="true"></canvas>
-    <div class="studio-vignette" aria-hidden="true"></div>
-    <div class="film-grain" aria-hidden="true"></div>
+    <!-- Interactive Cursor Follower -->
+    <div id="cursorHalo" aria-hidden="true"></div>
 
-    <!-- Subtle Bottom-Right Chapter Compass (Replaces Top Navbar) -->
-    <aside id="chapterCompass" class="fixed bottom-6 right-6 z-40 hidden sm:flex items-center gap-4 mono-meta text-[11px] uppercase tracking-[0.2em] text-sand/70 mix-blend-plus-lighter">
-        <span id="compassLabel" class="text-amberGlow">00 / Opening</span>
-        <span class="w-8 h-[1px] bg-amberGlow/40"></span>
-        <a href="#contact" data-track="compass_contact" class="hover:text-ivory transition">Initiate Dialogue &rarr;</a>
+    <!-- 1. Lit 3D Architectural Sculpture Canvas (Positioned in Negative Space — Zero Clutter Behind Text) -->
+    <canvas id="bgCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0" aria-hidden="true"></canvas>
+
+    <!-- Persistent Floating Magnetic CTA Dock (Bottom Center-Right) -->
+    <aside class="fixed bottom-6 right-6 z-40 flex items-center gap-3 p-2 rounded-full bg-espresso/90 backdrop-blur-xl border border-amberGlow/30 shadow-2xl">
+        <span id="compassLabel" class="hidden md:inline-block mono-meta text-[11px] uppercase tracking-[0.18em] text-amberGlow pl-4 pr-2">00 / Opening</span>
+        <a href="https://drive.google.com/drive/folders/1HMkirMmnzI4PltyYpzQxqKNEyUM6md-Q?usp=sharing" data-track="dock_cv" target="_blank" rel="noopener noreferrer" data-magnetic class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-semibold text-ivory transition">
+            Access CV &nearr;
+        </a>
+        <a href="https://calendly.com/maazkhan53123/30min" data-track="dock_calendly" target="_blank" rel="noopener noreferrer" data-magnetic class="px-5 py-2 rounded-full bg-amberGlow text-obsidian text-xs font-bold tracking-wide hover:bg-ivory transition shadow-lg">
+            Book a Call &nearr;
+        </a>
     </aside>
 
     <!-- =====================================================================
-         CHAPTER 00 · THE OPEN-CANVAS LANDING (Curtain-Split Scroll Physics)
+         CHAPTER 00 · THE OPEN-CANVAS LANDING (Mask-Split Typography + Prominent Magnetic CTAs)
          ===================================================================== -->
-    <section id="top" data-chapter="00 / Opening" class="min-h-screen relative z-10 flex flex-col justify-between px-6 sm:px-12 md:px-20 py-14 md:py-20 overflow-hidden">
+    <section id="top" data-chapter="00 / Opening" class="min-h-screen relative z-10 flex flex-col justify-between px-6 sm:px-12 md:px-20 py-14 md:py-20 section-scrim">
 
-        <!-- Upper-Left Anchor: Identity -->
-        <div id="heroTopLeft" class="max-w-3xl will-change-transform">
-            <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-4">Karachi &middot; Systems &amp; Data Architecture</p>
-            <p class="font-editorial italic text-2xl sm:text-3xl text-sand font-normal mb-1">Hi, I'm</p>
-            <h1 class="font-editorial font-semibold text-6xl sm:text-8xl md:text-[7.2rem] text-ivory tracking-[-0.03em] leading-[0.95]">
-                Maaz Khan<span class="text-amberGlow">.</span>
+        <!-- Upper-Left Identity with Mask-Split Reveal -->
+        <div id="heroTopLeft" class="max-w-4xl reading-halo">
+            <div class="inline-flex items-center gap-3 mb-5">
+                <span class="w-2.5 h-2.5 rounded-full bg-amberGlow animate-pulse"></span>
+                <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow font-medium">Karachi &middot; Systems &amp; Data Architecture</p>
+            </div>
+            <span class="split-mask">
+                <span class="split-line font-editorial italic text-2xl sm:text-4xl text-sand font-normal mb-1">Hi, I'm</span>
+            </span>
+            <h1 class="split-mask font-editorial font-semibold text-6xl sm:text-8xl md:text-[7.5rem] text-ivory tracking-[-0.03em] leading-[0.95]">
+                <span class="split-line">Maaz Khan<span class="text-amberGlow">.</span></span>
             </h1>
         </div>
 
-        <!-- Center Self-Drawing Golden Bezier Thread -->
-        <svg class="w-full max-w-4xl mx-auto h-20 md:h-28 my-4 pointer-events-none opacity-65" viewBox="0 0 800 120" fill="none" aria-hidden="true">
-            <path id="heroThreadPath" d="M 20 110 C 260 110, 540 10, 780 10" stroke="#E5A93C" stroke-width="1.2" stroke-dasharray="900" stroke-dashoffset="0"/>
-            <circle cx="20" cy="110" r="3.5" fill="#E5A93C"/>
-            <circle cx="780" cy="10" r="3.5" fill="#E5A93C"/>
-        </svg>
-
-        <!-- Lower-Right Anchor: Plain-English Thesis & Action -->
-        <div id="heroBottomRight" class="max-w-2xl self-end text-left md:text-right will-change-transform">
-            <h2 class="font-editorial text-3xl sm:text-4xl md:text-5xl text-ivory leading-[1.14] tracking-tight mb-5">
-                Architecting systems that save people's time.
+        <!-- Lower-Left / Center-Right Thesis & Prominent Magnetic CTAs -->
+        <div id="heroBottomRight" class="max-w-2xl my-auto pt-12 reading-halo">
+            <h2 class="split-mask font-editorial text-3xl sm:text-5xl md:text-6xl text-ivory leading-[1.1] tracking-tight mb-6">
+                <span class="split-line">Architecting systems that</span>
+                <span class="split-line">save people's <span class="italic text-amberGlow">time.</span></span>
             </h2>
-            <p class="text-base sm:text-lg md:text-xl text-sand leading-relaxed mb-8">
+            <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed mb-10 max-w-xl font-normal">
                 Companies lose thousands of hours to work a machine should be doing. I design the software that gives people their evenings back.
             </p>
-            <div class="flex flex-wrap gap-8 items-center md:justify-end text-sm font-medium tracking-wide">
-                <a href="#projects" data-track="hero_view_work" class="editorial-link text-ivory font-semibold">
-                    <span>Enter Selected Work</span>
-                    <span>&darr;</span>
+
+            <!-- High-Impact Magnetic CTA Bar -->
+            <div class="flex flex-wrap gap-5 items-center">
+                <a href="#projects" data-track="hero_view_work" data-magnetic class="cta-primary">
+                    <span>Explore Selected Work</span>
+                    <span class="cta-arrow-circle">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                    </span>
                 </a>
-                <a href="https://calendly.com/maazkhan53123/30min" data-track="calendly_hero" target="_blank" rel="noopener noreferrer" class="editorial-link text-amberGlow">
-                    <span>Book a Conversation</span>
-                    <span>&nearr;</span>
+                <a href="https://calendly.com/maazkhan53123/30min" data-track="calendly_hero" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amberGlow"></span>
+                    <span>Book a 1-on-1 Conversation</span>
+                    <span class="text-amberGlow text-lg leading-none">&nearr;</span>
                 </a>
             </div>
         </div>
+
+        <!-- Bottom Scroll Cue -->
+        <div class="flex items-center gap-4 text-xs mono-meta uppercase tracking-[0.24em] text-sand/70 reading-halo">
+            <span>Scroll to enter the 3D timeline</span>
+            <span class="w-16 h-[1px] bg-amberGlow/50"></span>
+        </div>
     </section>
 
+    <!-- Liquid Morphing SVG Portal 1 -->
+    <svg class="liquid-divider relative z-10" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+        <path class="morph-wave" d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="rgba(229,169,60,0.04)"/>
+        <path class="morph-line" d="M0,60 C360,120 1080,0 1440,60" fill="none" stroke="rgba(229,169,60,0.35)" stroke-width="1.5"/>
+    </svg>
+
     <!-- =====================================================================
-         CHAPTER 01 · SELECTED WORK ("The Before & After Theatre" — Open Spreads)
+         CHAPTER 01 · SELECTED WORK (3D Timeline + Mask-Split Typography + Prominent CTAs)
          ===================================================================== -->
-    <section id="projects" data-chapter="01 / Selected Work" class="py-28 md:py-40 px-6 sm:px-12 md:px-20 relative z-10">
-        <div class="max-w-6xl mx-auto space-y-36 md:space-y-48">
+    <section id="projects" data-chapter="01 / Selected Work" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
+        <div class="max-w-6xl mx-auto space-y-40 md:space-y-52 reading-halo">
 
             <!-- Chapter Title -->
-            <div class="choreo-reveal max-w-2xl">
+            <div class="gsap-section-header max-w-3xl">
                 <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">01 / Selected Work</p>
-                <h2 class="font-editorial text-4xl sm:text-6xl text-ivory tracking-tight leading-[1.05]">
-                    Three problems. Three working systems.
+                <h2 class="split-mask font-editorial text-5xl sm:text-7xl text-ivory tracking-tight leading-[1.02]">
+                    <span class="split-line">Three problems.</span>
+                    <span class="split-line italic text-amberGlow">Three working systems.</span>
                 </h2>
             </div>
 
             <!-- SPREAD 01 · PEPSICO -->
-            <article id="pepsico" class="choreo-reveal grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center" data-compression-spread>
+            <article id="pepsico" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <!-- Left: Plain-English Narrative -->
                 <div class="lg:col-span-7 space-y-6">
                     <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
-                        <span>No. 01</span>
-                        <span class="w-8 h-[1px] bg-amberGlow/50"></span>
-                        <span>PepsiCo Pakistan &middot; GTM &amp; Tax</span>
+                        <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 01</span>
+                        <span>PepsiCo Pakistan &middot; Go-To-Market &amp; Tax</span>
                     </div>
 
-                    <h3 class="font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
-                        A 26-hour tax audit, finished in <span class="italic text-amberGlow">3 minutes.</span>
+                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
+                        <span class="split-line">A 26-hour tax audit,</span>
+                        <span class="split-line">finished in <span class="italic text-amberGlow">3 minutes.</span></span>
                     </h3>
 
-                    <p class="text-base sm:text-lg text-sand leading-relaxed max-w-xl">
-                        PepsiCo teams were spending <strong class="text-ivory font-medium">61 hours every month</strong> cross-checking thousands of sales, barcode, and tax rows by hand. I built seven custom one-click tools directly inside Excel that automated the entire workflow across two departments—and presented the results to the COO and CFO.
+                    <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-xl">
+                        PepsiCo teams were spending <strong class="text-amberGlow font-semibold">61 hours every month</strong> cross-checking thousands of sales, barcode, and tax rows by hand. I built seven custom one-click tools directly inside Excel that automated the entire workflow across two departments—and presented the results to the COO and CFO.
                     </p>
 
-                    <!-- Collapsible Plain-English List of the 7 Engines -->
-                    <details id="pepsicoToolsDetails" class="pt-2 group">
-                        <summary class="list-none cursor-pointer editorial-link text-sm mono-meta uppercase tracking-wider text-amberGlow">
-                            <span>Inspect the 7 Excel engines built for PepsiCo</span>
-                            <span class="group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    <!-- Prominent Interactive Drawer Button -->
+                    <details id="pepsicoToolsDetails" class="pt-3 group">
+                        <summary class="list-none cursor-pointer inline-flex items-center gap-4 px-7 py-4 rounded-full bg-espresso border-2 border-amberGlow/50 hover:border-amberGlow text-ivory font-semibold text-sm tracking-wide shadow-xl transition">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amberGlow"></span>
+                            <span>Inspect All 7 Excel Engines Built for PepsiCo</span>
+                            <span class="group-open:rotate-45 transition-transform text-xl text-amberGlow leading-none">+</span>
                         </summary>
-                        <div class="mt-6 pt-6 border-t border-white/10 grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm text-sand">
-                            <div><strong class="text-ivory font-medium block">01. CNIC &amp; Cell Audit</strong>Flags invalid 13-digit IDs and telecom codes across thousands of rows instantly.</div>
-                            <div><strong class="text-ivory font-medium block">02. FBR &amp; SAP Tax Reconciler</strong>Matches tax ledgers line-by-line with automated green, amber, and red triage.</div>
-                            <div><strong class="text-ivory font-medium block">03. Pending Transfers Finder</strong>Isolates stalled inventory transfers in under a second.</div>
-                            <div><strong class="text-ivory font-medium block">04. Barcode Summary Engine</strong>Groups massive scan logs by product and region entirely in memory.</div>
-                            <div><strong class="text-ivory font-medium block">05. Counterfeit Barcode Detector</strong>Isolates duplicate or fake scans and calculates contamination rates.</div>
-                            <div><strong class="text-ivory font-medium block">06. YTD Reports Generator</strong>Consolidates multi-period reports safely with zero double-counting.</div>
-                            <div class="sm:col-span-2"><strong class="text-ivory font-medium block">07. CPR Tax Standardizer</strong>Normalizes thousands of tax CPR numbers in place in a single click.</div>
+                        <div class="mt-6 p-6 sm:p-8 rounded-3xl bg-espresso/95 border border-amberGlow/30 grid sm:grid-cols-2 gap-x-8 gap-y-5 text-sm text-sand shadow-2xl">
+                            <div><strong class="text-ivory font-semibold block text-base">01. CNIC &amp; Cell Audit</strong>Flags invalid 13-digit IDs and telecom codes across thousands of rows instantly.</div>
+                            <div><strong class="text-ivory font-semibold block text-base">02. FBR &amp; SAP Tax Reconciler</strong>Matches tax ledgers line-by-line with automated green, amber, and red triage.</div>
+                            <div><strong class="text-ivory font-semibold block text-base">03. Pending Transfers Finder</strong>Isolates stalled inventory transfers in under a second.</div>
+                            <div><strong class="text-ivory font-semibold block text-base">04. Barcode Summary Engine</strong>Groups massive scan logs by product and region entirely in memory.</div>
+                            <div><strong class="text-ivory font-semibold block text-base">05. Counterfeit Barcode Detector</strong>Isolates duplicate or fake scans and calculates contamination rates.</div>
+                            <div><strong class="text-ivory font-semibold block text-base">06. YTD Reports Generator</strong>Consolidates multi-period reports safely with zero double-counting.</div>
+                            <div class="sm:col-span-2"><strong class="text-ivory font-semibold block text-base">07. CPR Tax Standardizer</strong>Normalizes thousands of tax CPR numbers in place in a single click.</div>
                         </div>
                     </details>
                 </div>
 
-                <!-- Right: Live Scroll-Driven Time Compression Sculpture -->
-                <div class="lg:col-span-5 space-y-8 border-l border-white/10 pl-6 sm:pl-10">
+                <!-- Right: High-Contrast Time Compression Meter -->
+                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
                     <div>
-                        <span class="mono-meta text-[11px] uppercase tracking-[0.22em] text-sand/70 block mb-2">Monthly Time Returned</span>
-                        <div class="kpi-num font-editorial text-6xl sm:text-7xl md:text-8xl text-ivory leading-none">
+                        <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">Monthly Time Returned</span>
+                        <div class="kpi-num font-editorial text-6xl sm:text-7xl text-ivory leading-none">
                             59.4<span class="text-2xl sm:text-3xl text-amberGlow font-sans ml-2">hrs/mo</span>
                         </div>
-                        <p class="text-xs mono-meta text-sand/80 mt-2">33 hrs in Go-To-Market + 26.4 hrs in Tax</p>
+                        <p class="text-sm text-sand mt-2">33 hrs saved in Go-To-Market + 26.4 hrs saved in Tax</p>
                     </div>
 
-                    <!-- Animated Before -> After Compression Visual -->
-                    <div class="space-y-4 pt-2">
+                    <div class="space-y-5 pt-2">
                         <div>
-                            <div class="flex justify-between text-xs mono-meta text-sand/70 mb-1.5">
+                            <div class="flex justify-between text-xs mono-meta text-sand mb-2">
                                 <span>Before: Manual Tax Reconciliation</span>
-                                <span>26 Hours</span>
+                                <span class="text-ivory font-semibold">26 Hours</span>
                             </div>
-                            <div class="w-full h-2 bg-white/10 overflow-hidden">
-                                <div class="h-full bg-sand/40 w-full"></div>
+                            <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden">
+                                <div class="h-full bg-sand/50 w-full"></div>
                             </div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-xs mono-meta text-amberGlow mb-1.5">
-                                <span>After: In-Memory VBA Engine</span>
-                                <span>192 Seconds</span>
+                            <div class="flex justify-between text-xs mono-meta text-amberGlow mb-2">
+                                <span>After: One-Click VBA Engine</span>
+                                <span class="font-bold">192 Seconds</span>
                             </div>
-                            <div class="w-full h-2 bg-white/5 overflow-hidden">
-                                <div class="compression-bar h-full bg-amberGlow transition-all duration-1000 ease-out" style="width: 100%;" data-target-width="3%"></div>
+                            <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden">
+                                <div class="compression-bar h-full bg-amberGlow rounded-full" style="width: 100%;" data-target-width="4%"></div>
                             </div>
                         </div>
                     </div>
@@ -520,62 +632,62 @@
             </article>
 
             <!-- SPREAD 02 · FLYRANK AI -->
-            <article id="flyrank" class="choreo-reveal grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center" data-compression-spread>
-                <!-- Left: Plain-English Narrative -->
+            <article id="flyrank" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 space-y-6">
                     <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
-                        <span>No. 02</span>
-                        <span class="w-8 h-[1px] bg-amberGlow/50"></span>
+                        <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 02</span>
                         <span>FlyRank AI &middot; Machine Learning Research</span>
                     </div>
 
-                    <h3 class="font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
-                        Finding the <span class="italic text-amberGlow">10 pages</span> that matter out of 30,000.
+                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
+                        <span class="split-line">Finding the <span class="italic text-amberGlow">10 pages</span></span>
+                        <span class="split-line">that matter out of 30,000.</span>
                     </h3>
 
-                    <p class="text-base sm:text-lg text-sand leading-relaxed max-w-xl">
-                        When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. I trained a machine learning system across 32 enterprise companies that spots decaying pages <strong class="text-ivory font-medium">3.5&times; more accurately</strong> on completely unseen websites.
+                    <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-xl">
+                        When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. I trained a machine learning system across 32 enterprise companies that spots decaying pages <strong class="text-amberGlow font-semibold">3.5&times; more accurately</strong> on completely unseen websites.
                     </p>
 
-                    <div class="flex flex-wrap gap-8 pt-2 text-sm font-medium">
-                        <a href="https://maazkhan53.github.io/ML-01-Run-the-Starter-Notebooks/" data-track="flyrank_paper_click" target="_blank" rel="noopener noreferrer" class="editorial-link text-amberGlow">
+                    <!-- Prominent Magnetic CTA Buttons -->
+                    <div class="flex flex-wrap gap-4 pt-3">
+                        <a href="https://maazkhan53.github.io/ML-01-Run-the-Starter-Notebooks/" data-track="flyrank_paper_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-primary">
                             <span>Read Published Research Paper</span>
-                            <span>&nearr;</span>
+                            <span class="cta-arrow-circle">&nearr;</span>
                         </a>
-                        <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="flyrank_verify_click" target="_blank" rel="noopener noreferrer" class="editorial-link text-sand">
-                            <span>Inspect Verified Credential</span>
-                            <span>&nearr;</span>
+                        <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="flyrank_verify_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
+                            <span>Verified Credential</span>
+                            <span class="text-amberGlow">&nearr;</span>
                         </a>
                     </div>
                 </div>
 
                 <!-- Right: Signal vs Noise Sculpture -->
-                <div class="lg:col-span-5 space-y-8 border-l border-white/10 pl-6 sm:pl-10">
+                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
                     <div>
-                        <span class="mono-meta text-[11px] uppercase tracking-[0.22em] text-sand/70 block mb-2">Top-10 Triage Accuracy</span>
-                        <div class="kpi-num font-editorial text-6xl sm:text-7xl md:text-8xl text-ivory leading-none">
+                        <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">Top-10 Triage Accuracy</span>
+                        <div class="kpi-num font-editorial text-6xl sm:text-7xl text-ivory leading-none">
                             70<span class="text-3xl sm:text-4xl text-amberGlow font-sans ml-1">%</span>
                         </div>
-                        <p class="text-xs mono-meta text-sand/80 mt-2">3.5&times; lift over the 20% industry heuristic rule</p>
+                        <p class="text-sm text-sand mt-2">3.5&times; lift over the 20% industry heuristic baseline</p>
                     </div>
 
-                    <div class="space-y-4 pt-2">
+                    <div class="space-y-5 pt-2">
                         <div>
-                            <div class="flex justify-between text-xs mono-meta text-sand/70 mb-1.5">
-                                <span>Legacy Striking-Distance Rule</span>
+                            <div class="flex justify-between text-xs mono-meta text-sand mb-2">
+                                <span>Standard Industry Rule</span>
                                 <span>2 of 10 Correct (20%)</span>
                             </div>
-                            <div class="w-full h-2 bg-white/10">
-                                <div class="h-full bg-sand/40" style="width: 20%;"></div>
+                            <div class="w-full h-3 rounded-full bg-white/10">
+                                <div class="h-full rounded-full bg-sand/40" style="width: 20%;"></div>
                             </div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-xs mono-meta text-amberGlow mb-1.5">
-                                <span>Client-Grouped ML Model</span>
-                                <span>7 of 10 Correct (70%)</span>
+                            <div class="flex justify-between text-xs mono-meta text-amberGlow mb-2">
+                                <span>Client-Grouped ML Pipeline</span>
+                                <span class="font-bold">7 of 10 Correct (70%)</span>
                             </div>
-                            <div class="w-full h-2 bg-white/5">
-                                <div class="compression-bar h-full bg-amberGlow transition-all duration-1000 ease-out" style="width: 0%;" data-target-width="70%"></div>
+                            <div class="w-full h-3 rounded-full bg-white/10">
+                                <div class="compression-bar h-full rounded-full bg-amberGlow" style="width: 0%;" data-target-width="70%"></div>
                             </div>
                         </div>
                     </div>
@@ -583,42 +695,42 @@
             </article>
 
             <!-- SPREAD 03 · OUTFIELD & AUTONOMOUS AGENTS -->
-            <article id="outfield" class="choreo-reveal grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center" data-compression-spread>
+            <article id="outfield" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 space-y-6">
                     <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
-                        <span>No. 03</span>
-                        <span class="w-8 h-[1px] bg-amberGlow/50"></span>
+                        <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 03</span>
                         <span>Founder &amp; Lead Developer &middot; Karachi</span>
                     </div>
 
-                    <h3 class="font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
-                        Replacing 15 phone calls with a <span class="italic text-amberGlow">single tap.</span>
+                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
+                        <span class="split-line">Replacing 15 phone calls</span>
+                        <span class="split-line">with a <span class="italic text-amberGlow">single tap.</span></span>
                     </h3>
 
-                    <p class="text-base sm:text-lg text-sand leading-relaxed max-w-xl">
-                        Booking a cricket or football ground in Karachi means chasing venue owners across scattered WhatsApp threads and phone calls. I founded and engineered <strong class="text-ivory font-medium">Outfield</strong>—a two-sided web platform on React and Supabase where players see live open slots and lock in a pitch instantly.
+                    <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-xl">
+                        Booking a cricket or football ground in Karachi means chasing venue owners across scattered WhatsApp threads and phone calls. I founded and engineered <strong class="text-amberGlow font-semibold">Outfield</strong>—a two-sided web platform on React and Supabase where players see live open slots and lock in a pitch instantly.
                     </p>
 
-                    <div class="pt-2">
-                        <a href="https://github.com/MaazKhan53/outfield" data-track="outfield_repo_click" target="_blank" rel="noopener noreferrer" class="editorial-link text-amberGlow text-sm font-medium">
-                            <span>Explore Outfield Repository</span>
-                            <span>&nearr;</span>
+                    <div class="pt-3">
+                        <a href="https://github.com/MaazKhan53/outfield" data-track="outfield_repo_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
+                            <span>Explore Outfield Repository on GitHub</span>
+                            <span class="text-amberGlow">&nearr;</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- Right: Autonomous Daily Systems Note -->
-                <div class="lg:col-span-5 space-y-6 border-l border-white/10 pl-6 sm:pl-10">
-                    <span class="mono-meta text-[11px] uppercase tracking-[0.22em] text-amberGlow block">Also Running in the Background</span>
+                <!-- Right: Autonomous Daily Systems -->
+                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-6">
+                    <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block">Autonomous Personal Agents</span>
                     <div>
-                        <h4 class="font-editorial text-2xl text-ivory">6:00 AM Autonomous Market Briefing</h4>
-                        <p class="text-sm text-sand mt-1.5 leading-relaxed">
+                        <h4 class="font-editorial text-2xl text-ivory">6:00 AM Market Briefing</h4>
+                        <p class="text-sm sm:text-base text-sand mt-1.5 leading-relaxed">
                             A self-hosted Docker &amp; n8n workflow that scrapes daily financial news, writes an executive briefing via the Groq LLM API, and emails it before I wake up.
                         </p>
                     </div>
-                    <div class="pt-4 border-t border-white/10">
+                    <div class="pt-5 border-t border-white/15">
                         <h4 class="font-editorial text-2xl text-ivory">Local MCP Resume Agent</h4>
-                        <p class="text-sm text-sand mt-1.5 leading-relaxed">
+                        <p class="text-sm sm:text-base text-sand mt-1.5 leading-relaxed">
                             A local Claude agent wired to my filesystem that maps verified project metrics directly to target job descriptions in seconds.
                         </p>
                     </div>
@@ -628,24 +740,30 @@
         </div>
     </section>
 
-    <!-- =====================================================================
-         CHAPTER 02 · EXPERIENCE (Direction A: The Rotating Architectural Dial)
-         ===================================================================== -->
-    <section id="experience" data-chapter="02 / Track Record" class="relative z-10 h-[320vh]">
-        <div class="sticky top-0 min-h-screen flex items-center px-6 sm:px-12 md:px-20 py-12 overflow-hidden">
-            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+    <!-- Liquid Morphing SVG Portal 2 -->
+    <svg class="liquid-divider relative z-10" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+        <path class="morph-wave" d="M0,30 C480,110 960,10 1440,80 L1440,120 L0,120 Z" fill="rgba(229,169,60,0.04)"/>
+        <path class="morph-line" d="M0,30 C480,110 960,10 1440,80" fill="none" stroke="rgba(229,169,60,0.35)" stroke-width="1.5"/>
+    </svg>
 
-                <!-- Left 5 Cols: The Rotating Architectural Wheel -->
+    <!-- =====================================================================
+         CHAPTER 02 · EXPERIENCE (Rotating Architectural Dial with Oversized 84px–98px Logos)
+         ===================================================================== -->
+    <section id="experience" data-chapter="02 / Track Record" class="relative z-10 h-[320vh] section-scrim">
+        <div class="sticky top-0 min-h-screen flex items-center px-6 sm:px-12 md:px-20 py-12 overflow-hidden">
+            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center reading-halo">
+
+                <!-- Left 5 Cols: The Rotating Architectural Wheel with Big Company Logos -->
                 <div class="lg:col-span-5 flex flex-col items-center lg:items-start">
                     <div class="dial-wheel-wrap">
                         <!-- Fixed 3-o'clock Golden Indicator Needle -->
-                        <div class="absolute top-1/2 -right-5 w-10 h-[2px] bg-amberGlow z-20 pointer-events-none"></div>
+                        <div class="absolute top-1/2 -right-7 w-12 h-[3px] bg-amberGlow z-20 pointer-events-none shadow-lg"></div>
 
                         <!-- Center Hub Label -->
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                            <span class="mono-meta text-[10px] uppercase tracking-[0.24em] text-sand/60">Track Record</span>
-                            <span id="dialCounter" class="font-editorial text-3xl sm:text-4xl text-ivory mt-1">01 / 08</span>
-                            <span class="mono-meta text-[10px] uppercase tracking-[0.18em] text-amberGlow mt-1">Scroll or Click</span>
+                            <span class="mono-meta text-[11px] uppercase tracking-[0.24em] text-amberGlow">Track Record</span>
+                            <span id="dialCounter" class="font-editorial text-4xl sm:text-5xl text-ivory mt-1">01 / 08</span>
+                            <span class="mono-meta text-[10px] uppercase tracking-[0.18em] text-sand mt-1">Scroll or Click Logo</span>
                         </div>
 
                         <div class="dial-ring-inner"></div>
@@ -653,28 +771,28 @@
                     </div>
                 </div>
 
-                <!-- Right 7 Cols: Open-Canvas Morphing Story -->
-                <div class="lg:col-span-7 space-y-5">
+                <!-- Right 7 Cols: High-Contrast Open-Canvas Role Story -->
+                <div class="lg:col-span-7 space-y-5 lg:pl-6">
                     <div class="flex flex-wrap items-center gap-3 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
                         <span id="expActiveDates">Jul 2026 to Sep 2026</span>
                         <span>&middot;</span>
-                        <span id="expActivePlace" class="text-sand">Remote, Chicago</span>
+                        <span id="expActivePlace" class="text-ivory/80">Remote, Chicago</span>
                     </div>
 
                     <h2 id="expActiveCompany" class="font-editorial text-5xl sm:text-6xl md:text-7xl text-ivory tracking-tight leading-[1.02] transition-all duration-300">
                         FlyRank AI
                     </h2>
 
-                    <p id="expActiveRole" class="font-editorial italic text-2xl sm:text-3xl text-amberGlow/95">
+                    <p id="expActiveRole" class="font-editorial italic text-2xl sm:text-3xl text-amberGlow">
                         Machine Learning Engineering Intern
                     </p>
 
-                    <p id="expActiveImpact" class="text-base sm:text-lg text-sand leading-relaxed max-w-2xl pt-2">
+                    <p id="expActiveImpact" class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-2xl pt-2">
                         Engineered a content decay triage pipeline across 30,000 production URLs (32 clients), achieving 70.0% Precision@10 on unseen domains (3.5x lift over baseline) with a deliberate leakage harness.
                     </p>
 
-                    <!-- Subtle Progress Ticks -->
-                    <div id="expStepDots" class="flex items-center gap-3 pt-6"></div>
+                    <!-- Interactive Role Selector Pills -->
+                    <div id="expStepDots" class="flex flex-wrap items-center gap-3 pt-6"></div>
                 </div>
 
             </div>
@@ -684,31 +802,33 @@
     <!-- =====================================================================
          CHAPTER 03 · CRAFT ("The Typographic Split-Curtain")
          ===================================================================== -->
-    <section id="skills" data-chapter="03 / Craft" class="py-28 md:py-40 px-6 sm:px-12 md:px-20 relative z-10">
-        <div class="max-w-6xl mx-auto">
-            <div class="choreo-reveal mb-16">
+    <section id="skills" data-chapter="03 / Craft" class="py-28 md:py-40 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
+        <div class="max-w-6xl mx-auto reading-halo">
+            <div class="gsap-section-header mb-16">
                 <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">03 / Capabilities</p>
-                <h2 class="font-editorial text-4xl sm:text-6xl text-ivory tracking-tight">
-                    How I give time back.
+                <h2 class="split-mask font-editorial text-5xl sm:text-7xl text-ivory tracking-tight leading-[1.04]">
+                    <span class="split-line">How I give time back.</span>
                 </h2>
-                <p class="text-sand mt-3 text-base sm:text-lg">Glide across any discipline to part the curtain and inspect the proof.</p>
+                <p class="text-ivory/80 mt-3 text-lg">Hover or tap any discipline below to part the curtain and inspect the proof.</p>
             </div>
 
-            <div id="curtainList" class="choreo-reveal"></div>
+            <div id="curtainList"></div>
         </div>
     </section>
 
     <!-- =====================================================================
          CHAPTER 04 · CREDENTIALS ("The 3D Perspective Gallery Arc")
          ===================================================================== -->
-    <section id="certificates" data-chapter="04 / Credentials" class="py-28 md:py-36 relative z-10 overflow-hidden">
-        <div class="max-w-6xl mx-auto px-6 sm:px-12 md:px-20 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 choreo-reveal">
-            <div>
+    <section id="certificates" data-chapter="04 / Credentials" class="py-28 md:py-36 relative z-10 overflow-hidden section-scrim">
+        <div class="max-w-6xl mx-auto px-6 sm:px-12 md:px-20 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 reading-halo">
+            <div class="gsap-section-header">
                 <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">04 / Verified Credentials</p>
-                <h2 class="font-editorial text-4xl sm:text-6xl text-ivory tracking-tight">Anthropic Archive.</h2>
+                <h2 class="split-mask font-editorial text-5xl sm:text-6xl text-ivory tracking-tight">
+                    <span class="split-line">Anthropic Archive.</span>
+                </h2>
             </div>
-            <p class="text-sand text-sm sm:text-base max-w-md">
-                14 verified credentials across AI Fluency, Claude Code, and Subagent Workflows. Drag either gallery stream or click any document to inspect.
+            <p class="text-ivory/85 text-base sm:text-lg max-w-md">
+                14 verified credentials across AI Fluency, Claude Code, and Subagent Workflows. Drag either gallery stream or click any certificate to enlarge.
             </p>
         </div>
 
@@ -725,46 +845,56 @@
     </div>
 
     <!-- =====================================================================
-         CHAPTER 05 · OPERATING PRINCIPLE & DIRECT CHANNEL (Open Canvas)
+         CHAPTER 05 · OPERATING PRINCIPLE & PROMINENT DIRECT CHANNEL
          ===================================================================== -->
-    <section id="about" data-chapter="05 / Dialogue" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start">
+    <section id="about" data-chapter="05 / Dialogue" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start reading-halo">
 
-            <!-- Left 6 Cols: Operating Principle -->
-            <div class="lg:col-span-6 space-y-8 choreo-reveal">
+            <!-- Left 6 Cols: Operating Principle & Prominent Action Links -->
+            <div class="lg:col-span-6 space-y-8">
                 <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow">05 / Operating Principle</p>
                 <blockquote id="aboutBelief" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-ivory leading-[1.18] tracking-tight"></blockquote>
-                <div id="aboutStory" class="space-y-4 text-sand leading-relaxed"></div>
-                <ul id="aboutFacts" class="space-y-3 text-sand text-sm sm:text-base pt-4 border-t border-white/10"></ul>
+                <div id="aboutStory" class="space-y-4 text-ivory/85 leading-relaxed text-lg"></div>
+                <ul id="aboutFacts" class="space-y-3 text-ivory/90 text-base sm:text-lg pt-4 border-t border-white/15"></ul>
 
-                <div class="flex flex-wrap gap-8 pt-6 text-sm font-medium">
-                    <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" data-track="contact_linkedin" target="_blank" rel="noopener noreferrer" class="editorial-link">LinkedIn &nearr;</a>
-                    <a href="https://github.com/MaazKhan53" data-track="contact_github" target="_blank" rel="noopener noreferrer" class="editorial-link">GitHub &nearr;</a>
-                    <a href="https://drive.google.com/drive/folders/1HMkirMmnzI4PltyYpzQxqKNEyUM6md-Q?usp=sharing" data-track="cv_folder_open" target="_blank" rel="noopener noreferrer" class="editorial-link text-amberGlow">Curriculum Vitae &nearr;</a>
+                <!-- Prominent Action Buttons for LinkedIn, GitHub & CV -->
+                <div class="flex flex-wrap gap-4 pt-6">
+                    <a href="https://drive.google.com/drive/folders/1HMkirMmnzI4PltyYpzQxqKNEyUM6md-Q?usp=sharing" data-track="cv_folder_open" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-primary">
+                        <span>Access Curriculum Vitae</span>
+                        <span class="cta-arrow-circle">&nearr;</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" data-track="contact_linkedin" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
+                        <span>LinkedIn</span>
+                        <span class="text-amberGlow">&nearr;</span>
+                    </a>
+                    <a href="https://github.com/MaazKhan53" data-track="contact_github" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
+                        <span>GitHub</span>
+                        <span class="text-amberGlow">&nearr;</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Right 6 Cols: Minimalist Open-Canvas Note Form -->
-            <div id="contact" class="lg:col-span-6 space-y-8 choreo-reveal">
+            <!-- Right 6 Cols: High-Contrast Direct Note Card -->
+            <div id="contact" class="lg:col-span-6 p-8 sm:p-12 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
                 <div>
                     <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">06 / Direct Channel</p>
                     <h2 class="font-editorial text-4xl sm:text-5xl text-ivory tracking-tight">Which task eats your week?</h2>
-                    <p class="text-sand mt-2 text-sm sm:text-base">Tell me about it and we'll see if it can be handed to a system.</p>
+                    <p class="text-ivory/80 mt-2 text-base sm:text-lg">Tell me about it and we'll see if it can be handed to a system.</p>
                 </div>
 
                 <form id="contactForm" action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-8 pt-2">
                     <div>
-                        <label for="email" class="block mono-meta text-[11px] uppercase tracking-[0.2em] text-sand/70">Your Email</label>
+                        <label for="email" class="block mono-meta text-xs uppercase tracking-[0.2em] text-amberGlow">Your Email</label>
                         <input type="email" name="email" id="email" required placeholder="name@company.com" class="minimal-input">
                     </div>
                     <div>
-                        <label for="message" class="block mono-meta text-[11px] uppercase tracking-[0.2em] text-sand/70">The Bottleneck</label>
+                        <label for="message" class="block mono-meta text-xs uppercase tracking-[0.2em] text-amberGlow">The Bottleneck</label>
                         <textarea name="message" id="message" rows="3" required placeholder="Walk me through the workflow..." class="minimal-input resize-none"></textarea>
                     </div>
                     <input type="hidden" name="_next" value="https://maazkhan--portfolio.vercel.app/success.html">
-                    <button id="submitBtn" type="submit" class="editorial-link text-lg font-editorial text-amberGlow pt-2 cursor-pointer disabled:opacity-50">
-                        <span>Dispatch Note</span>
-                        <span>&rarr;</span>
+                    <button id="submitBtn" type="submit" data-magnetic class="cta-primary w-full justify-center cursor-pointer disabled:opacity-50">
+                        <span>Dispatch Direct Note</span>
+                        <span class="cta-arrow-circle">&rarr;</span>
                     </button>
                 </form>
             </div>
@@ -773,30 +903,30 @@
     </section>
 
     <!-- Footer with Theme-Matched Warm Espresso & Brushed Gold FlyRank Credential -->
-    <footer class="py-16 px-6 text-center relative z-10 border-t border-white/10">
+    <footer class="py-20 px-6 text-center relative z-10 border-t border-white/15 bg-obsidian">
         <div class="mb-6 flex justify-center">
             <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="footer_flyrank_badge" target="_blank" rel="noopener noreferrer"
                aria-label="Verify Maaz Khan's FlyRank AI Internship credential"
                class="transition duration-300 transform hover:-translate-y-1"
-               style="display:inline-flex;align-items:center;gap:14px;padding:14px 20px;background:linear-gradient(145deg, #18120E 0%, #0E0B09 100%);border:1px solid rgba(229,169,60,0.35);border-radius:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,0.85);max-width:100%;text-decoration:none;">
-              <svg width="38" height="38" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;flex:none;">
+               style="display:inline-flex;align-items:center;gap:14px;padding:14px 22px;background:linear-gradient(145deg, #18120E 0%, #0E0B09 100%);border:1px solid rgba(229,169,60,0.45);border-radius:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,0.9);max-width:100%;text-decoration:none;">
+              <svg width="40" height="40" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;flex:none;">
                 <rect width="96" height="96" rx="20" fill="#E5A93C" />
-                <path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#0B0907" />
+                <path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#070605" />
               </svg>
               <span style="display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left;">
                 <span class="mono-meta" style="font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E5A93C;">FlyRank AI Internship</span>
                 <span class="font-editorial" style="font-size:15px;font-weight:600;color:#FAF6F0;white-space:nowrap;">Verified Credential</span>
-                <span style="font-size:11px;color:#C2B7AA;white-space:nowrap;">Machine Learning &amp; AI Fluency</span>
+                <span style="font-size:11px;color:#D4CBC0;white-space:nowrap;">Machine Learning &amp; AI Fluency</span>
               </span>
-              <span class="mono-meta" style="display:flex;align-items:center;gap:5px;margin-left:8px;padding:5px 11px;background:rgba(229,169,60,0.12);border:1px solid rgba(229,169,60,0.38);border-radius:9999px;font-size:10px;font-weight:600;color:#E5A93C;flex:none;">
+              <span class="mono-meta" style="display:flex;align-items:center;gap:5px;margin-left:8px;padding:6px 12px;background:rgba(229,169,60,0.16);border:1px solid rgba(229,169,60,0.45);border-radius:9999px;font-size:11px;font-weight:600;color:#E5A93C;flex:none;">
                 Verify &nearr;
               </span>
             </a>
         </div>
-        <p class="text-sand/50 text-xs mono-meta uppercase tracking-[0.22em]">&copy; 2026 Maaz Khan</p>
+        <p class="text-sand/60 text-xs mono-meta uppercase tracking-[0.22em]">&copy; 2026 Maaz Khan</p>
     </footer>
 
-    <!-- Site content and choreography engine -->
+    <!-- Site content and GSAP + Three.js choreography engine -->
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
