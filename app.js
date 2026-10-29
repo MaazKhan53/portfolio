@@ -5,146 +5,7 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var EXTS = ['.svg', '.png', '.webp', '.jpg'];
 
-  /* ---------- 1. Guaranteed Visibility & AOS Init ---------- */
-  function initAnimations() {
-    try {
-      if (window.AOS) {
-        window.AOS.init({ once: true, offset: 40, duration: 750, easing: 'ease-out-cubic', disable: reduce });
-      } else {
-        $$('[data-aos]').forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
-      }
-    } catch (e) {
-      $$('[data-aos]').forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
-    }
-  }
-  initAnimations();
-  setTimeout(function () {
-    $$('[data-aos]').forEach(function (el) {
-      if (window.getComputedStyle(el).opacity === '0' && !el.classList.contains('aos-animate')) {
-        el.classList.add('aos-animate');
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      }
-    });
-  }, 800);
-
-  /* ---------- 2. Cursor-Revealed Atelier Grid & Card Sheen ---------- */
-  window.addEventListener('pointermove', function (e) {
-    document.documentElement.style.setProperty('--cx', e.clientX + 'px');
-    document.documentElement.style.setProperty('--cy', e.clientY + 'px');
-  }, { passive: true });
-
-  function bindWarmGlassHover() {
-    $$('.warm-glass').forEach(function (card) {
-      if (card._glassBound) return;
-      card._glassBound = true;
-      card.addEventListener('pointermove', function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-      }, { passive: true });
-    });
-  }
-
-  /* ---------- 3. Cozy Studio Bokeh & Warm Floating Embers (No Robotic Lines) ---------- */
-  (function initCozyStudioBokeh() {
-    var canvas = $('#bgCanvas');
-    if (!canvas || !window.THREE || reduce) return;
-
-    try {
-      var THREE = window.THREE;
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 26;
-
-      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-      // Create a soft radial glow texture for warm studio bokeh orbs
-      var spriteCanvas = document.createElement('canvas');
-      spriteCanvas.width = 64;
-      spriteCanvas.height = 64;
-      var sCtx = spriteCanvas.getContext('2d');
-      var grad = sCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grad.addColorStop(0, 'rgba(250, 246, 240, 1)');
-      grad.addColorStop(0.35, 'rgba(229, 169, 60, 0.65)');
-      grad.addColorStop(0.7, 'rgba(200, 109, 68, 0.18)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      sCtx.fillStyle = grad;
-      sCtx.fillRect(0, 0, 64, 64);
-      var bokehTexture = new THREE.CanvasTexture(spriteCanvas);
-
-      var group = new THREE.Group();
-      scene.add(group);
-
-      var count = window.innerWidth < 640 ? 36 : 65;
-      var positions = new Float32Array(count * 3);
-      var velocities = [];
-      var spreadX = 50, spreadY = 34, spreadZ = 22;
-
-      for (var i = 0; i < count; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * spreadX;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * spreadY;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * spreadZ;
-        velocities.push({
-          vx: (Math.random() - 0.5) * 0.006,
-          vy: (Math.random() * 0.006) + 0.002,
-          vz: (Math.random() - 0.5) * 0.005
-        });
-      }
-
-      var pointsGeo = new THREE.BufferGeometry();
-      pointsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      var pointsMat = new THREE.PointsMaterial({
-        size: 1.45,
-        map: bokehTexture,
-        transparent: true,
-        opacity: 0.55,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending
-      });
-      var embers = new THREE.Points(pointsGeo, pointsMat);
-      group.add(embers);
-
-      var mouseX = 0, mouseY = 0;
-      window.addEventListener('pointermove', function (e) {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-      }, { passive: true });
-
-      window.addEventListener('resize', function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      function animateStudio() {
-        requestAnimationFrame(animateStudio);
-        var posArr = pointsGeo.attributes.position.array;
-        for (var i = 0; i < count; i++) {
-          var ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
-          posArr[ix] += velocities[i].vx;
-          posArr[iy] += velocities[i].vy;
-          posArr[iz] += velocities[i].vz;
-
-          if (posArr[iy] > spreadY / 2) posArr[iy] = -spreadY / 2;
-          if (Math.abs(posArr[ix]) > spreadX / 2) velocities[i].vx *= -1;
-          if (Math.abs(posArr[iz]) > spreadZ / 2) velocities[i].vz *= -1;
-        }
-        pointsGeo.attributes.position.needsUpdate = true;
-
-        var scrollProgress = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
-        group.rotation.y += (mouseX * 0.08 + scrollProgress * 0.35 - group.rotation.y) * 0.03;
-        group.rotation.x += (-mouseY * 0.06 + scrollProgress * 0.15 - group.rotation.x) * 0.03;
-
-        renderer.render(scene, camera);
-      }
-      animateStudio();
-    } catch (e) {}
-  })();
-
-  /* ---------- 4. Analytics & Visitor Intelligence ---------- */
+  /* ---------- 1. Analytics & Visitor Intelligence ---------- */
   function trackEvent(name, data) {
     try {
       if (typeof window.va === 'function') {
@@ -178,270 +39,222 @@
     });
   });
 
-  /* ---------- 5. Curated Exhibition Stage (Selected Work — Concise & Interactive) ---------- */
-  var EXHIBITS = {
-    pepsico: {
-      tag: '01 · Flagship Architecture',
-      context: 'PepsiCo Pakistan · Roshan Kal GTM & Tax',
-      title: '59.4 net hours returned to two departments every month.',
-      subtitle: 'Seven in-memory VBA engines packaged onto a custom Excel ribbon, installable on any corporate laptop in under 60 seconds.',
-      kpis: [
-        { val: '33 hrs', label: 'Saved monthly in GTM' },
-        { val: '26.4 hrs', label: 'Saved monthly in Tax' },
-        { val: '192 sec', label: 'vs. 26-hr reconciliation' },
-        { val: '100%', label: 'Audit validation accuracy' }
-      ],
-      beats: [
-        {
-          id: 'problem',
-          label: 'I. The Friction',
-          heading: '61 gross hours lost every month to manual spreadsheets.',
-          body: 'GTM spent 36 hours a month compiling master-data reports by hand, while Tax spent 25+ hours reconciling SAP ledgers against the FBR portal line by line.'
-        },
-        {
-          id: 'craft',
-          label: 'II. The Craft',
-          heading: 'In-memory hash tables instead of heavy worksheet formulas.',
-          body: 'Built seven engines on Scripting.Dictionary lookups and dynamic RAM arrays inside portable .xlam add-ins, complete with a 4-phase self-serve guide so executives install without IT tickets.'
-        },
-        {
-          id: 'return',
-          label: 'III. The Return',
-          heading: 'Presented to the COO & CFO; permanently adopted in production.',
-          body: 'GTM reporting dropped to under 15 minutes and Tax reconciliation dropped to 192 seconds. All 7 tools continue running across both departments post-internship.'
-        }
-      ],
-      tools: [
-        '01. CNIC & Cell Audit Engine',
-        '02. YTD Reports Generator',
-        '03. Pending Transfers Module',
-        '04. Barcode Summary Engine',
-        '05. Invalid Barcode % Detector',
-        '06. FBR & SAP Reconciliation Engine',
-        '07. CPR Standardization Protocol'
-      ],
-      stack: ['Excel VBA', 'Scripting.Dictionary', 'In-Memory Arrays', 'Custom Ribbon XML']
-    },
-    flyrank: {
-      tag: '02 · Applied Machine Learning',
-      context: 'FlyRank AI · 30,000 Production URLs · 32 Clients',
-      title: '3.5× precision lift on unseen enterprise domains.',
-      subtitle: 'A decision-support triage pipeline that ranks decaying search content under strict editorial bandwidth constraints.',
-      kpis: [
-        { val: '70.0%', label: 'Precision@10 (Unseen)' },
-        { val: '3.5×', label: 'Lift over 20% heuristic' },
-        { val: '0.5758', label: 'Honest grouped PR-AUC' },
-        { val: '10,670', label: 'Ranked playbook URLs' }
-      ],
-      beats: [
-        {
-          id: 'problem',
-          label: 'I. The Friction',
-          heading: '80% of top-10 heuristic alerts were false alarms.',
-          body: 'Enterprise teams manage 30,000+ URLs but can only audit 10 to 50 pages per sprint. Standard striking-distance rules waste human hours on stable pages.'
-        },
-        {
-          id: 'craft',
-          label: 'II. The Craft',
-          heading: 'Client-grouped validation backed by a deliberate leakage harness.',
-          body: 'Trained calibrated Logistic Regression and Random Forest models across 25 train clients and 7 unseen test clients, purging 13 formula-leaking columns.'
-        },
-        {
-          id: 'return',
-          label: 'III. The Return',
-          heading: 'A 4-archetype Action Playbook with human safety guardrails.',
-          body: 'Weighted decay probability by 90-day impression demand and enforced automated prune-safety and 60-day cooldown checks before any editorial action.'
-        }
-      ],
-      links: [
-        { label: 'Read Research Paper →', href: 'https://maazkhan53.github.io/ML-01-Run-the-Starter-Notebooks/', primary: true, track: 'flyrank_paper_click' },
-        { label: 'Verified Credential →', href: 'https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz', primary: false, track: 'flyrank_verify_click' }
-      ],
-      stack: ['Python', 'scikit-learn', 'GroupShuffleSplit', 'Leakage Harness', 'NIST AI RMF']
-    },
-    outfield: {
-      tag: '03 · Product Engineering',
-      context: 'Founder & Lead Developer · Karachi',
-      title: 'Replacing fragmented WhatsApp chains with instant turf booking.',
-      subtitle: 'Outfield is a two-sided sports ground discovery and reservation platform built for players and venue owners in Karachi.',
-      kpis: [
-        { val: '2-Sided', label: 'Players & Venue Owners' },
-        { val: 'Live', label: 'Slot availability engine' },
-        { val: '1-Tap', label: 'Reservation workflow' }
-      ],
-      beats: [
-        {
-          id: 'problem',
-          label: 'I. The Friction',
-          heading: 'Booking a pitch in Karachi takes a dozen phone calls.',
-          body: 'Players have no central place to see open slots across venues, and facility owners manage overlapping reservations in manual notebooks and chat threads.'
-        },
-        {
-          id: 'craft',
-          label: 'II. The Craft',
-          heading: 'Real-time relational state on React & Supabase.',
-          body: 'Engineered a responsive web platform where players filter grounds by time and area while owners manage slot inventory from a single dashboard.'
-        },
-        {
-          id: 'return',
-          label: 'III. The Return',
-          heading: 'Currently being rebuilt for public launch.',
-          body: 'The core relational schema and frontend architecture are open-sourced on GitHub as the v2 production build nears completion.'
-        }
-      ],
-      links: [
-        { label: 'Inspect GitHub Repository →', href: 'https://github.com/MaazKhan53/outfield', primary: true, track: 'outfield_repo_click' }
-      ],
-      stack: ['React', 'Vite', 'Supabase', 'PostgreSQL', 'Vercel']
-    },
-    agents: {
-      tag: '04 · Autonomous Workflows',
-      context: 'Personal Engineering Systems · Docker & MCP',
-      title: 'Handing daily market briefings and resume tailoring to agents.',
-      subtitle: 'Two self-hosted automation pipelines built to eliminate repetitive personal research and document formatting.',
-      kpis: [
-        { val: 'Daily', label: 'Automated morning digest' },
-        { val: '0-Touch', label: 'n8n + Groq + Docker' },
-        { val: 'MCP', label: 'Local filesystem agent' }
-      ],
-      beats: [
-        {
-          id: 'problem',
-          label: 'I. Financial Pipeline',
-          heading: 'The morning market scan, automated end-to-end.',
-          body: 'A self-hosted n8n workflow inside Docker scrapes daily financial news, synthesizes an executive briefing via the Groq LLM API, and delivers it via SMTP every morning.'
-        },
-        {
-          id: 'craft',
-          label: 'II. Resume Tailor Agent',
-          heading: 'Local Claude agent wired to the MCP filesystem server.',
-          body: 'Reads verified project metrics from my local master database and rewrites resume bullet points to align with target job descriptions in seconds.'
-        },
-        {
-          id: 'return',
-          label: 'III. The Return',
-          heading: 'Hours of weekly reading and formatting reclaimed.',
-          body: 'Both workflows run locally with zero manual copy-pasting, turning multi-step research routines into background utilities.'
-        }
-      ],
-      stack: ['n8n', 'Docker', 'Groq LLM API', 'Model Context Protocol (MCP)', 'Claude Code']
-    }
-  };
-
-  var currentExhibitKey = 'pepsico';
-  var currentBeatIdx = 0;
-
-  function renderExhibitStage(key, beatIdx) {
-    var stage = $('#exhibitStage');
-    if (!stage || !EXHIBITS[key]) return;
-    currentExhibitKey = key;
-    currentBeatIdx = beatIdx || 0;
-    var ex = EXHIBITS[key];
-    var activeBeat = ex.beats[currentBeatIdx] || ex.beats[0];
-
-    $$('#exhibitTabs .exhibit-tab').forEach(function (btn) {
-      btn.classList.toggle('is-active', btn.getAttribute('data-exhibit') === key);
-    });
-
-    var kpisHtml = ex.kpis.map(function (k) {
-      return '<div class="rounded-2xl bg-black/35 border border-white/10 p-4">' +
-        '<div class="kpi-num font-editorial text-2xl sm:text-3xl font-semibold text-ivory">' + k.val + '</div>' +
-        '<p class="text-xs text-sand mt-1">' + k.label + '</p>' +
-      '</div>';
-    }).join('');
-
-    var beatsNavHtml = ex.beats.map(function (b, idx) {
-      return '<button type="button" data-beat-idx="' + idx + '" class="beat-btn ' + (idx === currentBeatIdx ? 'is-active' : '') + '">' + b.label + '</button>';
-    }).join('');
-
-    var toolsHtml = '';
-    if (ex.tools) {
-      toolsHtml =
-        '<details class="mt-5 pt-4 border-t border-white/10 group">' +
-          '<summary class="cursor-pointer list-none inline-flex items-center gap-2 text-xs mono-tag uppercase tracking-wider text-amberGlow hover:text-ivory transition">' +
-            '<span>View All 7 Production VBA Engines</span>' +
-            '<span class="group-open:rotate-180 transition-transform">&#9662;</span>' +
-          '</summary>' +
-          '<div class="mt-3 grid sm:grid-cols-2 gap-2 text-xs text-ivory/90">' +
-            ex.tools.map(function (t) {
-              return '<div class="px-3 py-2 rounded-xl bg-black/40 border border-white/10">' + t + '</div>';
-            }).join('') +
-          '</div>' +
-        '</details>';
-    }
-
-    var linksHtml = '';
-    if (ex.links) {
-      linksHtml = '<div class="mt-6 pt-4 border-t border-white/10 flex flex-wrap gap-4 items-center">' +
-        ex.links.map(function (l) {
-          return '<a href="' + l.href + '" target="_blank" rel="noopener noreferrer" class="' +
-            (l.primary ? 'text-sm font-semibold text-amberGlow hover:text-ivory transition' : 'text-xs mono-tag text-sand hover:text-ivory transition') + '">' + l.label + '</a>';
-        }).join('') +
-      '</div>';
-    }
-
-    var stackHtml = (ex.stack || []).map(function (s) {
-      return '<span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[11px] mono-tag text-sand">' + s + '</span>';
-    }).join('');
-
-    stage.innerHTML =
-      '<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">' +
-        '<!-- Left 6 Cols: Headline & Sculpted Numbers -->' +
-        '<div class="lg:col-span-6 space-y-6">' +
-          '<div>' +
-            '<div class="flex flex-wrap items-center gap-2.5 mb-3">' +
-              '<span class="mono-tag px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/30 text-amberGlow text-[11px] font-semibold uppercase tracking-wider">' + ex.tag + '</span>' +
-              '<span class="mono-tag text-xs text-sand">' + ex.context + '</span>' +
-            '</div>' +
-            '<h3 class="font-editorial text-2xl sm:text-3xl md:text-4xl text-ivory leading-tight">' + ex.title + '</h3>' +
-            '<p class="text-sand text-sm md:text-base mt-3 leading-relaxed">' + ex.subtitle + '</p>' +
-          '</div>' +
-          '<div class="grid grid-cols-2 gap-3">' + kpisHtml + '</div>' +
-          '<div class="flex flex-wrap gap-2 pt-1">' + stackHtml + '</div>' +
-        '</div>' +
-
-        '<!-- Right 6 Cols: Interactive 3-Beat Story Switcher (1 Short Card at a Time) -->' +
-        '<div class="lg:col-span-6">' +
-          '<div class="rounded-3xl bg-black/40 border border-white/10 p-6 sm:p-8">' +
-            '<div class="flex flex-wrap items-center gap-2 mb-6">' + beatsNavHtml + '</div>' +
-            '<div id="beatCardContent" class="space-y-3 min-h-[130px]">' +
-              '<span class="mono-tag text-[11px] uppercase tracking-widest text-amberGlow block">' + activeBeat.label + '</span>' +
-              '<h4 class="font-editorial text-xl sm:text-2xl text-ivory leading-snug">' + activeBeat.heading + '</h4>' +
-              '<p class="text-sand text-sm sm:text-base leading-relaxed">' + activeBeat.body + '</p>' +
-            '</div>' +
-            toolsHtml +
-            linksHtml +
-          '</div>' +
-        '</div>' +
-      '</div>';
-
-    $$('#exhibitStage [data-beat-idx]').forEach(function (bBtn) {
-      bBtn.addEventListener('click', function () {
-        var nextIdx = parseInt(bBtn.getAttribute('data-beat-idx'), 10);
-        renderExhibitStage(currentExhibitKey, nextIdx);
-        trackEvent('exhibit_beat_switch', { project: currentExhibitKey, beat: nextIdx + 1 });
-      });
+  var pepsicoDetails = $('#pepsicoToolsDetails');
+  if (pepsicoDetails) {
+    pepsicoDetails.addEventListener('toggle', function () {
+      if (pepsicoDetails.open) trackEvent('pepsico_tools_expand');
     });
   }
 
-  $$('#exhibitTabs .exhibit-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      var k = tab.getAttribute('data-exhibit');
-      renderExhibitStage(k, 0);
-      trackEvent('exhibit_project_switch', { project: k });
-    });
-  });
+  /* ---------- 2. Cursor Lamp Tracking ---------- */
+  var mouseNormX = 0, mouseNormY = 0;
+  window.addEventListener('pointermove', function (e) {
+    document.documentElement.style.setProperty('--cx', e.clientX + 'px');
+    document.documentElement.style.setProperty('--cy', e.clientY + 'px');
+    mouseNormX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseNormY = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
 
-  $$('[data-exhibit-jump]').forEach(function (link) {
-    link.addEventListener('click', function () {
-      var k = link.getAttribute('data-exhibit-jump');
-      if (EXHIBITS[k]) renderExhibitStage(k, 0);
-    });
-  });
+  /* ---------- 3. Morphing 4-State 3D WebGL Sculpture ---------- */
+  (function initMorphingSculpture() {
+    var canvas = $('#bgCanvas');
+    if (!canvas || !window.THREE) return;
 
-  renderExhibitStage('pepsico', 0);
+    try {
+      var THREE = window.THREE;
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 32;
 
-  /* ---------- Helpers ---------- */
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      // Soft warm glowing dot texture
+      var sc = document.createElement('canvas');
+      sc.width = 64; sc.height = 64;
+      var ctx = sc.getContext('2d');
+      var g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, 'rgba(250, 246, 240, 1)');
+      g.addColorStop(0.35, 'rgba(229, 169, 60, 0.78)');
+      g.addColorStop(0.75, 'rgba(200, 109, 68, 0.2)');
+      g.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 64, 64);
+      var dotTexture = new THREE.CanvasTexture(sc);
+
+      var N = window.innerWidth < 640 ? 550 : 1050;
+      var currentPos = new Float32Array(N * 3);
+
+      // 4 Distinct 3D Sculptural Formations
+      var s0_eclipse = new Float32Array(N * 3);   // Chapter 00: Golden Eclipse Ring
+      var s1_streams = new Float32Array(N * 3);   // Chapter 01: Chaos -> Parallel Order Streams
+      var s2_helix = new Float32Array(N * 3);     // Chapter 02: Orbital Architectural Dial Helix
+      var s3_horizon = new Float32Array(N * 3);   // Chapter 03-05: Calm Warm Horizon Floor
+
+      for (var i = 0; i < N; i++) {
+        var idx = i * 3;
+        var t = i / N;
+        var angle = t * Math.PI * 2 * 12;
+
+        // State 0: Off-center Golden Eclipse Torus
+        var r0 = 11.5 + (Math.random() - 0.5) * 2.4;
+        var a0 = t * Math.PI * 2;
+        s0_eclipse[idx] = Math.cos(a0) * r0 + 4.5;
+        s0_eclipse[idx + 1] = Math.sin(a0) * r0 * 0.82 + 1.0;
+        s0_eclipse[idx + 2] = (Math.random() - 0.5) * 4.5;
+
+        // State 1: Left Chaotic Cloud snapping into 5 Parallel Right Streams
+        var x1 = (t - 0.5) * 48;
+        var streamLane = (i % 5 - 2) * 3.2;
+        var chaosFactor = Math.max(0, (1 - t * 1.35));
+        s1_streams[idx] = x1;
+        s1_streams[idx + 1] = streamLane + Math.sin(t * 14 + i) * 9.5 * chaosFactor;
+        s1_streams[idx + 2] = Math.cos(t * 10 + i) * 7.0 * chaosFactor;
+
+        // State 2: Architectural Double Helix / Wheel
+        var r2 = 12.5;
+        var a2 = t * Math.PI * 6;
+        s2_helix[idx] = Math.cos(a2) * r2 - 7.5;
+        s2_helix[idx + 1] = (t - 0.5) * 34;
+        s2_helix[idx + 2] = Math.sin(a2) * r2 * 0.65;
+
+        // State 3: Wide Undulating Horizon Floor
+        var gx = ((i % 35) / 35 - 0.5) * 54;
+        var gz = (Math.floor(i / 35) / (N / 35) - 0.5) * 28;
+        s3_horizon[idx] = gx;
+        s3_horizon[idx + 1] = -8.5 + Math.sin(gx * 0.25) * 1.6 + Math.cos(gz * 0.3) * 1.4;
+        s3_horizon[idx + 2] = gz;
+
+        currentPos[idx] = s0_eclipse[idx];
+        currentPos[idx + 1] = s0_eclipse[idx + 1];
+        currentPos[idx + 2] = s0_eclipse[idx + 2];
+      }
+
+      var geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(currentPos, 3));
+
+      var mat = new THREE.PointsMaterial({
+        size: 0.72,
+        map: dotTexture,
+        transparent: true,
+        opacity: 0.78,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      var sculpture = new THREE.Points(geo, mat);
+      scene.add(sculpture);
+
+      window.addEventListener('resize', function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      var smoothScroll = 0;
+      var clock = 0;
+
+      function lerp(a, b, f) { return a + (b - a) * f; }
+
+      function animateSculpture() {
+        requestAnimationFrame(animateSculpture);
+        clock += 0.008;
+
+        var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        var rawProgress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+        smoothScroll += (rawProgress - smoothScroll) * 0.06;
+
+        // Map smoothScroll [0..1] across the 4 sculptural states (0->1, 1->2, 2->3)
+        var scaled = smoothScroll * 3;
+        var stageIdx = Math.min(2, Math.floor(scaled));
+        var stageFrac = scaled - stageIdx;
+        // Smoothstep easing between sculptures
+        var easeF = stageFrac * stageFrac * (3 - 2 * stageFrac);
+
+        var states = [s0_eclipse, s1_streams, s2_helix, s3_horizon];
+        var fromArr = states[stageIdx];
+        var toArr = states[stageIdx + 1];
+
+        var pos = geo.attributes.position.array;
+        for (var i = 0; i < N; i++) {
+          var ix = i * 3, iy = ix + 1, iz = ix + 2;
+          var tx = lerp(fromArr[ix], toArr[ix], easeF);
+          var ty = lerp(fromArr[iy], toArr[iy], easeF);
+          var tz = lerp(fromArr[iz], toArr[iz], easeF);
+
+          // Subtle organic breathing motion
+          pos[ix] = tx + Math.sin(clock + i * 0.15) * 0.18;
+          pos[iy] = ty + Math.cos(clock + i * 0.12) * 0.18;
+          pos[iz] = tz;
+        }
+        geo.attributes.position.needsUpdate = true;
+
+        sculpture.rotation.y += (mouseNormX * 0.18 + clock * 0.08 - sculpture.rotation.y) * 0.04;
+        sculpture.rotation.x += (-mouseNormY * 0.12 - sculpture.rotation.x) * 0.04;
+
+        renderer.render(scene, camera);
+      }
+      animateSculpture();
+    } catch (e) {}
+  })();
+
+  /* ---------- 4. Scroll Choreography: Hero Curtain Split, Reveal & Compression Bars ---------- */
+  var heroTopLeft = $('#heroTopLeft');
+  var heroBottomRight = $('#heroBottomRight');
+  var compassLabel = $('#compassLabel');
+  var chapters = $$('[data-chapter]');
+
+  function onScrollChoreography() {
+    var sy = window.scrollY;
+    var vh = window.innerHeight;
+
+    // 1. Hero Curtain-Split Physics
+    if (heroTopLeft && heroBottomRight && sy < vh * 1.2 && !reduce) {
+      var p = Math.min(1, sy / (vh * 0.85));
+      heroTopLeft.style.transform = 'translate3d(' + (-p * 110).toFixed(1) + 'px, ' + (-p * 35).toFixed(1) + 'px, 0)';
+      heroTopLeft.style.opacity = String(Math.max(0, 1 - p * 1.25));
+      heroBottomRight.style.transform = 'translate3d(' + (p * 110).toFixed(1) + 'px, ' + (p * 35).toFixed(1) + 'px, 0)';
+      heroBottomRight.style.opacity = String(Math.max(0, 1 - p * 1.25));
+    }
+
+    // 2. Update Bottom-Right Chapter Compass
+    if (compassLabel && chapters.length) {
+      var currentName = chapters[0].getAttribute('data-chapter');
+      chapters.forEach(function (sec) {
+        if (sec.getBoundingClientRect().top <= vh * 0.45) {
+          currentName = sec.getAttribute('data-chapter');
+        }
+      });
+      compassLabel.textContent = currentName;
+    }
+
+    // 3. Rotate the Architectural Experience Dial on Scroll
+    updateExperienceDialFromScroll();
+  }
+
+  window.addEventListener('scroll', onScrollChoreography, { passive: true });
+
+  // IntersectionObserver for .choreo-reveal & .compression-bar
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add('is-visible');
+          $$('.compression-bar', en.target).forEach(function (bar) {
+            var targetW = bar.getAttribute('data-target-width');
+            if (targetW) bar.style.width = targetW;
+          });
+        }
+      });
+    }, { threshold: 0.18 });
+
+    $$('.choreo-reveal').forEach(function (el) { revealObserver.observe(el); });
+  } else {
+    $$('.choreo-reveal').forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ---------- 5. Experience (Direction A: The Rotating Architectural Dial) ---------- */
   function initials(name) {
     return (name || '').split(/\s+/).filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   }
@@ -453,188 +266,242 @@
     return img;
   }
 
-  /* ---------- Mobile Menu ---------- */
-  var menuBtn = $('#menuBtn'), menu = $('#mobileMenu');
-  if (menuBtn && menu) {
-    menuBtn.addEventListener('click', function () {
-      var hidden = menu.classList.toggle('hidden');
-      menuBtn.setAttribute('aria-expanded', String(!hidden));
-    });
-    $$('a', menu).forEach(function (a) {
-      a.addEventListener('click', function () { menu.classList.add('hidden'); menuBtn.setAttribute('aria-expanded', 'false'); });
-    });
-  }
+  var expSection = $('#experience');
+  var dialRing = $('#dialRing');
+  var dialCounter = $('#dialCounter');
+  var expCompany = $('#expActiveCompany');
+  var expRole = $('#expActiveRole');
+  var expDates = $('#expActiveDates');
+  var expPlace = $('#expActivePlace');
+  var expImpact = $('#expActiveImpact');
+  var expStepDots = $('#expStepDots');
+  var activeExpIdx = -1;
+  var manualLockUntil = 0;
 
-  /* ---------- KPI Count-Up ---------- */
-  var counters = $$('[data-count]');
-  function fmt(el, v) { return (el.dataset.prefix || '') + v.toFixed(+el.dataset.decimals || 0) + (el.dataset.suffix || ''); }
-  if (reduce || !('IntersectionObserver' in window)) {
-    counters.forEach(function (el) { el.textContent = fmt(el, parseFloat(el.dataset.count)); });
-  } else {
-    counters.forEach(function (el) { el.textContent = fmt(el, 0); });
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        io.unobserve(en.target);
-        var el = en.target, target = parseFloat(el.dataset.count), t0 = performance.now(), dur = 1300;
-        (function step(now) {
-          var p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
-          el.textContent = fmt(el, target * e);
-          if (p < 1) requestAnimationFrame(step);
-        })(t0);
-      });
-    }, { threshold: 0.4 });
-    counters.forEach(function (el) { io.observe(el); });
-  }
+  if (dialRing && Array.isArray(S.experience) && S.experience.length) {
+    var totalExp = S.experience.length;
 
-  /* ---------- 6. Experience: All-At-Once Interactive Accordion Filmstrip ---------- */
-  var expList = $('#experienceList') || $('#experienceGrid');
-  if (expList && Array.isArray(S.experience)) {
-    expList.innerHTML = '';
-    S.experience.forEach(function (e, idx) {
-      var row = document.createElement('article');
-      row.className = 'exp-row py-4.5 px-2 sm:px-4' + (idx === 0 ? ' is-open' : '');
+    S.experience.forEach(function (e, i) {
+      var angleDeg = (i / totalExp) * 360;
+      var angleRad = (angleDeg * Math.PI) / 180;
 
-      var chip = document.createElement('div');
-      chip.className = 'w-11 h-11 shrink-0 rounded-xl bg-white flex items-center justify-center p-1.5 overflow-hidden shadow-sm';
+      var node = document.createElement('button');
+      node.type = 'button';
+      node.className = 'dial-node';
+      node.setAttribute('aria-label', e.company + ' - ' + e.role);
+      node.dataset.index = String(i);
+
+      var upright = document.createElement('div');
+      upright.className = 'dial-node-upright';
+
       var img = loadImage('logos/' + e.key, function (bad) {
         bad.remove();
-        chip.className = 'w-11 h-11 shrink-0 rounded-xl bg-white/5 border border-white/10 text-amberGlow font-editorial font-semibold text-sm flex items-center justify-center';
-        chip.textContent = initials(e.company);
+        upright.innerHTML = '<span class="mono-meta text-xs font-semibold">' + initials(e.company) + '</span>';
       });
       img.className = 'max-w-full max-h-full object-contain';
-      chip.appendChild(img);
+      upright.appendChild(img);
+      node.appendChild(upright);
 
-      var header = document.createElement('div');
-      header.className = 'flex items-center justify-between gap-4 py-4';
-
-      var left = document.createElement('div');
-      left.className = 'flex items-center gap-4 min-w-0';
-      left.appendChild(chip);
-
-      var titleWrap = document.createElement('div');
-      titleWrap.className = 'min-w-0';
-      titleWrap.innerHTML =
-        '<div class="flex flex-wrap items-center gap-2">' +
-          '<h3 class="font-editorial text-lg md:text-xl text-ivory truncate">' + e.company + '</h3>' +
-          '<span class="text-sand/50 hidden sm:inline">&middot;</span>' +
-          '<span class="text-sm font-medium text-sand truncate">' + e.role + '</span>' +
-          (e.ongoing ? '<span class="mono-tag px-2 py-0.5 rounded-full bg-amberGlow/15 border border-amberGlow/30 text-amberGlow text-[10px] uppercase">Ongoing</span>' : '') +
-        '</div>';
-      left.appendChild(titleWrap);
-
-      var right = document.createElement('div');
-      right.className = 'flex items-center gap-3 shrink-0';
-      right.innerHTML =
-        '<span class="mono-tag text-xs text-sand/80 hidden md:inline">' + e.dates + '</span>' +
-        '<span class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-amberGlow text-xs">+</span>';
-
-      header.appendChild(left);
-      header.appendChild(right);
-
-      var details = document.createElement('div');
-      details.className = 'exp-details';
-      details.innerHTML =
-        '<div class="exp-details-inner pl-14 sm:pl-16 pb-4 pr-2">' +
-          '<p class="mono-tag text-[11px] text-amberGlow/90 mb-1">' + e.dates + ' &middot; ' + e.place + '</p>' +
-          '<p class="text-sm text-sand leading-relaxed max-w-3xl">' + e.impact + '</p>' +
-        '</div>';
-
-      row.appendChild(header);
-      row.appendChild(details);
-
-      row.addEventListener('click', function () {
-        var wasOpen = row.classList.contains('is-open');
-        $$('.exp-row', expList).forEach(function (r) { r.classList.remove('is-open'); });
-        if (!wasOpen) row.classList.add('is-open');
-        trackEvent('experience_row_toggle', { company: e.company });
+      node.addEventListener('click', function () {
+        manualLockUntil = performance.now() + 1800;
+        setActiveExperience(i);
+        trackEvent('experience_dial_click', { company: e.company });
       });
 
-      expList.appendChild(row);
+      dialRing.appendChild(node);
+
+      // Step dot indicator
+      if (expStepDots) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'h-1.5 rounded-full transition-all duration-300 ' + (i === 0 ? 'w-8 bg-amberGlow' : 'w-2 bg-white/20');
+        dot.setAttribute('aria-label', 'Go to ' + e.company);
+        dot.addEventListener('click', function () {
+          manualLockUntil = performance.now() + 1800;
+          setActiveExperience(i);
+        });
+        expStepDots.appendChild(dot);
+      }
     });
-  }
 
-  /* ---------- 7. Tactile Editorial Capability Deck ---------- */
-  var SKILL_ICONS = {
-    'vba': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
-    'validation': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
-    'recon': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>',
-    'deploy': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>',
-    'anomaly': '<svg class="w-4 h-4 draw-icon text-amberGlow shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>',
-    'default': '<svg class="w-4 h-4 draw-icon text-amberGlow/80 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'
-  };
-
-  var allSkills = {};
-  if (S.skills && S.skills.advanced && S.skills.practitioner) {
-    S.skills.advanced.forEach(function (s) { s.tier = 'Advanced Practitioner'; allSkills[s.id] = s; });
-    S.skills.practitioner.forEach(function (s) { s.tier = 'Practitioner'; allSkills[s.id] = s; });
-
-    function buildSkillPills(container, list) {
-      if (!container) return;
-      container.innerHTML = '';
-      list.forEach(function (s) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'skill-pill';
-        btn.setAttribute('data-id', s.id);
-        var iconSvg = SKILL_ICONS[s.id] || SKILL_ICONS['default'];
-        btn.innerHTML = iconSvg + '<span>' + s.name + '</span>';
-        btn.addEventListener('click', function () {
-          selectSkill(s.id);
-          trackEvent('skill_select', { skill: s.name });
-        });
-        btn.addEventListener('pointerenter', function () {
-          if (window.innerWidth >= 1024) selectSkill(s.id);
-        });
-        container.appendChild(btn);
+    function positionDialNodes() {
+      var radius = dialRing.offsetWidth / 2;
+      $$('.dial-node', dialRing).forEach(function (node, i) {
+        var angleRad = ((i / totalExp) * 360 * Math.PI) / 180;
+        var x = Math.cos(angleRad) * radius;
+        var y = Math.sin(angleRad) * radius;
+        node.style.transform = 'translate3d(' + x.toFixed(1) + 'px, ' + y.toFixed(1) + 'px, 0)';
       });
     }
+    positionDialNodes();
+    window.addEventListener('resize', positionDialNodes);
 
-    function selectSkill(id) {
-      $$('.skill-pill').forEach(function (b) {
-        b.classList.toggle('is-active', b.getAttribute('data-id') === id);
+    function setActiveExperience(idx) {
+      if (idx === activeExpIdx || !S.experience[idx]) return;
+      activeExpIdx = idx;
+      var item = S.experience[idx];
+      var targetRot = -((idx / totalExp) * 360);
+
+      dialRing.style.transform = 'rotate(' + targetRot + 'deg)';
+      $$('.dial-node', dialRing).forEach(function (node, i) {
+        node.classList.toggle('is-active', i === idx);
+        var up = $('.dial-node-upright', node);
+        if (up) up.style.transform = 'rotate(' + (-targetRot) + 'deg)';
       });
-      var s = allSkills[id], panel = $('#skillPanel');
-      if (!s || !panel) return;
-      var adv = s.tier === 'Advanced Practitioner';
-      panel.style.transform = 'scale(0.985)';
-      setTimeout(function () { panel.style.transform = 'scale(1)'; }, 120);
 
-      panel.innerHTML =
-        '<div class="flex items-center justify-between gap-2 mb-4">' +
-          '<span class="mono-tag px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider ' +
-            (adv ? 'bg-amberGlow/15 border border-amberGlow/35 text-amberGlow' : 'bg-white/5 border border-white/10 text-sand') + '">' + s.tier + '</span>' +
-          '<span class="mono-tag text-[11px] text-sand/60">Capability Proof</span>' +
+      if (dialCounter) dialCounter.textContent = '0' + (idx + 1) + ' / 0' + totalExp;
+
+      if (expCompany) {
+        expCompany.style.opacity = '0.25';
+        expCompany.style.transform = 'translateY(8px)';
+        setTimeout(function () {
+          expDates.textContent = item.dates;
+          expPlace.textContent = item.place + (item.ongoing ? ' · Ongoing' : '');
+          expCompany.textContent = item.company;
+          expRole.textContent = item.role;
+          expImpact.textContent = item.impact;
+          expCompany.style.opacity = '1';
+          expCompany.style.transform = 'translateY(0)';
+        }, 120);
+      }
+
+      if (expStepDots) {
+        $$('button', expStepDots).forEach(function (d, i) {
+          d.className = 'h-1.5 rounded-full transition-all duration-300 ' + (i === idx ? 'w-8 bg-amberGlow' : 'w-2 bg-white/20');
+        });
+      }
+    }
+
+    setActiveExperience(0);
+  }
+
+  function updateExperienceDialFromScroll() {
+    if (!expSection || !S.experience || !S.experience.length) return;
+    if (performance.now() < manualLockUntil) return;
+    var rect = expSection.getBoundingClientRect();
+    var scrollable = expSection.offsetHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    if (rect.top <= 0 && rect.bottom >= window.innerHeight * 0.5) {
+      var p = Math.min(0.999, Math.max(0, -rect.top / scrollable));
+      var idx = Math.floor(p * S.experience.length);
+      if (idx !== activeExpIdx) {
+        var clickables = $$('.dial-node', dialRing);
+        if (clickables[idx]) {
+          // Trigger dial update smoothly
+          activeExpIdx = -1;
+          var item = S.experience[idx];
+          var totalExp = S.experience.length;
+          activeExpIdx = idx;
+          var targetRot = -((idx / totalExp) * 360);
+          dialRing.style.transform = 'rotate(' + targetRot + 'deg)';
+          clickables.forEach(function (node, i) {
+            node.classList.toggle('is-active', i === idx);
+            var up = $('.dial-node-upright', node);
+            if (up) up.style.transform = 'rotate(' + (-targetRot) + 'deg)';
+          });
+          if (dialCounter) dialCounter.textContent = '0' + (idx + 1) + ' / 0' + totalExp;
+          if (expDates) expDates.textContent = item.dates;
+          if (expPlace) expPlace.textContent = item.place + (item.ongoing ? ' · Ongoing' : '');
+          if (expCompany) expCompany.textContent = item.company;
+          if (expRole) expRole.textContent = item.role;
+          if (expImpact) expImpact.textContent = item.impact;
+          if (expStepDots) {
+            $$('button', expStepDots).forEach(function (d, i) {
+              d.className = 'h-1.5 rounded-full transition-all duration-300 ' + (i === idx ? 'w-8 bg-amberGlow' : 'w-2 bg-white/20');
+            });
+          }
+        }
+      }
+    }
+  }
+
+  /* ---------- 6. Craft: The Typographic Split-Curtain ---------- */
+  var CURTAINS = [
+    {
+      num: '01',
+      title: 'Enterprise Excel & VBA Systems',
+      headline: 'Turning 36-hour manual spreadsheet routines into 15-minute in-memory engines.',
+      body: 'Built seven production tools using Scripting.Dictionary hash lookups, dynamic memory arrays, and custom XML ribbons (.xlam) so non-technical teams can run complex audits in one click.',
+      tools: 'VBA · Memory Arrays · Custom XML Ribbons · CNIC & Barcode Validation · Power BI & DAX',
+      proofLabel: 'Inspect PepsiCo Suite ↑',
+      proofHref: '#pepsico'
+    },
+    {
+      num: '02',
+      title: 'Predictive Machine Learning',
+      headline: ' Models that generalize to unseen companies instead of flattering themselves.',
+      body: 'Engineered L2 Logistic Regression and Random Forest triage pipelines evaluated under strict client-grouped holdout splits (GroupShuffleSplit) and a quarantined leakage harness across 30,000 URLs.',
+      tools: 'Python · pandas · scikit-learn · Client-Grouped Validation · NIST AI RMF Governance',
+      proofLabel: 'Inspect FlyRank Research ↑',
+      proofHref: '#flyrank'
+    },
+    {
+      num: '03',
+      title: 'Tax, SAP & ERP Reconciliation',
+      headline: 'Compressing 25-hour line-by-line SAP and FBR tax audits into 192 seconds.',
+      body: 'Designed tolerance-based matching engines for PepsiCo Tax, monitored dealer billing across 3,500 dealers in SAP at FFC, and executed SAP Ariba international sourcing at OGDCL.',
+      tools: 'SAP ERP · SAP Ariba · FBR Tax Portal Reconciliation · CPR Standardization',
+      proofLabel: 'Inspect Tax Engine ↑',
+      proofHref: '#pepsico'
+    },
+    {
+      num: '04',
+      title: 'Full-Stack & Agentic Workflows',
+      headline: 'Two-sided web platforms and autonomous background agents.',
+      body: 'Founded Outfield (React, Vite, Supabase) for live sports venue booking in Karachi, and deployed self-hosted n8n + Docker + Groq LLM pipelines and local MCP filesystem agents.',
+      tools: 'React · Supabase · n8n · Docker · Groq API · Claude Code & Subagents (MCP)',
+      proofLabel: 'Inspect Outfield & Agents ↑',
+      proofHref: '#outfield'
+    },
+    {
+      num: '05',
+      title: 'Risk, Credit & Equity Analysis',
+      headline: 'Institutional risk frameworks and independent technical trading.',
+      body: 'Worked across operational, credit, liquidity, and environmental risk (Basel II) at Askari Bank Head Office, alongside active technical and fundamental equity trading on the PSX since 2025.',
+      tools: 'Basel II & RCSA · SME Credit Analysis · RSI, MACD & Bollinger Bands · Financial Statements',
+      proofLabel: 'Inspect Track Record ↑',
+      proofHref: '#experience'
+    }
+  ];
+
+  var curtainList = $('#curtainList');
+  if (curtainList) {
+    CURTAINS.forEach(function (c, i) {
+      var band = document.createElement('article');
+      band.className = 'curtain-band py-7 sm:py-9' + (i === 0 ? ' is-open' : '');
+      band.innerHTML =
+        '<div class="flex items-baseline justify-between gap-6">' +
+          '<div class="flex items-baseline gap-5 sm:gap-8 min-w-0">' +
+            '<span class="mono-meta text-xs text-amberGlow shrink-0">' + c.num + '</span>' +
+            '<h3 class="curtain-title font-editorial text-2xl sm:text-4xl md:text-5xl text-ivory tracking-tight truncate">' + c.title + '</h3>' +
+          '</div>' +
+          '<span class="mono-meta text-xs uppercase tracking-widest text-sand/60 shrink-0 hidden sm:inline">Inspect +</span>' +
         '</div>' +
-        '<h3 class="font-editorial text-2xl md:text-3xl text-ivory mb-3">' + s.name + '</h3>' +
-        '<p class="text-sand text-sm md:text-base leading-relaxed mb-6">' + s.summary + '</p>' +
-        '<div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">' +
-          '<span class="mono-tag text-xs text-sand">Verified in:</span>' +
-          '<div class="flex flex-wrap gap-3">' +
-            s.proof.map(function (p) {
-              var jumpMap = { '#pepsico': 'pepsico', '#flyrank': 'flyrank', '#outfield': 'outfield', '#also-built': 'agents' };
-              var exKey = jumpMap[p.href] || '';
-              return '<a class="text-sm font-semibold text-amberGlow hover:text-ivory transition" ' +
-                (exKey ? 'data-skill-exhibit="' + exKey + '" href="#projects"' : 'href="' + p.href + '"') + '>' + p.label + ' &rarr;</a>';
-            }).join('') +
+        '<div class="curtain-drawer">' +
+          '<div class="curtain-drawer-inner pl-8 sm:pl-14 pt-6 pr-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">' +
+            '<div class="lg:col-span-8 space-y-2">' +
+              '<h4 class="font-editorial text-xl sm:text-2xl text-ivory">' + c.headline + '</h4>' +
+              '<p class="text-sm sm:text-base text-sand leading-relaxed max-w-2xl">' + c.body + '</p>' +
+              '<p class="mono-meta text-xs text-amberGlow/90 pt-2">' + c.tools + '</p>' +
+            '</div>' +
+            '<div class="lg:col-span-4 lg:text-right">' +
+              '<a href="' + c.proofHref + '" class="editorial-link text-sm font-medium text-ivory">' + c.proofLabel + '</a>' +
+            '</div>' +
           '</div>' +
         '</div>';
 
-      $$('[data-skill-exhibit]', panel).forEach(function (a) {
-        a.addEventListener('click', function () {
-          renderExhibitStage(a.getAttribute('data-skill-exhibit'), 0);
-        });
+      band.addEventListener('click', function () {
+        var open = band.classList.contains('is-open');
+        $$('.curtain-band', curtainList).forEach(function (b) { b.classList.remove('is-open'); });
+        if (!open) band.classList.add('is-open');
+        trackEvent('craft_curtain_open', { capability: c.title });
       });
-    }
 
-    buildSkillPills($('#clusterA'), S.skills.advanced);
-    buildSkillPills($('#clusterP'), S.skills.practitioner);
-    selectSkill(S.skills.advanced[0].id);
+      curtainList.appendChild(band);
+    });
   }
 
-  bindWarmGlassHover();
-
-  /* ---------- 8. PDF.js Setup & Frameless Certificate Renderer ---------- */
+  /* ---------- 7. PDF.js & 3D Perspective Gallery Arc for Certificates ---------- */
   if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
@@ -708,7 +575,6 @@
     });
   }
 
-  /* ---------- 9. Certificates: Pure Unbordered Gliding Rows ---------- */
   var certWrap = $('#certRows');
   var rowControllers = [];
 
@@ -734,16 +600,16 @@
 
       card.innerHTML =
         '<div class="cert-preview-box">' +
-          '<div class="cert-fallback absolute inset-0 flex flex-col justify-between p-6 bg-[#FAF6F0] text-obsidian rounded-[6px]">' +
+          '<div class="cert-fallback absolute inset-0 flex flex-col justify-between p-6 bg-[#FAF6F0] text-obsidian rounded-[4px]">' +
             '<div class="flex items-center justify-between border-b border-black/10 pb-2">' +
-              '<span class="mono-tag text-[9px] tracking-widest uppercase text-obsidian/60 font-bold">Anthropic</span>' +
-              '<span class="mono-tag text-[9px] text-obsidian/50">Verified</span>' +
+              '<span class="mono-meta text-[9px] tracking-widest uppercase text-obsidian/60 font-bold">Anthropic</span>' +
+              '<span class="mono-meta text-[9px] text-obsidian/50">Verified</span>' +
             '</div>' +
             '<div class="my-auto py-2 text-left">' +
               '<p class="font-editorial font-semibold text-obsidian text-sm leading-snug">' + c.title + '</p>' +
               '<p class="text-[11px] text-obsidian/60 mt-1">Maaz Khan</p>' +
             '</div>' +
-            '<div class="text-[9px] mono-tag text-obsidian/50 text-right">Certificate of Completion</div>' +
+            '<div class="text-[9px] mono-meta text-obsidian/50 text-right">Certificate of Completion</div>' +
           '</div>' +
           '<canvas></canvas>' +
         '</div>';
@@ -775,7 +641,7 @@
       viewport.appendChild(track);
       certWrap.appendChild(viewport);
 
-      var baseSpeed = (g.direction || (gi % 2 === 0 ? -1 : 1)) * 0.55;
+      var baseSpeed = (g.direction || (gi % 2 === 0 ? -1 : 1)) * 0.58;
       var ctrl = {
         viewport: viewport,
         track: track,
@@ -844,16 +710,6 @@
       viewport.addEventListener('pointerup', endDrag);
       viewport.addEventListener('pointercancel', endDrag);
 
-      track.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          var card = e.target.closest('.cert-card');
-          if (card && card._certData) {
-            e.preventDefault();
-            openCertModal(card._certData, card);
-          }
-        }
-      });
-
       ctrl.measure = measureSetWidth;
       rowControllers.push(ctrl);
     });
@@ -883,7 +739,7 @@
     requestAnimationFrame(tickCerts);
   }
 
-  /* ---------- 10. Frameless Fluid FLIP Lightbox Controller ---------- */
+  /* ---------- 8. Frameless Fluid FLIP Lightbox Controller ---------- */
   var lightbox = $('#certLightbox');
   var lightboxCard = $('#certLightboxCard');
   var modalCanvas = $('#certModalCanvas');
@@ -924,7 +780,7 @@
 
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        lightboxCard.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1)';
+        lightboxCard.style.transition = 'transform 0.44s cubic-bezier(0.16, 1, 0.3, 1)';
         lightboxCard.style.transform = 'translate3d(0, 0, 0) scale(1)';
       });
     });
@@ -935,7 +791,7 @@
     zoomLevel = 1;
     if (modalCanvas) modalCanvas.style.transform = 'scale(1)';
     var flip = computeFlipDelta(activeOriginCard);
-    lightboxCard.style.transition = 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1)';
+    lightboxCard.style.transition = 'transform 0.36s cubic-bezier(0.16, 1, 0.3, 1)';
     lightboxCard.style.transform = 'translate3d(' + flip.dx + 'px, ' + flip.dy + 'px, 0) scale(' + flip.scale + ')';
     lightbox.classList.remove('is-open');
     activeOriginCard = null;
@@ -943,9 +799,7 @@
 
   if (lightbox) {
     lightbox.addEventListener('click', function (e) {
-      if (e.target !== modalCanvas) {
-        closeCertModal();
-      }
+      if (e.target !== modalCanvas) closeCertModal();
     });
   }
 
@@ -962,7 +816,7 @@
     if (e.key === 'Escape') closeCertModal();
   });
 
-  /* ---------- 11. About & Contact ---------- */
+  /* ---------- 9. About & Contact ---------- */
   var factsEl = $('#aboutFacts');
   if (factsEl && S.about && Array.isArray(S.about.facts)) {
     S.about.facts.forEach(function (f) {
@@ -978,16 +832,9 @@
   if (storyEl && S.about && Array.isArray(S.about.story)) {
     S.about.story.forEach(function (p) {
       var el = document.createElement('p');
-      el.className = 'text-sand leading-relaxed';
       el.textContent = p;
       storyEl.appendChild(el);
     });
-  }
-  var fig = $('#aboutPhoto');
-  if (fig) {
-    var photo = loadImage('headshot', function (bad) { bad.remove(); });
-    photo.className = 'w-full h-full object-cover';
-    photo.onload = function () { fig.appendChild(photo); fig.classList.remove('hidden'); };
   }
 
   var contactForm = $('#contactForm');
@@ -995,18 +842,14 @@
     contactForm.addEventListener('submit', function () {
       trackEvent('contact_form_submit');
       var btn = $('#submitBtn');
-      if (btn) { btn.disabled = true; btn.innerText = 'Sending...'; }
+      if (btn) { btn.disabled = true; btn.innerText = 'Dispatching...'; }
     });
   }
 
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       var btn = $('#submitBtn');
-      if (btn) { btn.disabled = false; btn.innerText = 'Send Message'; }
+      if (btn) { btn.disabled = false; btn.innerHTML = '<span>Dispatch Note</span><span>&rarr;</span>'; }
     }
   });
-
-  if (window.AOS) {
-    setTimeout(function () { window.AOS.refresh(); }, 200);
-  }
 })();
