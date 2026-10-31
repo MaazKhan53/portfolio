@@ -46,17 +46,14 @@
     });
   }
 
-  /* ---------- 2. Interactive Cursor Follower & Magnetic CTA Physics ---------- */
+  /* ---------- 2. Cursor Follower & Magnetic CTA Physics ---------- */
   var cursorHalo = $('#cursorHalo');
-  var mouseNormX = 0, mouseNormY = 0;
   var cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
   var haloX = cursorX, haloY = cursorY;
 
   window.addEventListener('pointermove', function (e) {
     cursorX = e.clientX;
     cursorY = e.clientY;
-    mouseNormX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseNormY = (e.clientY / window.innerHeight - 0.5) * 2;
   }, { passive: true });
 
   if (cursorHalo && !reduce) {
@@ -94,133 +91,395 @@
   }
   bindMagneticElements();
 
-  /* ---------- 3. Lusion-Style Lit 3D Architectural Sculpture (Positioned in Negative Space) ---------- */
-  (function initLit3DSculpture() {
+  /* ---------- 3. TechText Interactive Hero Engine ("Maaz Khan.") ---------- */
+  (function initTechText() {
+    var wrap = $('#techTextWrap');
+    var canvas = $('#techTextCanvas');
+    if (!wrap || !canvas) return;
+
+    var ctx = canvas.getContext('2d');
+    var width = 0, height = 0, dpr = 1;
+    var pointer = { x: -9999, y: -9999, down: false, dragX: 0, dragY: 0 };
+    var springOffset = { x: 0, y: 0, vx: 0, vy: 0 };
+    var kickEnergy = 0;
+    var sweepX = -200;
+    var specks = [];
+
+    // Create 18 reactive technical specks & plus markers around the text
+    for (var i = 0; i < 18; i++) {
+      specks.push({
+        rx: (i / 18) * 0.88 + 0.04,
+        ry: 0.18 + (i % 3) * 0.32,
+        ox: 0, oy: 0, vx: 0, vy: 0,
+        isPlus: i % 3 === 0
+      });
+    }
+
+    function resizeTechText() {
+      var rect = wrap.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = Math.max(300, rect.width);
+      height = Math.max(80, rect.height);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeTechText();
+    window.addEventListener('resize', resizeTechText);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(resizeTechText);
+    }
+
+    wrap.addEventListener('pointermove', function (e) {
+      var r = wrap.getBoundingClientRect();
+      var nx = e.clientX - r.left;
+      var ny = e.clientY - r.top;
+      if (pointer.down) {
+        springOffset.vx += (nx - pointer.x) * 0.18;
+        springOffset.vy += (ny - pointer.y) * 0.18;
+      }
+      pointer.x = nx;
+      pointer.y = ny;
+    });
+
+    wrap.addEventListener('pointerleave', function () {
+      pointer.x = -9999;
+      pointer.y = -9999;
+      pointer.down = false;
+    });
+
+    wrap.addEventListener('pointerdown', function (e) {
+      pointer.down = true;
+      // clickKick impulse
+      kickEnergy = 18;
+      sweepX = 0;
+      specks.forEach(function (sp) {
+        var sx = sp.rx * width;
+        var sy = sp.ry * height;
+        var ang = Math.atan2(sy - pointer.y, sx - pointer.x);
+        sp.vx += Math.cos(ang) * 11;
+        sp.vy += Math.sin(ang) * 11;
+      });
+    });
+
+    window.addEventListener('pointerup', function () { pointer.down = false; });
+
+    function renderTechText() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Spring bounce physics (bounce = 0.4, softness = 0.7)
+      springOffset.vx += (-springOffset.x) * 0.12;
+      springOffset.vy += (-springOffset.y) * 0.12;
+      springOffset.vx *= 0.82;
+      springOffset.vy *= 0.82;
+      springOffset.x += springOffset.vx;
+      springOffset.y += springOffset.vy;
+
+      kickEnergy *= 0.88;
+      sweepX += 6;
+      if (sweepX > width + 300) sweepX = -400;
+
+      var fontSize = Math.min(height * 0.78, width * 0.155);
+      ctx.font = '600 ' + fontSize.toFixed(0) + 'px Fraunces, Georgia, serif';
+      ctx.textBaseline = 'middle';
+
+      var text = 'Maaz Khan';
+      var dot = '.';
+      var baseX = 4 + springOffset.x;
+      var baseY = height * 0.54 + springOffset.y;
+
+      // Compute cursor reach repulsion (reach = 200)
+      var dxCur = pointer.x - (width * 0.35);
+      var dyCur = pointer.y - baseY;
+      var distCur = Math.sqrt(dxCur * dxCur + dyCur * dyCur);
+      var reachPullX = distCur < 200 ? (dxCur / 200) * 6 : 0;
+      var reachPullY = distCur < 200 ? (dyCur / 200) * 4 : 0;
+
+      // 1. Solid Sculpted Fill
+      ctx.fillStyle = '#FAF6F0';
+      ctx.fillText(text, baseX - reachPullX * 0.4, baseY - reachPullY * 0.4);
+      var textW = ctx.measureText(text).width;
+      ctx.fillStyle = '#D9463E';
+      ctx.fillText(dot, baseX + textW - reachPullX * 0.4, baseY - reachPullY * 0.4);
+
+      // 2. TechText Dashed Contour Layer (dashLength = 4, dashGap = 2, strokeWidth = 1.5)
+      var contourShiftX = reachPullX + (Math.random() - 0.5) * kickEnergy;
+      var contourShiftY = reachPullY + (Math.random() - 0.5) * kickEnergy;
+      ctx.save();
+      ctx.setLineDash([4, 2]);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(232, 93, 84, 0.72)';
+      ctx.strokeText(text + dot, baseX + contourShiftX, baseY + contourShiftY);
+      ctx.restore();
+
+      // 3. Sweep Shimmer Highlight
+      if (sweepX > -200 && sweepX < width + 200) {
+        ctx.save();
+        var grad = ctx.createLinearGradient(sweepX - 80, 0, sweepX + 80, 0);
+        grad.addColorStop(0, 'rgba(217, 70, 62, 0)');
+        grad.addColorStop(0.5, 'rgba(240, 117, 108, 0.95)');
+        grad.addColorStop(1, 'rgba(217, 70, 62, 0)');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2;
+        ctx.strokeText(text + dot, baseX, baseY);
+        ctx.restore();
+      }
+
+      // 4. Specks, Plus Markers & Telemetry Labels
+      specks.forEach(function (sp, idx) {
+        var homeX = sp.rx * Math.min(width * 0.9, textW + 40);
+        var homeY = sp.ry * height;
+        var curX = homeX + sp.ox;
+        var curY = homeY + sp.oy;
+
+        var dmx = curX - pointer.x;
+        var dmy = curY - pointer.y;
+        var dm = Math.sqrt(dmx * dmx + dmy * dmy);
+        if (dm < 200 && dm > 1) {
+          var force = ((200 - dm) / 200) * 1.6;
+          sp.vx += (dmx / dm) * force;
+          sp.vy += (dmy / dm) * force;
+        }
+
+        sp.vx += (-sp.ox) * 0.08;
+        sp.vy += (-sp.oy) * 0.08;
+        sp.vx *= 0.84;
+        sp.vy *= 0.84;
+        sp.ox += sp.vx;
+        sp.oy += sp.vy;
+
+        var fx = homeX + sp.ox;
+        var fy = homeY + sp.oy;
+
+        ctx.strokeStyle = 'rgba(232, 93, 84, 0.55)';
+        ctx.fillStyle = 'rgba(250, 246, 240, 0.75)';
+        if (sp.isPlus) {
+          ctx.beginPath();
+          ctx.moveTo(fx - 3.5, fy); ctx.lineTo(fx + 3.5, fy);
+          ctx.moveTo(fx, fy - 3.5); ctx.lineTo(fx, fy + 3.5);
+          ctx.stroke();
+        } else {
+          ctx.fillRect(fx - 1.5, fy - 1.5, 3, 3);
+        }
+
+        // Telemetry label when cursor is within reach
+        if (dm < 130 && idx % 4 === 0) {
+          ctx.save();
+          ctx.font = '500 10px "JetBrains Mono", monospace';
+          ctx.fillStyle = '#F0756C';
+          ctx.fillText('[' + Math.round(fx) + ':' + Math.round(fy) + ']', fx + 6, fy - 6);
+          ctx.restore();
+        }
+      });
+
+      requestAnimationFrame(renderTechText);
+    }
+    requestAnimationFrame(renderTechText);
+  })();
+
+  /* ---------- 4. Scroll-Driven Background Line Streaks + AeroShards + Color Swapping ---------- */
+  (function initScrollDrivenStreaksAndColorSwap() {
     var canvas = $('#bgCanvas');
     if (!canvas || !window.THREE) return;
 
     try {
       var THREE = window.THREE;
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, 26);
+      var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 34);
 
       var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-      // Warm studio lighting (Gold key light + Copper rim light + Deep espresso ambient)
-      var ambientLight = new THREE.AmbientLight(0x1a1410, 1.4);
-      scene.add(ambientLight);
+      var streakGroup = new THREE.Group();
+      scene.add(streakGroup);
 
-      var keyLight = new THREE.DirectionalLight(0xe5a93c, 2.2);
-      keyLight.position.set(12, 16, 14);
-      scene.add(keyLight);
+      // 28 Architectural Streaks positioned in an outer aperture so center/left reading areas stay crystal clear
+      var STREAK_COUNT = 28;
+      var SEGMENTS = 44;
+      var streaks = [];
 
-      var rimLight = new THREE.PointLight(0xc86d44, 2.6, 50);
-      rimLight.position.set(-14, -10, 8);
-      scene.add(rimLight);
+      var colorCrimson = new THREE.Color('#D9463E');
+      var colorRose = new THREE.Color('#F0756C');
+      var colorIvory = new THREE.Color('#FAF6F0');
 
-      var artifactGroup = new THREE.Group();
-      // Start positioned on the right side of the screen so left-aligned hero text is 100% clear
-      artifactGroup.position.set(6.5, 0.5, 0);
-      scene.add(artifactGroup);
+      for (var i = 0; i < STREAK_COUNT; i++) {
+        var geo = new THREE.BufferGeometry();
+        var positions = new Float32Array(SEGMENTS * 3);
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-      // Core Sculptural Mobius / TorusKnot Ribbon (Smooth Dark Bronze Physical Material)
-      var knotGeo = new THREE.TorusKnotGeometry(4.2, 1.05, 180, 32, 2, 3);
-      var knotMat = new THREE.MeshStandardMaterial({
-        color: 0x18130e,
-        roughness: 0.24,
-        metalness: 0.88,
+        var mat = new THREE.LineBasicMaterial({
+          color: i % 2 === 0 ? colorCrimson.clone() : colorRose.clone(),
+          transparent: true,
+          opacity: 0.24 + (i % 5) * 0.04
+        });
+
+        var line = new THREE.Line(geo, mat);
+        streakGroup.add(line);
+
+        streaks.push({
+          line: line,
+          geo: geo,
+          mat: mat,
+          index: i,
+          angleOffset: (i / STREAK_COUNT) * Math.PI * 2,
+          radiusBase: 10.5 + (i % 6) * 1.9
+        });
+      }
+
+      // AeroShards Plus Markers ('+') in 3D space
+      var plusCanvas = document.createElement('canvas');
+      plusCanvas.width = 32; plusCanvas.height = 32;
+      var pCtx = plusCanvas.getContext('2d');
+      pCtx.strokeStyle = '#F0756C';
+      pCtx.lineWidth = 2.2;
+      pCtx.beginPath();
+      pCtx.moveTo(16, 6); pCtx.lineTo(16, 26);
+      pCtx.moveTo(6, 16); pCtx.lineTo(26, 16);
+      pCtx.stroke();
+      var plusTex = new THREE.CanvasTexture(plusCanvas);
+
+      var shardCount = 90;
+      var shardPos = new Float32Array(shardCount * 3);
+      var shardHome = new Float32Array(shardCount * 3);
+      for (var s = 0; s < shardCount; s++) {
+        var sa = (s / shardCount) * Math.PI * 2;
+        var sr = 12 + Math.random() * 14;
+        shardHome[s * 3] = Math.cos(sa) * sr + 4;
+        shardHome[s * 3 + 1] = (Math.random() - 0.5) * 32;
+        shardHome[s * 3 + 2] = (Math.random() - 0.5) * 14;
+        shardPos[s * 3] = shardHome[s * 3];
+        shardPos[s * 3 + 1] = shardHome[s * 3 + 1];
+        shardPos[s * 3 + 2] = shardHome[s * 3 + 2];
+      }
+      var shardGeo = new THREE.BufferGeometry();
+      shardGeo.setAttribute('position', new THREE.BufferAttribute(shardPos, 3));
+      var shardMat = new THREE.PointsMaterial({
+        size: 0.75,
+        map: plusTex,
         transparent: true,
-        opacity: 0.92
+        opacity: 0.38,
+        depthWrite: false
       });
-      var knotMesh = new THREE.Mesh(knotGeo, knotMat);
-      artifactGroup.add(knotMesh);
+      var shardPoints = new THREE.Points(shardGeo, shardMat);
+      streakGroup.add(shardPoints);
 
-      // Delicate Golden Wireframe Halo Cage around the sculpture
-      var cageGeo = new THREE.TorusKnotGeometry(4.26, 1.08, 90, 16, 2, 3);
-      var cageMat = new THREE.MeshBasicMaterial({
-        color: 0xe5a93c,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.08
-      });
-      var cageMesh = new THREE.Mesh(cageGeo, cageMat);
-      artifactGroup.add(cageMesh);
+      var targetScroll = 0;
+      var currentScroll = 0;
+      var targetColorSwap = 0; // 0 = Crimson Streaks / Ivory Headings; 1 = Ivory Streaks / Crimson Headings
+      var currentColorSwap = 0;
+      var gatherStrength = 0;
+      var isHolding = false;
+      var pulseWave = 0;
+      var needsRender = true;
 
-      // Outer Gyroscopic Architectural Rings
-      var ringGeo1 = new THREE.TorusGeometry(6.8, 0.035, 16, 120);
-      var ringMat1 = new THREE.MeshBasicMaterial({ color: 0xe5a93c, transparent: true, opacity: 0.28 });
-      var ring1 = new THREE.Mesh(ringGeo1, ringMat1);
-      ring1.rotation.x = Math.PI / 3;
-      artifactGroup.add(ring1);
+      function updateGeometryAtScroll(scrollVal, swapVal) {
+        // Widen and rotate purely as a function of scroll progress
+        var widenFactor = 1.0 + scrollVal * 1.65 + pulseWave * 0.35 - gatherStrength * 0.45;
+        streakGroup.rotation.z = scrollVal * Math.PI * 1.45;
+        streakGroup.rotation.y = scrollVal * Math.PI * 0.85;
+        streakGroup.position.x = 4.2 - scrollVal * 2.4;
 
-      var ringGeo2 = new THREE.TorusGeometry(8.2, 0.025, 16, 120);
-      var ringMat2 = new THREE.MeshBasicMaterial({ color: 0xfaf6f0, transparent: true, opacity: 0.14 });
-      var ring2 = new THREE.Mesh(ringGeo2, ringMat2);
-      ring2.rotation.y = Math.PI / 4;
-      artifactGroup.add(ring2);
+        // Interpolate streak color between Soft Deep Red (#D9463E) and Warm Ivory (#FAF6F0)
+        var blendedPrimary = colorCrimson.clone().lerp(colorIvory, swapVal);
+        var blendedSecondary = colorRose.clone().lerp(colorCrimson, swapVal);
 
+        streaks.forEach(function (st) {
+          st.mat.color.copy(st.index % 2 === 0 ? blendedPrimary : blendedSecondary);
+          var pos = st.geo.attributes.position.array;
+          var baseA = st.angleOffset;
+          var r = st.radiusBase * widenFactor;
+
+          for (var p = 0; p < SEGMENTS; p++) {
+            var u = (p / (SEGMENTS - 1)) - 0.5; // -0.5 to 0.5
+            var twist = u * (1.8 + scrollVal * 3.6);
+            var a = baseA + twist;
+            var localR = r * (1.0 + Math.abs(u) * scrollVal * 0.9);
+            pos[p * 3] = Math.cos(a) * localR;
+            pos[p * 3 + 1] = u * (34 + scrollVal * 18);
+            pos[p * 3 + 2] = Math.sin(a) * localR * 0.55;
+          }
+          st.geo.attributes.position.needsUpdate = true;
+        });
+
+        renderer.render(scene, camera);
+      }
+
+      function tickScrollPhysics() {
+        var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        targetScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+        var diffScroll = targetScroll - currentScroll;
+        var diffSwap = targetColorSwap - currentColorSwap;
+        var targetGather = isHolding ? 1 : 0;
+        var diffGather = targetGather - gatherStrength;
+
+        // Only animate when scrolling, swapping colors, or holding/clicking (100% still when idle!)
+        if (Math.abs(diffScroll) > 0.0002 || Math.abs(diffSwap) > 0.002 || Math.abs(diffGather) > 0.005 || pulseWave > 0.005 || needsRender) {
+          currentScroll += diffScroll * 0.1;
+          currentColorSwap += diffSwap * 0.08;
+          gatherStrength += diffGather * 0.1;
+          pulseWave *= 0.9;
+          needsRender = false;
+          updateGeometryAtScroll(currentScroll, currentColorSwap);
+        }
+        requestAnimationFrame(tickScrollPhysics);
+      }
+
+      // Check active section color mode on scroll & swap text + background streak colors
+      var colorSections = $$('[data-color-mode]');
+      function syncChapterColorSwap() {
+        var vh = window.innerHeight;
+        var activeMode = 'crimson-streaks';
+        colorSections.forEach(function (sec) {
+          var rect = sec.getBoundingClientRect();
+          if (rect.top <= vh * 0.48 && rect.bottom >= vh * 0.25) {
+            activeMode = sec.getAttribute('data-color-mode');
+          }
+        });
+
+        if (activeMode === 'ivory-streaks') {
+          targetColorSwap = 0.88;
+          // Swap headings to Soft Deep Red and accents to Ivory
+          document.documentElement.style.setProperty('--dyn-heading', '#F0756C');
+          document.documentElement.style.setProperty('--dyn-accent', '#FAF6F0');
+        } else {
+          targetColorSwap = 0.0;
+          // Headings in Crisp Ivory and accents in Soft Deep Red
+          document.documentElement.style.setProperty('--dyn-heading', '#FAF6F0');
+          document.documentElement.style.setProperty('--dyn-accent', '#E85D54');
+        }
+      }
+
+      window.addEventListener('scroll', syncChapterColorSwap, { passive: true });
+      window.addEventListener('mousedown', function () { isHolding = true; pulseWave = 1.0; });
+      window.addEventListener('mouseup', function () { isHolding = false; });
       window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        needsRender = true;
       });
 
-      var smoothScroll = 0;
-      var clock = 0;
-
-      function animate3D() {
-        requestAnimationFrame(animate3D);
-        clock += 0.006;
-
-        var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-        var rawScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-        smoothScroll += (rawScroll - smoothScroll) * 0.05;
-
-        // 3D Timeline Choreography: Move sculpture gracefully across negative space as user scrolls
-        var isMobile = window.innerWidth < 768;
-        var targetX = isMobile ? 0 : Math.cos(smoothScroll * Math.PI * 2.5) * 6.8;
-        var targetY = Math.sin(smoothScroll * Math.PI * 2) * 2.2;
-        var targetZ = -Math.sin(smoothScroll * Math.PI) * 5.5;
-
-        artifactGroup.position.x += (targetX + mouseNormX * 1.1 - artifactGroup.position.x) * 0.04;
-        artifactGroup.position.y += (targetY - mouseNormY * 0.9 - artifactGroup.position.y) * 0.04;
-        artifactGroup.position.z += (targetZ - artifactGroup.position.z) * 0.04;
-
-        // Scroll-driven sculptural rotation + subtle idle spin
-        knotMesh.rotation.x = smoothScroll * Math.PI * 3.5 + clock * 0.7;
-        knotMesh.rotation.y = smoothScroll * Math.PI * 2.2 + clock * 0.5;
-        cageMesh.rotation.copy(knotMesh.rotation);
-
-        ring1.rotation.z = clock * 0.8 + smoothScroll * 4;
-        ring2.rotation.x = -clock * 0.6 + smoothScroll * 3;
-
-        renderer.render(scene, camera);
-      }
-      animate3D();
+      syncChapterColorSwap();
+      tickScrollPhysics();
     } catch (e) {}
   })();
 
-  /* ---------- 4. GSAP ScrollTrigger Choreography & Mask-Split Typography ---------- */
+  /* ---------- 5. GSAP ScrollTrigger Choreography & Mask-Split Typography ---------- */
   function initGSAPChoreography() {
     if (!window.gsap) return;
     var gsap = window.gsap;
-    if (window.ScrollTrigger) {
-      gsap.registerPlugin(window.ScrollTrigger);
-    }
-
+    if (window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
     if (reduce) return;
 
-    // 1. Hero Opening Mask-Split Stagger
     gsap.fromTo(
       '#top .split-line',
       { yPercent: 115, rotateZ: 2, opacity: 0 },
       { yPercent: 0, rotateZ: 0, opacity: 1, duration: 1.15, stagger: 0.12, ease: 'power4.out', delay: 0.1 }
     );
 
-    // 2. Section Header Mask-Split Reveals on Scroll
     $$('.gsap-section-header').forEach(function (header) {
       var lines = $$('.split-line', header);
       if (lines.length) {
@@ -228,19 +487,13 @@
           lines,
           { yPercent: 115, rotateZ: 1.5, opacity: 0 },
           {
-            yPercent: 0,
-            rotateZ: 0,
-            opacity: 1,
-            duration: 1.05,
-            stagger: 0.1,
-            ease: 'power4.out',
+            yPercent: 0, rotateZ: 0, opacity: 1, duration: 1.05, stagger: 0.1, ease: 'power4.out',
             scrollTrigger: { trigger: header, start: 'top 84%' }
           }
         );
       }
     });
 
-    // 3. Project Spreads 3D Perspective Entry + Compression Bar Trigger
     $$('.gsap-spread').forEach(function (spread) {
       var lines = $$('.split-line', spread);
       if (lines.length) {
@@ -248,11 +501,7 @@
           lines,
           { yPercent: 110, opacity: 0 },
           {
-            yPercent: 0,
-            opacity: 1,
-            duration: 1.0,
-            stagger: 0.1,
-            ease: 'power4.out',
+            yPercent: 0, opacity: 1, duration: 1.0, stagger: 0.1, ease: 'power4.out',
             scrollTrigger: { trigger: spread, start: 'top 82%' }
           }
         );
@@ -262,13 +511,9 @@
         spread,
         { y: 50, opacity: 0 },
         {
-          y: 0,
-          opacity: 1,
-          duration: 1.0,
-          ease: 'power3.out',
+          y: 0, opacity: 1, duration: 1.0, ease: 'power3.out',
           scrollTrigger: {
-            trigger: spread,
-            start: 'top 82%',
+            trigger: spread, start: 'top 82%',
             onEnter: function () {
               $$('.compression-bar', spread).forEach(function (bar) {
                 var w = bar.getAttribute('data-target-width');
@@ -280,7 +525,6 @@
       );
     });
 
-    // 4. Liquid SVG Morphing Wave Dividers on Scroll
     $$('.liquid-divider').forEach(function (svg) {
       var wave = $('.morph-wave', svg);
       var line = $('.morph-line', svg);
@@ -288,18 +532,13 @@
         gsap.to([wave, line], {
           attr: { d: 'M0,80 C480,0 960,120 1440,30 L1440,120 L0,120 Z' },
           ease: 'none',
-          scrollTrigger: {
-            trigger: svg,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true
-          }
+          scrollTrigger: { trigger: svg, start: 'top bottom', end: 'bottom top', scrub: true }
         });
       }
     });
   }
 
-  /* ---------- 5. Chapter Compass & Scroll Listener ---------- */
+  /* ---------- 6. Chapter Compass & Experience Dial ---------- */
   var compassLabel = $('#compassLabel');
   var chapters = $$('[data-chapter]');
 
@@ -318,7 +557,6 @@
   }
   window.addEventListener('scroll', onScrollUpdate, { passive: true });
 
-  /* ---------- 6. Experience (Rotating Architectural Dial with Oversized 82px–98px Logos) ---------- */
   function initials(name) {
     return (name || '').split(/\s+/).filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   }
@@ -375,7 +613,7 @@
         var dot = document.createElement('button');
         dot.type = 'button';
         dot.className = 'px-3 py-1.5 rounded-full mono-meta text-xs transition-all duration-300 ' +
-          (i === 0 ? 'bg-amberGlow text-obsidian font-bold' : 'bg-white/10 text-sand hover:bg-white/20');
+          (i === 0 ? 'bg-crimson text-ivory font-bold' : 'bg-white/10 text-sand hover:bg-white/20');
         dot.textContent = e.company;
         dot.addEventListener('click', function () {
           manualLockUntil = performance.now() + 2200;
@@ -430,7 +668,7 @@
       if (expStepDots) {
         $$('button', expStepDots).forEach(function (d, i) {
           d.className = 'px-3 py-1.5 rounded-full mono-meta text-xs transition-all duration-300 ' +
-            (i === idx ? 'bg-amberGlow text-obsidian font-bold shadow-lg' : 'bg-white/10 text-sand hover:bg-white/20');
+            (i === idx ? 'bg-crimson text-ivory font-bold shadow-lg' : 'bg-white/10 text-sand hover:bg-white/20');
         });
       }
     }
@@ -454,7 +692,7 @@
     }
   }
 
-  /* ---------- 7. Craft: The Typographic Split-Curtain ---------- */
+  /* ---------- 7. Craft Curtains ---------- */
   var CURTAINS = [
     {
       num: '01',
@@ -511,17 +749,17 @@
       band.innerHTML =
         '<div class="flex items-baseline justify-between gap-6">' +
           '<div class="flex items-baseline gap-5 sm:gap-8 min-w-0">' +
-            '<span class="mono-meta text-sm text-amberGlow font-bold shrink-0">' + c.num + '</span>' +
+            '<span class="mono-meta text-sm swap-accent font-bold shrink-0">' + c.num + '</span>' +
             '<h3 class="curtain-title font-editorial text-2xl sm:text-4xl md:text-5xl text-ivory tracking-tight truncate">' + c.title + '</h3>' +
           '</div>' +
-          '<span class="mono-meta text-xs uppercase tracking-widest text-amberGlow shrink-0 hidden sm:inline">Expand +</span>' +
+          '<span class="mono-meta text-xs uppercase tracking-widest swap-accent shrink-0 hidden sm:inline">Expand +</span>' +
         '</div>' +
         '<div class="curtain-drawer">' +
           '<div class="curtain-drawer-inner pl-8 sm:pl-14 pt-6 pr-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">' +
             '<div class="lg:col-span-8 space-y-2">' +
               '<h4 class="font-editorial text-xl sm:text-2xl text-ivory">' + c.headline + '</h4>' +
               '<p class="text-base sm:text-lg text-ivory/85 leading-relaxed max-w-2xl">' + c.body + '</p>' +
-              '<p class="mono-meta text-xs text-amberGlow pt-2">' + c.tools + '</p>' +
+              '<p class="mono-meta text-xs swap-accent pt-2">' + c.tools + '</p>' +
             '</div>' +
             '<div class="lg:col-span-4 lg:text-right">' +
               '<a href="' + c.proofHref + '" class="cta-beam text-xs py-3 px-5">' + c.proofLabel + '</a>' +
@@ -540,7 +778,7 @@
     });
   }
 
-  /* ---------- 8. PDF.js & 3D Perspective Gallery Arc for Certificates ---------- */
+  /* ---------- 8. Certificates: 3D CircularCarousel (preset="cylinder") ---------- */
   if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
@@ -614,168 +852,172 @@
     });
   }
 
-  var certWrap = $('#certRows');
-  var rowControllers = [];
+  var cylStage = $('#certCylinderStage');
+  var cylRotor = $('#certCylinderRotor');
 
-  if (certWrap && Array.isArray(S.certs)) {
-    var allCertsFlat = [];
+  if (cylStage && cylRotor && Array.isArray(S.certs)) {
+    var allCerts = [];
     S.certs.forEach(function (g) {
-      (g.items || []).forEach(function (it) { allCertsFlat.push(it); });
+      (g.items || []).forEach(function (it) { allCerts.push(it); });
     });
 
-    var balancedGroups = S.certs.length === 2 && S.certs[0].items.length === 7
-      ? S.certs
-      : [
-          { direction: -1, items: allCertsFlat.slice(0, 7) },
-          { direction: 1, items: allCertsFlat.slice(7, 14) }
-        ];
+    var count = allCerts.length;
+    var stepDeg = 360 / count;
+    var cylCards = [];
 
-    function createCertCard(c) {
+    allCerts.forEach(function (c, idx) {
       var card = document.createElement('div');
-      card.className = 'cert-card';
+      card.className = 'cyl-card';
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
       card.setAttribute('aria-label', c.title);
 
       card.innerHTML =
-        '<div class="cert-preview-box">' +
-          '<div class="cert-fallback absolute inset-0 flex flex-col justify-between p-6 bg-[#FAF6F0] text-obsidian rounded-[4px]">' +
-            '<div class="flex items-center justify-between border-b border-black/10 pb-2">' +
+        '<div class="cyl-card-inner">' +
+          '<div class="cert-fallback absolute inset-0 flex flex-col justify-between p-5 bg-[#FAF6F0] text-obsidian">' +
+            '<div class="flex items-center justify-between border-b border-black/10 pb-1.5">' +
               '<span class="mono-meta text-[9px] tracking-widest uppercase text-obsidian/60 font-bold">Anthropic</span>' +
               '<span class="mono-meta text-[9px] text-obsidian/50">Verified</span>' +
             '</div>' +
-            '<div class="my-auto py-2 text-left">' +
-              '<p class="font-editorial font-semibold text-obsidian text-sm leading-snug">' + c.title + '</p>' +
-              '<p class="text-[11px] text-obsidian/60 mt-1">Maaz Khan</p>' +
+            '<div class="my-auto py-1 text-left">' +
+              '<p class="font-editorial font-semibold text-obsidian text-xs sm:text-sm leading-snug">' + c.title + '</p>' +
+              '<p class="text-[10px] text-obsidian/60 mt-1">Maaz Khan</p>' +
             '</div>' +
-            '<div class="text-[9px] mono-meta text-obsidian/50 text-right">Certificate of Completion</div>' +
+            '<div class="text-[8px] mono-meta text-obsidian/50 text-right">Certificate</div>' +
           '</div>' +
           '<canvas></canvas>' +
+          '<div class="cyl-shade"></div>' +
         '</div>';
 
       var canvas = card.querySelector('canvas');
-      renderCertToCanvas(c, canvas, 360);
+      renderCertToCanvas(c, canvas, 340);
+
       card._certData = c;
-      return card;
-    }
-
-    balancedGroups.forEach(function (g, gi) {
-      var viewport = document.createElement('div');
-      viewport.className = 'cert-viewport';
-      var track = document.createElement('div');
-      track.className = 'cert-track';
-
-      for (var copy = 0; copy < 3; copy++) {
-        g.items.forEach(function (c) {
-          var card = createCertCard(c);
-          if (copy > 0) {
-            card.setAttribute('data-clone', String(copy));
-            card.setAttribute('aria-hidden', 'true');
-            card.tabIndex = -1;
-          }
-          track.appendChild(card);
-        });
-      }
-
-      viewport.appendChild(track);
-      certWrap.appendChild(viewport);
-
-      var baseSpeed = (g.direction || (gi % 2 === 0 ? -1 : 1)) * 0.58;
-      var ctrl = {
-        viewport: viewport,
-        track: track,
-        baseSpeed: baseSpeed,
-        pos: 0,
-        momentum: 0,
-        setW: 0,
-        dragging: false,
-        pointerId: null,
-        lastX: 0,
-        lastT: 0,
-        movedDist: 0,
-        downCard: null
-      };
-
-      function measureSetWidth() {
-        var cards = $$('.cert-card', track);
-        var n = g.items.length;
-        if (cards.length >= n * 2) {
-          ctrl.setW = cards[n].offsetLeft - cards[0].offsetLeft;
-        } else {
-          ctrl.setW = track.scrollWidth / 3;
-        }
-        if (ctrl.pos === 0 && ctrl.setW > 0) {
-          ctrl.pos = -ctrl.setW;
-        }
-      }
-
-      viewport.addEventListener('pointerdown', function (e) {
-        if (e.button && e.button !== 0) return;
-        ctrl.dragging = true;
-        ctrl.pointerId = e.pointerId;
-        ctrl.lastX = e.clientX;
-        ctrl.lastT = performance.now();
-        ctrl.movedDist = 0;
-        ctrl.momentum = 0;
-        ctrl.downCard = e.target.closest('.cert-card');
-        viewport.classList.add('is-dragging');
-        try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
-      });
-
-      viewport.addEventListener('pointermove', function (e) {
-        if (!ctrl.dragging || e.pointerId !== ctrl.pointerId) return;
-        var now = performance.now();
-        var dx = e.clientX - ctrl.lastX;
-        var dt = Math.max(now - ctrl.lastT, 8);
-        ctrl.pos += dx;
-        ctrl.movedDist += Math.abs(dx);
-        var instVel = (dx / dt) * 16.67;
-        ctrl.momentum = ctrl.momentum * 0.4 + instVel * 0.6;
-        ctrl.lastX = e.clientX;
-        ctrl.lastT = now;
-      });
-
-      function endDrag() {
-        if (!ctrl.dragging) return;
-        ctrl.dragging = false;
-        viewport.classList.remove('is-dragging');
-        try { viewport.releasePointerCapture(ctrl.pointerId); } catch (err) {}
-        if (ctrl.movedDist < 7 && ctrl.downCard && ctrl.downCard._certData) {
-          openCertModal(ctrl.downCard._certData, ctrl.downCard);
-        }
-        ctrl.downCard = null;
-      }
-
-      viewport.addEventListener('pointerup', endDrag);
-      viewport.addEventListener('pointercancel', endDrag);
-
-      ctrl.measure = measureSetWidth;
-      rowControllers.push(ctrl);
+      card._baseAngle = idx * stepDeg;
+      card._shadeEl = card.querySelector('.cyl-shade');
+      cylRotor.appendChild(card);
+      cylCards.push(card);
     });
 
-    function measureAllRows() {
-      rowControllers.forEach(function (c) { c.measure(); });
-    }
-    window.addEventListener('load', measureAllRows);
-    window.addEventListener('resize', measureAllRows);
-    setTimeout(measureAllRows, 150);
+    var rotY = 0;
+    var velY = 0;
+    var targetSnapY = null;
+    var isHovered = false;
+    var isDragging = false;
+    var startX = 0, lastX = 0, lastT = 0, movedDist = 0, clickedCard = null;
+    var driftSpeed = -0.14; // direction="left", speed={14}
 
-    function tickCerts() {
-      rowControllers.forEach(function (c) {
-        if (!c.setW) c.measure();
-        if (!c.setW) return;
-        if (!c.dragging) {
-          c.pos += (reduce ? 0 : c.baseSpeed) + c.momentum;
-          c.momentum *= 0.94;
-          if (Math.abs(c.momentum) < 0.02) c.momentum = 0;
-        }
-        if (c.pos <= -2 * c.setW) c.pos += c.setW;
-        if (c.pos >= 0) c.pos -= c.setW;
-        c.track.style.transform = 'translate3d(' + c.pos.toFixed(2) + 'px, 0, 0)';
-      });
-      requestAnimationFrame(tickCerts);
+    function getRadius() {
+      var cardW = window.innerWidth < 640 ? 220 : 280;
+      var gap = 25;
+      return Math.round(((cardW + gap) * count) / (2 * Math.PI));
     }
-    requestAnimationFrame(tickCerts);
+
+    cylStage.addEventListener('pointerenter', function () { isHovered = true; });
+    cylStage.addEventListener('pointerleave', function () { isHovered = false; });
+
+    cylStage.addEventListener('pointerdown', function (e) {
+      if (e.button && e.button !== 0) return;
+      isDragging = true;
+      targetSnapY = null;
+      startX = e.clientX;
+      lastX = e.clientX;
+      lastT = performance.now();
+      movedDist = 0;
+      velY = 0;
+      clickedCard = e.target.closest('.cyl-card');
+      cylStage.classList.add('is-dragging');
+      try { cylStage.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+
+    cylStage.addEventListener('pointermove', function (e) {
+      if (!isDragging) return;
+      var now = performance.now();
+      var dx = e.clientX - lastX;
+      var dt = Math.max(now - lastT, 8);
+      var degDelta = dx * 0.16;
+      rotY += degDelta;
+      movedDist += Math.abs(dx);
+      velY = velY * 0.4 + ((degDelta / dt) * 16.67) * 0.6;
+      lastX = e.clientX;
+      lastT = now;
+    });
+
+    function endCylDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      cylStage.classList.remove('is-dragging');
+      try { cylStage.releasePointerCapture(e.pointerId); } catch (err) {}
+
+      // focusOnClick behavior: if clicked without dragging
+      if (movedDist < 7 && clickedCard) {
+        var worldDeg = ((clickedCard._baseAngle + rotY) % 360 + 360) % 360;
+        if (worldDeg > 180) worldDeg -= 360;
+        // If card is on the side, rotate cylinder to focus it front-and-center; if already centered, zoom open!
+        if (Math.abs(worldDeg) > 14) {
+          velY = 0;
+          targetSnapY = rotY - worldDeg;
+        } else {
+          openCertModal(clickedCard._certData, clickedCard);
+        }
+      }
+      clickedCard = null;
+    }
+
+    cylStage.addEventListener('pointerup', endCylDrag);
+    cylStage.addEventListener('pointercancel', endCylDrag);
+
+    function tickCylinder() {
+      var radius = getRadius();
+
+      if (!isDragging) {
+        if (targetSnapY !== null) {
+          var diff = targetSnapY - rotY;
+          rotY += diff * 0.12;
+          if (Math.abs(diff) < 0.15) {
+            rotY = targetSnapY;
+            targetSnapY = null;
+          }
+        } else {
+          // Apply drag momentum (momentum = 0.6) + autoplay drift (pauses on hover)
+          if (Math.abs(velY) > 0.02) {
+            rotY += velY;
+            velY *= 0.94;
+            // Snap to nearest card once momentum slows down
+            if (Math.abs(velY) < 0.08 && isHovered) {
+              targetSnapY = Math.round(rotY / stepDeg) * stepDeg;
+              velY = 0;
+            }
+          } else if (!isHovered && !reduce) {
+            rotY += driftSpeed;
+          }
+        }
+      }
+
+      // Update each card's 3D cylindrical position, depthFade={0.55}, and innerShade={0.6}
+      cylCards.forEach(function (card) {
+        var angle = card._baseAngle + rotY;
+        var rad = (angle * Math.PI) / 180;
+        var cosA = Math.cos(rad); // +1 at front, -1 at back
+        var depthNorm = (cosA + 1) * 0.5; // 1 at front, 0 at back
+
+        // stretch={0.5} subtle scale enhancement at front
+        var scale = 0.86 + depthNorm * 0.18;
+        card.style.transform = 'rotateY(' + angle.toFixed(2) + 'deg) translateZ(' + radius + 'px) scale(' + scale.toFixed(3) + ')';
+
+        // depthFade={0.55}
+        card.style.opacity = (0.22 + depthNorm * 0.78).toFixed(3);
+        card.style.zIndex = String(Math.round(depthNorm * 100));
+
+        // innerShade={0.6}
+        if (card._shadeEl) {
+          card._shadeEl.style.opacity = ((1 - depthNorm) * 0.65).toFixed(3);
+        }
+      });
+
+      requestAnimationFrame(tickCylinder);
+    }
+    requestAnimationFrame(tickCylinder);
   }
 
   /* ---------- 9. Frameless Fluid FLIP Lightbox Controller ---------- */
@@ -861,7 +1103,7 @@
     S.about.facts.forEach(function (f) {
       var li = document.createElement('li');
       li.className = 'flex items-center gap-3';
-      li.innerHTML = '<span class="w-2 h-2 rounded-full bg-amberGlow shrink-0"></span><span>' + f + '</span>';
+      li.innerHTML = '<span class="w-2 h-2 rounded-full bg-crimson shrink-0"></span><span>' + f + '</span>';
       factsEl.appendChild(li);
     });
   }
@@ -895,7 +1137,6 @@
     }
   });
 
-  // Initialize GSAP ScrollTrigger choreography after DOM population
   bindMagneticElements();
   initGSAPChoreography();
 })();
