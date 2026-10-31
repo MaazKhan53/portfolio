@@ -465,7 +465,7 @@
         <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] mono-meta uppercase tracking-[0.2em] text-sand/75 reading-halo">
             <span>59.4 Monthly Hours Returned at PepsiCo</span>
             <span class="text-crimson">&middot;</span>
-            <span>30,000 Production URLs Modeled at FlyRank AI</span>
+            <span>30,000 URLs Sampled from a 79M-Row Warehouse at FlyRank AI</span>
             <span class="text-crimson">&middot;</span>
             <span>14 Verified Anthropic Credentials</span>
         </div>
@@ -577,7 +577,7 @@
                 <div class="lg:col-span-7 space-y-5">
                     <div class="flex items-center gap-3 mono-meta text-xs uppercase tracking-[0.2em] swap-accent">
                         <span class="px-3 py-1 rounded-full bg-crimson/15 border border-crimson/40 font-semibold">Case 02</span>
-                        <span>FlyRank AI &middot; Machine Learning Research</span>
+                        <span>FlyRank AI &middot; 30k URLs Sampled from 79M Warehouse</span>
                     </div>
 
                     <h3 class="split-mask font-editorial text-3xl sm:text-4xl md:text-5xl swap-heading leading-[1.1] tracking-tight">
@@ -586,7 +586,7 @@
                     </h3>
 
                     <p class="text-base sm:text-lg text-ivory/85 leading-relaxed max-w-lg">
-                        When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. I trained a machine learning system across 32 enterprise companies that spots decaying pages <strong class="swap-accent font-semibold">3.5&times; more accurately</strong> on completely unseen websites.
+                        When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. Working on 30,000 production URLs sampled from a 79M-row warehouse across 32 enterprise clients, I enforced a strict client-grouped holdout split (exposing a <strong class="text-ivory font-semibold">14.4 percentage point inflation gap</strong> in standard random testing) to achieve <strong class="swap-accent font-semibold">70.0% Precision@10 (a 3.5&times; lift over baseline)</strong> and <strong class="swap-accent font-semibold">70.0% Precision@50 (a 1.75&times; lift)</strong> on unseen domains.
                     </p>
 
                     <div class="flex flex-wrap gap-3.5 pt-2">
@@ -603,17 +603,17 @@
 
                 <div class="lg:col-span-5 p-7 sm:p-9 rounded-3xl bg-crimsonSurface/90 border border-white/15 shadow-2xl space-y-6">
                     <div>
-                        <span class="mono-meta text-[11px] uppercase tracking-[0.2em] swap-accent block mb-2">Top-10 Triage Accuracy</span>
+                        <span class="mono-meta text-[11px] uppercase tracking-[0.2em] swap-accent block mb-2">Top-10 Triage Accuracy (Unseen Clients)</span>
                         <div class="kpi-num font-editorial text-5xl sm:text-6xl text-ivory leading-none">
-                            70<span class="text-2xl sm:text-3xl swap-accent font-sans ml-1">%</span>
+                            70.0<span class="text-2xl sm:text-3xl swap-accent font-sans ml-1">%</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-sand mt-2">3.5&times; lift over the 20% industry heuristic baseline across 7 unseen test domains</p>
+                        <p class="text-xs sm:text-sm text-sand mt-2">+50.0 percentage points (3.5&times; lift) at K=10 over the 20% baseline; +30.0 pp (1.75&times; lift) at K=50</p>
                     </div>
 
                     <div class="space-y-4 pt-2 border-t border-white/10">
                         <div>
                             <div class="flex justify-between text-xs mono-meta text-sand mb-1.5">
-                                <span>Standard Industry Rule</span>
+                                <span>Standard Industry Rule (P@10)</span>
                                 <span>2 of 10 Correct (20%)</span>
                             </div>
                             <div class="w-full h-2.5 rounded-full bg-white/10">
@@ -622,7 +622,7 @@
                         </div>
                         <div>
                             <div class="flex justify-between text-xs mono-meta swap-accent mb-1.5">
-                                <span>Client-Grouped ML Pipeline</span>
+                                <span>Client-Grouped ML Pipeline (P@10)</span>
                                 <span class="font-bold">7 of 10 Correct (70%)</span>
                             </div>
                             <div class="w-full h-2.5 rounded-full bg-white/10">
@@ -642,12 +642,12 @@
                     </div>
 
                     <h3 class="split-mask font-editorial text-3xl sm:text-4xl md:text-5xl swap-heading leading-[1.1] tracking-tight">
-                        <span class="split-line">Replacing 15 phone calls</span>
+                        <span class="split-line">Replacing a chain of phone calls</span>
                         <span class="split-line">with a <span class="italic swap-accent">single tap.</span></span>
                     </h3>
 
                     <p class="text-base sm:text-lg text-ivory/85 leading-relaxed max-w-lg">
-                        Booking a cricket or football ground in Karachi means chasing venue owners across scattered WhatsApp threads and phone calls. I founded and engineered <strong class="swap-accent font-semibold">Outfield</strong>—a two-sided web platform on React and Supabase where players see live open slots and lock in a pitch instantly.
+                        Booking a cricket or football ground in Karachi means chasing venue owners across scattered WhatsApp threads and a chain of phone calls. I founded and engineered <strong class="swap-accent font-semibold">Outfield</strong>—a two-sided web platform on React and Supabase where players see live open slots and lock in a pitch instantly.
                     </p>
 
                     <div class="pt-2">
@@ -717,7 +717,7 @@
                     </div>
                     <h3 id="flexCapTitle" class="font-editorial text-2xl sm:text-3xl text-ivory">FlyRank AI — Machine Learning Engineering Intern</h3>
                     <p id="flexCapImpact" class="text-sm sm:text-base text-ivory/85 mt-2 leading-relaxed">
-                        Engineered a content decay triage pipeline across 30,000 production URLs (32 clients), achieving 70.0% Precision@10 on unseen domains (3.5x lift over baseline) with a deliberate leakage harness.
+                        Engineered a content decay triage pipeline across 30,000 production URLs sampled from a 79M-row warehouse (32 clients), achieving 70.0% Precision@10 on unseen domains (3.5x lift over baseline) with a deliberate leakage harness.
                     </p>
                 </div>
             </div>
@@ -864,6 +864,21 @@
         </div>
         <p class="text-sand/60 text-xs mono-meta uppercase tracking-[0.22em]">&copy; 2026 Maaz Khan</p>
     </footer>
+
+    <!-- Microsoft Clarity Consent Banner (EU/UK/Swiss Compliance) -->
+    <div id="clarityConsentBanner" class="fixed bottom-6 left-6 z-50 max-w-xs sm:max-w-sm p-5 rounded-3xl bg-crimsonSurface/95 border border-crimson/40 shadow-2xl backdrop-blur-xl hidden transition-opacity duration-300 opacity-0">
+        <div class="flex items-center gap-2.5 mb-2">
+            <span class="w-2 h-2 rounded-full bg-crimson animate-pulse"></span>
+            <span class="mono-meta text-[10px] uppercase tracking-[0.2em] text-ivory font-semibold">Analytics Consent</span>
+        </div>
+        <p class="text-xs text-sand leading-relaxed mb-4">
+            This portfolio uses Microsoft Clarity to understand visitor engagement. Do you consent to analytics cookies?
+        </p>
+        <div class="flex gap-2.5">
+            <button id="acceptClarity" type="button" class="px-4 py-2 rounded-full bg-crimson text-ivory text-xs font-bold hover:bg-roseSoft transition shadow-lg">Accept</button>
+            <button id="declineClarity" type="button" class="px-4 py-2 rounded-full bg-white/5 border border-white/15 text-ivory text-xs hover:bg-white/15 transition">Decline</button>
+        </div>
+    </div>
 
     <script src="data.js"></script>
     <script src="app.js"></script>
