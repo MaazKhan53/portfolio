@@ -99,7 +99,16 @@
             text-shadow: 0 4px 28px rgba(7, 5, 6, 0.95);
         }
         .section-scrim {
-            background: radial-gradient(70% 70% at 35% 50%, rgba(7, 5, 6, 0.86) 0%, rgba(7, 5, 6, 0.42) 72%, transparent 100%);
+            background: radial-gradient(72% 72% at 35% 50%, rgba(7, 5, 6, 0.88) 0%, rgba(7, 5, 6, 0.5) 72%, transparent 100%);
+        }
+
+        /* Soft Vignette Overlay (vignette={0.3}) */
+        .aero-vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(5, 3, 4, 0.65) 100%);
         }
 
         /* Custom Cursor Halo */
@@ -172,12 +181,11 @@
         .split-mask { overflow: hidden; display: block; padding-bottom: 0.08em; }
         .split-line { display: block; will-change: transform, opacity; }
 
-        /* TechText Interactive Canvas Container (Breathable Proportions) */
+        /* TechText Interactive Canvas Container */
         #techTextWrap {
             position: relative; width: 100%; max-width: 820px; height: 130px;
-            cursor: grab; user-select: none;
+            cursor: default; user-select: none;
         }
-        #techTextWrap:active { cursor: grabbing; }
         @media (max-width: 640px) { #techTextWrap { height: 82px; } }
         #techTextCanvas { width: 100%; height: 100%; display: block; }
 
@@ -185,47 +193,12 @@
             width: 100%; height: 80px; display: block; overflow: visible; pointer-events: none;
         }
 
-        /* ---------- RubberSegment Component (trackColor="#27272a", thumbColor="#fafafa") ---------- */
-        .rubber-segment {
-            position: relative;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background: #27272a;
-            padding: 3px; /* inset={3} */
-            border-radius: 10px; /* radius={10} */
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: pan-y;
-        }
-        .rubber-thumb {
-            position: absolute;
-            top: 3px; bottom: 3px; left: 3px;
-            width: calc((100% - 6px) / 4);
-            background: #fafafa;
-            border-radius: 8px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-            pointer-events: none;
-            will-change: transform;
-            transform-origin: center center;
-        }
-        .rubber-slot {
-            position: relative; z-index: 2;
-            padding: 7px 10px;
-            font-size: 12px; font-weight: 600;
-            color: #fafafa;
-            text-align: center;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        .rubber-slot.is-active { color: #18181b; }
-
-        /* ---------- JellyRadio Component (chipColor="#27272a", activeColor="#f5f5f5", radius={18}) ---------- */
+        /* ---------- JellyRadio Component ---------- */
         .jelly-radio-group {
             display: inline-flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 8px; /* gap={8} */
+            gap: 8px;
         }
         .jelly-chip {
             position: relative;
@@ -233,7 +206,7 @@
             align-items: center;
             gap: 7px;
             padding: 9px 18px;
-            border-radius: 18px; /* radius={18} */
+            border-radius: 18px;
             background: #27272a;
             color: #f5f5f5;
             font-size: 13px;
@@ -252,10 +225,6 @@
             color: #18181b;
             border-color: #f5f5f5;
             box-shadow: 0 10px 24px -6px rgba(217, 70, 62, 0.4);
-        }
-        .jelly-chip:disabled {
-            opacity: 0.38;
-            cursor: not-allowed;
         }
 
         /* ---------- Experience: FlexCarousel (preset="liquid", intro="rise") ---------- */
@@ -282,12 +251,11 @@
             justify-content: center;
             transform-style: preserve-3d;
         }
-        /* Individual FlexCarousel Card with intro="rise" initial state */
         .flex-liquid-card {
             position: absolute;
             width: 290px;
-            height: 290px; /* cardHeight={0.5} of 560px stage */
-            border-radius: 24px; /* roundness={1} */
+            height: 290px;
+            border-radius: 24px;
             background: linear-gradient(155deg, rgba(26, 12, 15, 0.94) 0%, rgba(11, 6, 8, 0.98) 100%);
             border: 1px solid rgba(250, 246, 240, 0.14);
             padding: 24px;
@@ -298,7 +266,6 @@
             transform-style: preserve-3d;
             will-change: transform, opacity;
             box-shadow: 0 24px 50px -15px rgba(0, 0, 0, 0.9);
-            /* intro="rise" starting offset before entering viewport */
             opacity: 0;
             transform: translate3d(0, 140px, -200px) rotateX(35deg) scale(0.82);
             transition: border-color 0.35s ease, box-shadow 0.35s ease;
@@ -306,7 +273,6 @@
         @media (max-width: 640px) {
             .flex-liquid-card { width: 240px; height: 255px; padding: 18px; }
         }
-        /* Chromatic dispersion={0.45} liquid lens glow on active card */
         .flex-liquid-card.is-focused {
             border-color: rgba(232, 93, 84, 0.8);
             box-shadow:
@@ -324,7 +290,7 @@
             box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
         }
 
-        /* ---------- Craft: Split-Curtain List & Grid Modes ---------- */
+        /* ---------- Craft: Split-Curtain List ---------- */
         .curtain-band {
             border-bottom: 1px solid rgba(250, 246, 240, 0.14); cursor: pointer;
             transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s var(--spring);
@@ -341,28 +307,6 @@
         .curtain-drawer { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.5s var(--spring), opacity 0.4s ease; }
         .curtain-band:hover .curtain-drawer, .curtain-band.is-open .curtain-drawer { grid-template-rows: 1fr; opacity: 1; }
         .curtain-drawer-inner { overflow: hidden; }
-
-        /* Grid View Mode for Capabilities */
-        #curtainList.is-grid-mode {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        #curtainList.is-grid-mode .curtain-band {
-            border: 1px solid rgba(250, 246, 240, 0.14);
-            border-radius: 24px;
-            padding: 28px;
-            background: rgba(19, 9, 11, 0.82);
-        }
-        #curtainList.is-grid-mode .curtain-drawer {
-            grid-template-rows: 1fr;
-            opacity: 1;
-        }
-        #curtainList.is-grid-mode .curtain-drawer-inner {
-            padding-left: 0 !important;
-            padding-top: 16px !important;
-            display: block !important;
-        }
 
         /* ---------- Certificates: 3D CircularCarousel (preset="cylinder", intro="rise") ---------- */
         #certCylinderStage {
@@ -458,8 +402,9 @@
     <!-- Interactive Cursor Halo -->
     <div id="cursorHalo" aria-hidden="true"></div>
 
-    <!-- 1. Combined 3D AeroShards + Scroll-Driven Line Streaks Canvas -->
+    <!-- 1. Subtle Continuous AeroShards Stream + Scroll-Driven Line Streaks Canvas -->
     <canvas id="bgCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0" aria-hidden="true"></canvas>
+    <div class="aero-vignette" aria-hidden="true"></div>
 
     <!-- Persistent Floating Magnetic CTA Dock -->
     <aside class="fixed bottom-6 right-6 z-40 flex items-center gap-3 p-2 rounded-full bg-crimsonSurface/90 backdrop-blur-xl border border-crimson/45 shadow-2xl">
@@ -473,7 +418,7 @@
     </aside>
 
     <!-- =====================================================================
-         CHAPTER 00 · THE OPEN-CANVAS LANDING (Breathable Layout + TechText)
+         CHAPTER 00 · THE OPEN-CANVAS LANDING
          ===================================================================== -->
     <section id="top" data-chapter="00 / Opening" data-color-mode="crimson-streaks" class="min-h-screen relative z-10 flex flex-col justify-between px-6 sm:px-14 md:px-24 py-16 md:py-24 section-scrim">
 
@@ -487,7 +432,7 @@
             </span>
 
             <h1 class="sr-only">Maaz Khan.</h1>
-            <div id="techTextWrap" title="Hover, drag, or click to kick">
+            <div id="techTextWrap">
                 <canvas id="techTextCanvas"></canvas>
             </div>
         </div>
@@ -516,9 +461,13 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-4 text-[11px] mono-meta uppercase tracking-[0.22em] text-sand/65 reading-halo">
-            <span>Scroll to rotate AeroShards &amp; line streaks &middot; Click anywhere to pulse</span>
-            <span class="w-14 h-[1px] bg-crimson/60"></span>
+        <!-- Substantive Proof Summary Bar -->
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] mono-meta uppercase tracking-[0.2em] text-sand/75 reading-halo">
+            <span>59.4 Monthly Hours Returned at PepsiCo</span>
+            <span class="text-crimson">&middot;</span>
+            <span>30,000 Production URLs Modeled at FlyRank AI</span>
+            <span class="text-crimson">&middot;</span>
+            <span>14 Verified Anthropic Credentials</span>
         </div>
     </section>
 
@@ -529,7 +478,7 @@
     </svg>
 
     <!-- =====================================================================
-         CHAPTER 01 · SELECTED WORK (Breathable Proportions + RubberSegment)
+         CHAPTER 01 · SELECTED WORK
          ===================================================================== -->
     <section id="projects" data-chapter="01 / Selected Work" data-color-mode="ivory-streaks" class="py-28 md:py-36 px-6 sm:px-14 md:px-24 relative z-10 section-scrim">
         <div class="max-w-5xl mx-auto space-y-36 md:space-y-44 reading-halo">
@@ -542,81 +491,81 @@
                 </h2>
             </div>
 
-            <!-- SPREAD 01 · PEPSICO (With Interactive RubberSegment Period Switcher) -->
+            <!-- SPREAD 01 · PEPSICO (Primary Focus on Go-To-Market + Tax) -->
             <article id="pepsico" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 <div class="lg:col-span-7 space-y-5">
                     <div class="flex items-center gap-3 mono-meta text-xs uppercase tracking-[0.2em] swap-accent">
                         <span class="px-3 py-1 rounded-full bg-crimson/15 border border-crimson/40 font-semibold">Case 01</span>
-                        <span>PepsiCo Pakistan &middot; Go-To-Market &amp; Tax</span>
+                        <span>PepsiCo Pakistan &middot; Go-To-Market (GTM) &amp; Tax</span>
                     </div>
 
                     <h3 class="split-mask font-editorial text-3xl sm:text-4xl md:text-5xl swap-heading leading-[1.1] tracking-tight">
-                        <span class="split-line">A 26-hour tax audit,</span>
-                        <span class="split-line">finished in <span class="italic swap-accent">3 minutes.</span></span>
+                        <span class="split-line">61 hours of manual GTM &amp; Tax</span>
+                        <span class="split-line">work, <span class="italic swap-accent">reduced to minutes.</span></span>
                     </h3>
 
                     <p class="text-base sm:text-lg text-ivory/85 leading-relaxed max-w-lg">
-                        PepsiCo teams were spending <strong class="swap-accent font-semibold">61 hours every month</strong> cross-checking thousands of sales, barcode, and tax rows by hand. I built seven custom one-click tools directly inside Excel that automated the entire workflow across two departments—and presented the results to the COO and CFO.
+                        In Go-To-Market operations, teams were losing <strong class="swap-accent font-semibold">36 hours every month</strong> compiling sales master-data, tracking pending inventory transfers, and auditing thousands of customer CNIC and barcode records by hand—while the Tax team spent another <strong class="swap-accent font-semibold">25+ hours</strong> reconciling SAP ledgers against the FBR portal line by line. I engineered seven custom one-click Excel VBA add-ins across both departments and presented the deployed suite to the COO and CFO.
                     </p>
 
                     <details id="pepsicoToolsDetails" class="pt-2 group">
                         <summary class="list-none cursor-pointer inline-flex items-center gap-3.5 px-6 py-3.5 rounded-full bg-crimsonSurface border border-crimson/55 hover:border-roseSoft text-ivory font-semibold text-xs sm:text-sm tracking-wide shadow-xl transition">
                             <span class="w-2 h-2 rounded-full bg-crimson"></span>
-                            <span>Inspect All 7 Excel Engines Built for PepsiCo</span>
+                            <span>View All 7 Production Engines (5 GTM &middot; 2 Tax)</span>
                             <span class="group-open:rotate-45 transition-transform text-lg swap-accent leading-none">+</span>
                         </summary>
                         <div class="mt-5 p-6 rounded-3xl bg-crimsonSurface/95 border border-crimson/35 grid sm:grid-cols-2 gap-x-7 gap-y-4 text-xs sm:text-sm text-sand shadow-2xl">
-                            <div><strong class="text-ivory font-semibold block">01. CNIC &amp; Cell Audit</strong>Flags invalid 13-digit IDs and telecom codes across thousands of rows instantly.</div>
-                            <div><strong class="text-ivory font-semibold block">02. FBR &amp; SAP Tax Reconciler</strong>Matches tax ledgers line-by-line with automated green, amber, and red triage.</div>
-                            <div><strong class="text-ivory font-semibold block">03. Pending Transfers Finder</strong>Isolates stalled inventory transfers in under a second.</div>
-                            <div><strong class="text-ivory font-semibold block">04. Barcode Summary Engine</strong>Groups massive scan logs by product and region entirely in memory.</div>
-                            <div><strong class="text-ivory font-semibold block">05. Counterfeit Barcode Detector</strong>Isolates duplicate or fake scans and calculates contamination rates.</div>
-                            <div><strong class="text-ivory font-semibold block">06. YTD Reports Generator</strong>Consolidates multi-period reports safely with zero double-counting.</div>
-                            <div class="sm:col-span-2"><strong class="text-ivory font-semibold block">07. CPR Tax Standardizer</strong>Normalizes thousands of tax CPR numbers in place in a single click.</div>
+                            <div><strong class="text-ivory font-semibold block">01. GTM — CNIC &amp; Cell Audit Engine</strong>Flags invalid 13-digit IDs and telecom codes across thousands of customer rows in one click.</div>
+                            <div><strong class="text-ivory font-semibold block">02. GTM — YTD Reports Generator</strong>Consolidates multi-period commercial reports safely across active filters with zero double-counting.</div>
+                            <div><strong class="text-ivory font-semibold block">03. GTM — Pending Transfers Finder</strong>Isolates stalled distributor and warehouse inventory transfers in under a second.</div>
+                            <div><strong class="text-ivory font-semibold block">04. GTM — Barcode Summary Engine</strong>Groups high-volume scan logs by SKU and territory entirely in RAM using hash dictionaries.</div>
+                            <div><strong class="text-ivory font-semibold block">05. GTM — Invalid Barcode Detector</strong>Isolates duplicate or counterfeit scans and calculates exact contamination percentages.</div>
+                            <div><strong class="text-ivory font-semibold block">06. Tax — FBR &amp; SAP Reconciler</strong>Matches tax ledgers line-by-line with automated green, amber, and red discrepancy triage.</div>
+                            <div class="sm:col-span-2"><strong class="text-ivory font-semibold block">07. Tax — CPR Standardization Protocol</strong>Normalizes thousands of inconsistent tax CPR numbers in place in a single click.</div>
                         </div>
                     </details>
                 </div>
 
-                <!-- Right Column: RubberSegment Horizon Switcher + Time Compression Meter -->
+                <!-- Right Column: Direct GTM & Tax Time Compression Breakdown -->
                 <div class="lg:col-span-5 p-7 sm:p-9 rounded-3xl bg-crimsonSurface/90 border border-white/15 shadow-2xl space-y-6">
-                    <div class="flex items-center justify-between gap-2">
-                        <span class="mono-meta text-[11px] uppercase tracking-[0.2em] swap-accent">Time Returned Horizon</span>
-                        <span class="mono-meta text-[10px] text-sand/60">Drag or Click</span>
-                    </div>
-
-                    <!-- RubberSegment Component (['Day', 'Week', 'Month', 'Year']) -->
-                    <div id="pepsicoRubberSegment" class="rubber-segment" role="tablist" aria-label="Time Horizon">
-                        <div id="pepsicoRubberThumb" class="rubber-thumb"></div>
-                        <button type="button" class="rubber-slot" data-period="Day" data-index="0">Day</button>
-                        <button type="button" class="rubber-slot" data-period="Week" data-index="1">Week</button>
-                        <button type="button" class="rubber-slot is-active" data-period="Month" data-index="2">Month</button>
-                        <button type="button" class="rubber-slot" data-period="Year" data-index="3">Year</button>
-                    </div>
-
                     <div>
+                        <span class="mono-meta text-[11px] uppercase tracking-[0.2em] swap-accent block mb-2">Verified Production Impact</span>
                         <div class="kpi-num font-editorial text-5xl sm:text-6xl text-ivory leading-none">
-                            <span id="pepsicoDynamicVal">59.4</span><span id="pepsicoDynamicUnit" class="text-xl sm:text-2xl swap-accent font-sans ml-2">hrs / mo</span>
+                            59.4<span class="text-xl sm:text-2xl swap-accent font-sans ml-2">net hrs / mo</span>
                         </div>
-                        <p id="pepsicoDynamicSub" class="text-xs sm:text-sm text-sand mt-2">33 hrs saved in Go-To-Market + 26.4 hrs saved in Tax every month</p>
+                        <p class="text-xs sm:text-sm text-sand mt-2">33.0 net hours saved in Go-To-Market + 26.4 net hours saved in Tax every month</p>
                     </div>
 
-                    <div class="space-y-4 pt-2 border-t border-white/10">
-                        <div>
-                            <div class="flex justify-between text-xs mono-meta text-sand mb-1.5">
-                                <span>Before: Manual Tax Audit</span>
-                                <span id="pepsicoBeforeLabel" class="text-ivory font-semibold">26 Hours / mo</span>
-                            </div>
-                            <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden">
-                                <div class="h-full bg-sand/50 w-full"></div>
-                            </div>
+                    <!-- GTM Compression Meter -->
+                    <div class="space-y-3 pt-4 border-t border-white/10">
+                        <div class="flex justify-between items-baseline">
+                            <span class="mono-meta text-[11px] uppercase tracking-wider text-ivory font-semibold">Go-To-Market (GTM) Suite &middot; 5 Engines</span>
+                            <span class="mono-meta text-xs swap-accent font-bold">33.0 hrs/mo saved</span>
                         </div>
                         <div>
-                            <div class="flex justify-between text-xs mono-meta swap-accent mb-1.5">
-                                <span>After: One-Click VBA Engine</span>
-                                <span id="pepsicoAfterLabel" class="font-bold">192 Seconds</span>
+                            <div class="flex justify-between text-xs mono-meta text-sand mb-1">
+                                <span>Manual Master-Data &amp; Barcode Audits</span>
+                                <span>36 Hours &rarr; &lt;15 Min</span>
                             </div>
                             <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden">
-                                <div class="compression-bar h-full bg-crimson rounded-full" style="width: 100%;" data-target-width="4%"></div>
+                                <div class="compression-bar h-full bg-crimson rounded-full" style="width: 100%;" data-target-width="6%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tax Compression Meter -->
+                    <div class="space-y-3 pt-3 border-t border-white/10">
+                        <div class="flex justify-between items-baseline">
+                            <span class="mono-meta text-[11px] uppercase tracking-wider text-ivory font-semibold">Tax Compliance Suite &middot; 2 Engines</span>
+                            <span class="mono-meta text-xs swap-accent font-bold">26.4 hrs/mo saved</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mono-meta text-sand mb-1">
+                                <span>Line-by-Line SAP &amp; FBR Reconciliation</span>
+                                <span>26 Hours &rarr; 192 Sec</span>
+                            </div>
+                            <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden">
+                                <div class="compression-bar h-full bg-roseSoft rounded-full" style="width: 100%;" data-target-width="3%"></div>
                             </div>
                         </div>
                     </div>
@@ -658,7 +607,7 @@
                         <div class="kpi-num font-editorial text-5xl sm:text-6xl text-ivory leading-none">
                             70<span class="text-2xl sm:text-3xl swap-accent font-sans ml-1">%</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-sand mt-2">3.5&times; lift over the 20% industry heuristic baseline</p>
+                        <p class="text-xs sm:text-sm text-sand mt-2">3.5&times; lift over the 20% industry heuristic baseline across 7 unseen test domains</p>
                     </div>
 
                     <div class="space-y-4 pt-2 border-t border-white/10">
@@ -736,28 +685,28 @@
     </svg>
 
     <!-- =====================================================================
-         CHAPTER 02 · EXPERIENCE (FlexCarousel — preset="liquid", intro="rise")
+         CHAPTER 02 · EXPERIENCE (FlexCarousel — Content-Driven Header)
          ===================================================================== -->
     <section id="experience" data-chapter="02 / Track Record" data-color-mode="crimson-streaks" class="py-28 md:py-36 px-6 sm:px-14 md:px-24 relative z-10 section-scrim overflow-hidden">
         <div class="max-w-6xl mx-auto reading-halo">
 
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                 <div class="gsap-section-header">
-                    <p class="mono-meta text-xs uppercase tracking-[0.26em] swap-accent mb-2">02 / Track Record &middot; FlexCarousel</p>
+                    <p class="mono-meta text-xs uppercase tracking-[0.26em] swap-accent mb-2">02 / Track Record</p>
                     <h2 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl swap-heading tracking-tight">
                         <span class="split-line">Where I've worked.</span>
                     </h2>
                 </div>
                 <p class="text-ivory/80 text-sm sm:text-base max-w-md">
-                    Scroll your wheel over the stage, drag horizontally, or click any card to bend the liquid lens into focus.
+                    Six corporate internships across FMCG, AI, banking, energy, and fertilizer operations, alongside university teaching and independent equity research.
                 </p>
             </div>
 
-            <!-- FlexCarousel Stage (preset="liquid", intro="rise", captureWheel, focusOnClick, captions) -->
-            <div id="flexCarouselStage" aria-label="Experience Liquid FlexCarousel">
+            <!-- FlexCarousel Stage -->
+            <div id="flexCarouselStage" aria-label="Experience Track Record">
                 <div id="flexCarouselTrack"></div>
 
-                <!-- Dynamic Liquid Caption Bar Below the Lens -->
+                <!-- Dynamic Role Detail Bar -->
                 <div id="flexCaptionBox" class="max-w-2xl mx-auto text-center mt-4 px-6 py-5 rounded-3xl bg-crimsonSurface/85 border border-white/15 backdrop-blur-md transition-all duration-300">
                     <div class="flex items-center justify-center gap-3 mono-meta text-[11px] uppercase tracking-[0.2em] swap-accent mb-1">
                         <span id="flexCapIndex">01 / 08</span>
@@ -777,7 +726,7 @@
     </section>
 
     <!-- =====================================================================
-         CHAPTER 03 · CRAFT (With JellyRadio Level Filter & List/Grid Switcher)
+         CHAPTER 03 · CRAFT (With JellyRadio Domain Filter)
          ===================================================================== -->
     <section id="skills" data-chapter="03 / Craft" data-color-mode="ivory-streaks" class="py-28 md:py-36 px-6 sm:px-14 md:px-24 relative z-10 section-scrim">
         <div class="max-w-5xl mx-auto reading-halo">
@@ -788,33 +737,17 @@
                     <h2 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl swap-heading tracking-tight">
                         <span class="split-line">How I give time back.</span>
                     </h2>
+                    <p class="text-ivory/80 mt-2 text-sm sm:text-base max-w-xl">
+                        Production engineering across enterprise workflow automation, predictive machine learning, and institutional risk analysis.
+                    </p>
                 </div>
 
-                <!-- JellyRadio Controls (Level Filter + List/Grid/Map View Switcher) -->
-                <div class="flex flex-wrap items-center gap-4">
-                    <!-- JellyRadio 1: Impact Level Filter -->
-                    <div id="jellyLevelGroup" class="jelly-radio-group" role="radiogroup" aria-label="Impact Filter">
-                        <button type="button" class="jelly-chip is-active" data-jelly-val="All">All</button>
-                        <button type="button" class="jelly-chip" data-jelly-val="Automation">Automation</button>
-                        <button type="button" class="jelly-chip" data-jelly-val="ML & AI">ML &amp; AI</button>
-                        <button type="button" class="jelly-chip" data-jelly-val="Finance & ERP">Finance &amp; ERP</button>
-                    </div>
-
-                    <!-- JellyRadio 2: List / Grid / Map (disabled) -->
-                    <div id="jellyViewGroup" class="jelly-radio-group" role="radiogroup" aria-label="Layout Mode">
-                        <button type="button" class="jelly-chip is-active" data-jelly-view="list">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                            <span>List</span>
-                        </button>
-                        <button type="button" class="jelly-chip" data-jelly-view="grid">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                            <span>Grid</span>
-                        </button>
-                        <button type="button" class="jelly-chip" data-jelly-view="map" disabled title="Map view locked">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
-                            <span>Map</span>
-                        </button>
-                    </div>
+                <!-- JellyRadio Domain Filter -->
+                <div id="jellyLevelGroup" class="jelly-radio-group" role="radiogroup" aria-label="Domain Filter">
+                    <button type="button" class="jelly-chip is-active" data-jelly-val="All">All</button>
+                    <button type="button" class="jelly-chip" data-jelly-val="Automation">Automation</button>
+                    <button type="button" class="jelly-chip" data-jelly-val="ML & AI">ML &amp; AI</button>
+                    <button type="button" class="jelly-chip" data-jelly-val="Finance & ERP">Finance &amp; ERP</button>
                 </div>
             </div>
 
@@ -823,23 +756,23 @@
     </section>
 
     <!-- =====================================================================
-         CHAPTER 04 · CREDENTIALS (3D CircularCarousel — intro="rise" + Non-Stop Drift)
+         CHAPTER 04 · CREDENTIALS (3D CircularCarousel — Content-Driven Header)
          ===================================================================== -->
     <section id="certificates" data-chapter="04 / Credentials" data-color-mode="crimson-streaks" class="py-28 md:py-36 relative z-10 overflow-hidden section-scrim">
         <div class="max-w-5xl mx-auto px-6 sm:px-14 md:px-24 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 reading-halo">
             <div class="gsap-section-header">
                 <p class="mono-meta text-xs uppercase tracking-[0.26em] swap-accent mb-2">04 / Verified Credentials</p>
                 <h2 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl swap-heading tracking-tight">
-                    <span class="split-line">Anthropic 3D Cylinder.</span>
+                    <span class="split-line">Anthropic Archive.</span>
                 </h2>
             </div>
             <p class="text-ivory/80 text-sm sm:text-base max-w-md">
-                14 verified credentials in a constantly drifting 3D cylinder. Grab and spin with momentum, or click any certificate to focus &amp; enlarge.
+                14 verified certifications spanning AI Fluency frameworks, Claude Code engineering, Model Context Protocol (MCP), and multi-agent architectures.
             </p>
         </div>
 
         <!-- CircularCarousel 3D Cylinder Stage -->
-        <div id="certCylinderStage" aria-label="3D Cylindrical Certificate Carousel">
+        <div id="certCylinderStage" aria-label="Verified Anthropic Credentials">
             <div id="certCylinderTilt">
                 <div id="certCylinderRotor"></div>
             </div>
