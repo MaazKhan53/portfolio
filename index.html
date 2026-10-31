@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#070605">
+    <meta name="theme-color" content="#070506">
 
-    <!-- Basic SEO & Warm Gold Monogram Favicon -->
+    <!-- Basic SEO & Soft Deep Red Monogram Favicon -->
     <title>Maaz Khan — Systems & Data Architecture</title>
     <meta name="description" content="Companies lose thousands of hours to work a machine should be doing. I design the software that gives people their evenings back.">
     <meta name="author" content="Maaz Khan">
     <link rel="canonical" href="https://maazkhan--portfolio.vercel.app/">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23120E0B' stroke='%23E5A93C' stroke-width='3'/%3E%3Cpath d='M16 45V19h6.5l9.5 16.5L41.5 19H48v26h-6V29.5L33.5 44h-3L22 29.5V45h-6z' fill='%23FAF6F0'/%3E%3Ccircle cx='50' cy='43' r='3.5' fill='%23E5A93C'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230D0708' stroke='%23D9463E' stroke-width='3'/%3E%3Cpath d='M16 45V19h6.5l9.5 16.5L41.5 19H48v26h-6V29.5L33.5 44h-3L22 29.5V45h-6z' fill='%23FAF6F0'/%3E%3Ccircle cx='50' cy='43' r='3.5' fill='%23D9463E'/%3E%3C/svg%3E">
 
     <!-- Open Graph / Social Share Preview -->
     <meta property="og:type" content="website">
@@ -30,19 +30,19 @@
     <meta name="twitter:image" content="https://maazkhan--portfolio.vercel.app/preview.png">
     <meta name="twitter:image:alt" content="Hi, I'm Maaz Khan. Architecting systems that save people's time.">
 
-    <!-- Google Fonts: Fraunces (Sculpted Curved Serif) + Plus Jakarta Sans + JetBrains Mono -->
+    <!-- Google Fonts: Fraunces + Plus Jakarta Sans + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,60;1,9..144,400..600,60&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <!-- GSAP & ScrollTrigger for Awwwards Scrollytelling & Mask-Split Typography -->
+    <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <!-- Three.js for Lit 3D Architectural Sculpture -->
+    <!-- Three.js for Scroll-Driven Line Streaks & AeroShards -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- PDF.js for Live Frameless Certificate Rendering -->
+    <!-- PDF.js for Live Certificate Rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <script>
@@ -50,12 +50,12 @@
             theme: {
                 extend: {
                     colors: {
-                        obsidian: '#070605',
-                        espresso: '#120E0B',
+                        obsidian: '#070506',
+                        crimsonSurface: '#13090B',
                         ivory: '#FAF6F0',
-                        sand: '#D4CBC0',
-                        amberGlow: '#E5A93C',
-                        terracotta: '#C86D44'
+                        sand: '#DDD5D0',
+                        crimson: '#D9463E',
+                        roseSoft: '#F0756C'
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -69,17 +69,19 @@
 
     <style>
         :root {
-            --cx: 50vw;
-            --cy: 50vh;
             --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            /* Dynamic Color-Swapping Variables (Driven by Scroll in app.js) */
+            --dyn-heading: #FAF6F0;
+            --dyn-accent: #E85D54;
+            --dyn-border: rgba(217, 70, 62, 0.42);
         }
         html {
-            background-color: #070605;
+            background-color: #070506;
             color: #FAF6F0;
             scroll-behavior: smooth;
         }
         body {
-            background-color: #070605;
+            background-color: #070506;
             overflow-x: hidden;
         }
         .font-editorial {
@@ -88,14 +90,24 @@
         }
         .mono-meta { font-family: 'JetBrains Mono', monospace; }
 
-        /* ---------- 1. High-Contrast Reading Protection ---------- */
+        /* Dynamic Color-Swapping Typography Classes */
+        .swap-heading {
+            color: var(--dyn-heading);
+            transition: color 0.45s ease;
+        }
+        .swap-accent {
+            color: var(--dyn-accent);
+            transition: color 0.45s ease;
+        }
+
+        /* High-Contrast Reading Protection */
         .reading-halo {
             position: relative;
             z-index: 10;
-            text-shadow: 0 4px 28px rgba(7, 6, 5, 0.95);
+            text-shadow: 0 4px 30px rgba(7, 5, 6, 0.96);
         }
         .section-scrim {
-            background: radial-gradient(75% 75% at 32% 50%, rgba(7, 6, 5, 0.88) 0%, rgba(7, 6, 5, 0.45) 75%, transparent 100%);
+            background: radial-gradient(72% 72% at 34% 50%, rgba(7, 5, 6, 0.88) 0%, rgba(7, 5, 6, 0.48) 72%, transparent 100%);
         }
 
         /* Custom Interactive Cursor Follower */
@@ -103,26 +115,26 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 36px;
-            height: 36px;
-            margin: -18px 0 0 -18px;
+            width: 34px;
+            height: 34px;
+            margin: -17px 0 0 -17px;
             border-radius: 50%;
-            border: 1px solid rgba(229, 169, 60, 0.45);
+            border: 1px solid rgba(232, 93, 84, 0.55);
             pointer-events: none;
             z-index: 9999;
             transition: width 0.3s var(--spring), height 0.3s var(--spring), margin 0.3s var(--spring), background 0.3s ease, border-color 0.3s ease;
             mix-blend-mode: exclusion;
         }
         #cursorHalo.is-hovering {
-            width: 68px;
-            height: 68px;
-            margin: -34px 0 0 -34px;
-            background: rgba(229, 169, 60, 0.18);
-            border-color: #E5A93C;
+            width: 66px;
+            height: 66px;
+            margin: -33px 0 0 -33px;
+            background: rgba(217, 70, 62, 0.22);
+            border-color: #F0756C;
         }
         @media (pointer: coarse) { #cursorHalo { display: none; } }
 
-        /* ---------- 2. Prominent Magnetic CTAs ---------- */
+        /* ---------- Prominent Magnetic CTAs (Soft Deep Red & Ivory) ---------- */
         .cta-primary {
             position: relative;
             display: inline-flex;
@@ -131,14 +143,14 @@
             padding: 18px 34px;
             border-radius: 9999px;
             background: #FAF6F0;
-            color: #070605;
+            color: #070506;
             font-weight: 700;
             font-size: 15px;
             letter-spacing: 0.01em;
             overflow: hidden;
             box-shadow:
-                0 0 0 1px rgba(229, 169, 60, 0.4),
-                0 18px 40px -10px rgba(229, 169, 60, 0.38);
+                0 0 0 1px rgba(217, 70, 62, 0.45),
+                0 18px 40px -10px rgba(217, 70, 62, 0.38);
             transition: color 0.4s var(--spring), box-shadow 0.4s ease;
             will-change: transform;
         }
@@ -146,36 +158,28 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: #E5A93C;
+            background: #D9463E;
             border-radius: 9999px;
             transform: translateY(102%);
             transition: transform 0.45s var(--spring);
             z-index: 0;
         }
-        .cta-primary:hover::before {
-            transform: translateY(0%);
-        }
+        .cta-primary:hover::before { transform: translateY(0%); }
         .cta-primary:hover {
+            color: #FAF6F0;
             box-shadow:
                 0 0 0 2px #FAF6F0,
-                0 22px 50px -8px rgba(229, 169, 60, 0.6);
+                0 22px 50px -8px rgba(217, 70, 62, 0.65);
         }
-        .cta-primary > * {
-            position: relative;
-            z-index: 1;
-        }
+        .cta-primary > * { position: relative; z-index: 1; }
         .cta-arrow-circle {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #070605;
-            color: #FAF6F0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.4s var(--spring);
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #070506; color: #FAF6F0;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.4s var(--spring), background 0.35s ease, color 0.35s ease;
         }
         .cta-primary:hover .cta-arrow-circle {
+            background: #FAF6F0; color: #D9463E;
             transform: rotate(45deg) scale(1.1);
         }
 
@@ -186,269 +190,222 @@
             gap: 12px;
             padding: 18px 32px;
             border-radius: 9999px;
-            background: rgba(18, 14, 11, 0.9);
+            background: rgba(19, 9, 11, 0.92);
             color: #FAF6F0;
             font-weight: 600;
             font-size: 15px;
-            border: 1px solid rgba(229, 169, 60, 0.45);
-            box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(232, 93, 84, 0.48);
+            box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.88);
             overflow: hidden;
             transition: border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
             will-change: transform;
         }
         .cta-beam:hover {
-            background: rgba(229, 169, 60, 0.15);
-            border-color: #E5A93C;
-            box-shadow: 0 0 32px rgba(229, 169, 60, 0.32);
+            background: rgba(217, 70, 62, 0.18);
+            border-color: #F0756C;
+            box-shadow: 0 0 32px rgba(217, 70, 62, 0.38);
         }
 
-        /* ---------- 3. Expressive Mask-Split Typography ---------- */
-        .split-mask {
-            overflow: hidden;
-            display: block;
-            padding-bottom: 0.08em;
-        }
-        .split-line {
-            display: block;
-            will-change: transform, opacity;
-        }
+        /* Mask-Split Typography */
+        .split-mask { overflow: hidden; display: block; padding-bottom: 0.08em; }
+        .split-line { display: block; will-change: transform, opacity; }
 
-        /* ---------- 4. Liquid SVG Morph Dividers Between Chapters ---------- */
-        .liquid-divider {
-            width: 100%;
-            height: 90px;
-            display: block;
-            overflow: visible;
-            pointer-events: none;
-        }
-
-        /* ---------- 5. Experience: Oversized Architectural Dial & Big Company Logos ---------- */
-        .dial-wheel-wrap {
+        /* TechText Interactive Canvas Container */
+        #techTextWrap {
             position: relative;
-            width: 440px;
-            height: 440px;
-            flex: none;
+            width: 100%;
+            max-width: 920px;
+            height: 155px;
+            cursor: grab;
+            user-select: none;
         }
-        @media (max-width: 640px) {
-            .dial-wheel-wrap { width: 310px; height: 310px; }
+        #techTextWrap:active { cursor: grabbing; }
+        @media (max-width: 640px) { #techTextWrap { height: 92px; } }
+        #techTextCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
+
+        /* Liquid SVG Morph Dividers */
+        .liquid-divider {
+            width: 100%; height: 90px; display: block; overflow: visible; pointer-events: none;
+        }
+
+        /* ---------- Experience: Rotating Architectural Dial ---------- */
+        .dial-wheel-wrap { position: relative; width: 440px; height: 440px; flex: none; }
+        @media (max-width: 640px) { .dial-wheel-wrap { width: 310px; height: 310px; } }
         .dial-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 1.5px solid rgba(229, 169, 60, 0.28);
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 1.5px solid rgba(232, 93, 84, 0.35);
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform;
         }
         .dial-ring-inner {
-            position: absolute;
-            inset: 70px;
-            border-radius: 50%;
-            border: 1px dashed rgba(250, 246, 240, 0.14);
-            pointer-events: none;
+            position: absolute; inset: 70px; border-radius: 50%;
+            border: 1px dashed rgba(250, 246, 240, 0.14); pointer-events: none;
         }
         .dial-node {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 82px;
-            height: 82px;
-            margin: -41px 0 0 -41px;
-            border-radius: 22px;
-            background: #FAF6F0;
-            color: #070605;
-            border: 2px solid rgba(250, 246, 240, 0.35);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            position: absolute; top: 50%; left: 50%; width: 82px; height: 82px;
+            margin: -41px 0 0 -41px; border-radius: 22px; background: #FAF6F0; color: #070506;
+            border: 2px solid rgba(250, 246, 240, 0.35); box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
             transition: border-color 0.4s ease, box-shadow 0.4s ease, width 0.4s var(--spring), height 0.4s var(--spring), margin 0.4s var(--spring);
-            overflow: hidden;
-            padding: 12px;
+            overflow: hidden; padding: 12px;
         }
-        @media (max-width: 640px) {
-            .dial-node { width: 62px; height: 62px; margin: -31px 0 0 -31px; padding: 9px; border-radius: 16px; }
-        }
+        @media (max-width: 640px) { .dial-node { width: 62px; height: 62px; margin: -31px 0 0 -31px; padding: 9px; border-radius: 16px; } }
         .dial-node.is-active {
-            width: 98px;
-            height: 98px;
-            margin: -49px 0 0 -49px;
-            border: 3px solid #E5A93C;
-            box-shadow: 0 0 42px rgba(229, 169, 60, 0.65), 0 18px 40px rgba(0, 0, 0, 0.9);
-            background: #FFFFFF;
-            z-index: 10;
+            width: 98px; height: 98px; margin: -49px 0 0 -49px;
+            border: 3px solid #D9463E;
+            box-shadow: 0 0 42px rgba(217, 70, 62, 0.7), 0 18px 40px rgba(0,0,0,0.9);
+            background: #FFFFFF; z-index: 10;
         }
-        @media (max-width: 640px) {
-            .dial-node.is-active { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
-        }
+        @media (max-width: 640px) { .dial-node.is-active { width: 74px; height: 74px; margin: -37px 0 0 -37px; } }
         .dial-node-upright {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ---------- 6. Craft: Typographic Split-Curtain Bands ---------- */
+        /* ---------- Craft: Typographic Split-Curtain Bands ---------- */
         .curtain-band {
-            border-bottom: 1px solid rgba(250, 246, 240, 0.15);
-            cursor: pointer;
+            border-bottom: 1px solid rgba(250, 246, 240, 0.15); cursor: pointer;
             transition: border-color 0.4s ease, background 0.4s ease;
         }
-        .curtain-band:first-child {
-            border-top: 1px solid rgba(250, 246, 240, 0.15);
-        }
+        .curtain-band:first-child { border-top: 1px solid rgba(250, 246, 240, 0.15); }
         .curtain-band:hover, .curtain-band.is-open {
-            border-color: rgba(229, 169, 60, 0.65);
-            background: linear-gradient(90deg, rgba(229, 169, 60, 0.06) 0%, transparent 80%);
+            border-color: rgba(232, 93, 84, 0.7);
+            background: linear-gradient(90deg, rgba(217, 70, 62, 0.09) 0%, transparent 80%);
         }
-        .curtain-title {
-            transition: transform 0.55s var(--spring), color 0.35s ease;
+        .curtain-title { transition: transform 0.55s var(--spring), color 0.35s ease; }
+        .curtain-band:hover .curtain-title, .curtain-band.is-open .curtain-title {
+            color: #F0756C; font-style: italic; transform: translateX(16px);
         }
-        .curtain-band:hover .curtain-title,
-        .curtain-band.is-open .curtain-title {
-            color: #E5A93C;
-            font-style: italic;
-            transform: translateX(16px);
-        }
-        .curtain-drawer {
-            display: grid;
-            grid-template-rows: 0fr;
-            opacity: 0;
-            transition: grid-template-rows 0.55s var(--spring), opacity 0.45s ease;
-        }
-        .curtain-band:hover .curtain-drawer,
-        .curtain-band.is-open .curtain-drawer {
-            grid-template-rows: 1fr;
-            opacity: 1;
-        }
+        .curtain-drawer { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.55s var(--spring), opacity 0.45s ease; }
+        .curtain-band:hover .curtain-drawer, .curtain-band.is-open .curtain-drawer { grid-template-rows: 1fr; opacity: 1; }
         .curtain-drawer-inner { overflow: hidden; }
 
-        /* ---------- 7. Certificates: 3D Perspective Gallery Arc ---------- */
-        .cert-3d-stage {
-            perspective: 1500px;
-            overflow: hidden;
-            padding: 30px 0;
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-        }
-        .cert-3d-tilt {
-            transform-style: preserve-3d;
-            transform: rotateX(6deg) rotateZ(-1deg);
-            transition: transform 0.6s var(--spring);
-        }
-        .cert-3d-stage:hover .cert-3d-tilt {
-            transform: rotateX(0deg) rotateZ(0deg);
-        }
-        .cert-viewport {
-            overflow: visible;
+        /* ---------- Certificates: 3D CircularCarousel (preset="cylinder") ---------- */
+        #certCylinderStage {
+            width: 100%;
+            height: 560px;
             position: relative;
+            perspective: 2500px;
+            overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
             touch-action: pan-y;
             cursor: grab;
         }
-        .cert-viewport.is-dragging { cursor: grabbing; }
-        .cert-track {
-            display: flex;
-            gap: 36px;
-            width: max-content;
-            will-change: transform;
-            padding: 16px 0;
+        #certCylinderStage.is-dragging { cursor: grabbing; }
+        /* Edge fade vignette matching fadeColor="#000000" */
+        #certCylinderStage::before,
+        #certCylinderStage::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 14%;
+            z-index: 30;
+            pointer-events: none;
         }
-        .cert-card {
-            flex: none;
-            width: 340px;
+        #certCylinderStage::before {
+            left: 0;
+            background: linear-gradient(90deg, #070506 0%, transparent 100%);
+        }
+        #certCylinderStage::after {
+            right: 0;
+            background: linear-gradient(-90deg, #070506 0%, transparent 100%);
+        }
+        #certCylinderTilt {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            /* tilt={-5} */
+            transform: rotateZ(-5deg) rotateX(-3deg);
+            transition: transform 0.6s var(--spring);
+        }
+        #certCylinderRotor {
+            position: relative;
+            width: 280px;
+            height: 198px;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        @media (max-width: 640px) {
+            #certCylinderStage { height: 440px; }
+            #certCylinderRotor { width: 220px; height: 156px; }
+        }
+        .cyl-card {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px; /* cornerRadius={12} */
             background: transparent;
             border: none;
             padding: 0;
             cursor: pointer;
-            transition: transform 0.45s var(--spring), filter 0.4s ease;
-            filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.88));
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+            box-shadow: 0 26px 50px -12px rgba(0, 0, 0, 0.9);
+            transition: box-shadow 0.35s ease;
+            will-change: transform, opacity, filter;
         }
-        @media (max-width: 640px) { .cert-card { width: 260px; } }
-        .cert-card:hover {
-            transform: translateY(-10px) scale(1.05) !important;
-            filter: drop-shadow(0 30px 48px rgba(229, 169, 60, 0.32));
+        .cyl-card:hover {
+            box-shadow: 0 30px 60px -10px rgba(217, 70, 62, 0.45);
         }
-        .cert-preview-box {
+        .cyl-card-inner {
             position: relative;
             width: 100%;
-            aspect-ratio: 1.414 / 1;
-            background: transparent;
-            border-radius: 4px;
+            height: 100%;
+            border-radius: 12px;
             overflow: hidden;
+            background: #FAF6F0;
         }
-        .cert-preview-box canvas {
+        .cyl-card-inner canvas {
             width: 100%;
             height: 100%;
             object-fit: contain;
             display: block;
             pointer-events: none;
         }
+        /* innerShade={0.6} overlay for depth shading */
+        .cyl-shade {
+            position: absolute;
+            inset: 0;
+            background: #070506;
+            opacity: 0;
+            pointer-events: none;
+            border-radius: 12px;
+        }
 
         /* Frameless FLIP Lightbox Modal */
         #certLightbox {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(7, 6, 5, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s var(--spring);
-            touch-action: pinch-zoom;
-            cursor: zoom-out;
+            position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
+            background: rgba(7, 5, 6, 0.92); backdrop-filter: blur(16px); opacity: 0; pointer-events: none;
+            transition: opacity 0.35s var(--spring); touch-action: pinch-zoom; cursor: zoom-out;
         }
-        #certLightbox.is-open {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        #certLightbox.is-open { opacity: 1; pointer-events: auto; }
         #certLightboxCard {
-            position: relative;
-            width: min(92vw, 980px);
-            max-height: 90vh;
-            background: transparent;
-            transform-origin: center center;
-            transition: transform 0.42s var(--spring), opacity 0.32s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative; width: min(92vw, 980px); max-height: 90vh; background: transparent;
+            transform-origin: center center; transition: transform 0.42s var(--spring), opacity 0.32s ease;
+            display: flex; align-items: center; justify-content: center;
         }
         #certModalCanvas {
-            max-width: 92vw;
-            max-height: 88vh;
-            width: auto;
-            height: auto;
-            border-radius: 6px;
-            box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.95);
-            transition: transform 0.3s var(--spring);
-            transform-origin: center center;
-            cursor: zoom-in;
+            max-width: 92vw; max-height: 88vh; width: auto; height: auto; border-radius: 8px;
+            box-shadow: 0 35px 90px -15px rgba(0,0,0,0.95); transition: transform 0.3s var(--spring);
+            transform-origin: center center; cursor: zoom-in;
         }
 
-        /* High-Contrast Form Inputs */
         .minimal-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1.5px solid rgba(250, 246, 240, 0.28);
-            padding: 16px 0;
-            color: #FAF6F0;
-            font-size: 17px;
-            transition: border-color 0.35s ease;
+            width: 100%; background: transparent; border: none;
+            border-bottom: 1.5px solid rgba(250, 246, 240, 0.28); padding: 16px 0;
+            color: #FAF6F0; font-size: 17px; transition: border-color 0.35s ease;
         }
-        .minimal-input:focus {
-            outline: none;
-            border-bottom-color: #E5A93C;
-        }
-
+        .minimal-input:focus { outline: none; border-bottom-color: #D9463E; }
         .kpi-num { font-variant-numeric: tabular-nums; }
     </style>
 
@@ -462,52 +419,53 @@
     </script>
 
     <!-- Vercel Web Analytics Script -->
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
+    <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
-<body class="text-sand font-sans antialiased selection:bg-amberGlow selection:text-obsidian">
+<body class="text-sand font-sans antialiased selection:bg-crimson selection:text-ivory">
 
     <!-- Interactive Cursor Follower -->
     <div id="cursorHalo" aria-hidden="true"></div>
 
-    <!-- 1. Lit 3D Architectural Sculpture Canvas -->
+    <!-- 1. Scroll-Driven Dynamic Line Streaks + AeroShards Canvas (Moves Strictly on Scroll + Click/Hold) -->
     <canvas id="bgCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0" aria-hidden="true"></canvas>
 
     <!-- Persistent Floating Magnetic CTA Dock -->
-    <aside class="fixed bottom-6 right-6 z-40 flex items-center gap-3 p-2 rounded-full bg-espresso/90 backdrop-blur-xl border border-amberGlow/30 shadow-2xl">
-        <span id="compassLabel" class="hidden md:inline-block mono-meta text-[11px] uppercase tracking-[0.18em] text-amberGlow pl-4 pr-2">00 / Opening</span>
+    <aside class="fixed bottom-6 right-6 z-40 flex items-center gap-3 p-2 rounded-full bg-crimsonSurface/90 backdrop-blur-xl border border-crimson/45 shadow-2xl">
+        <span id="compassLabel" class="hidden md:inline-block mono-meta text-[11px] uppercase tracking-[0.18em] swap-accent pl-4 pr-2">00 / Opening</span>
         <a href="https://drive.google.com/drive/folders/1HMkirMmnzI4PltyYpzQxqKNEyUM6md-Q?usp=sharing" data-track="dock_cv" target="_blank" rel="noopener noreferrer" data-magnetic class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-semibold text-ivory transition">
             Access CV &nearr;
         </a>
-        <a href="https://calendly.com/maazkhan53123/30min" data-track="dock_calendly" target="_blank" rel="noopener noreferrer" data-magnetic class="px-5 py-2 rounded-full bg-amberGlow text-obsidian text-xs font-bold tracking-wide hover:bg-ivory transition shadow-lg">
+        <a href="https://calendly.com/maazkhan53123/30min" data-track="dock_calendly" target="_blank" rel="noopener noreferrer" data-magnetic class="px-5 py-2 rounded-full bg-crimson text-ivory text-xs font-bold tracking-wide hover:bg-roseSoft transition shadow-lg">
             Book a Call &nearr;
         </a>
     </aside>
 
     <!-- =====================================================================
-         CHAPTER 00 · THE OPEN-CANVAS LANDING
+         CHAPTER 00 · THE OPEN-CANVAS LANDING (With Interactive TechText Engine)
          ===================================================================== -->
-    <section id="top" data-chapter="00 / Opening" class="min-h-screen relative z-10 flex flex-col justify-between px-6 sm:px-12 md:px-20 py-14 md:py-20 section-scrim">
+    <section id="top" data-chapter="00 / Opening" data-color-mode="crimson-streaks" class="min-h-screen relative z-10 flex flex-col justify-between px-6 sm:px-12 md:px-20 py-14 md:py-20 section-scrim">
 
-        <div id="heroTopLeft" class="max-w-4xl reading-halo">
+        <div id="heroTopLeft" class="max-w-5xl reading-halo">
             <div class="inline-flex items-center gap-3 mb-5">
-                <span class="w-2.5 h-2.5 rounded-full bg-amberGlow animate-pulse"></span>
-                <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow font-medium">Karachi &middot; Systems &amp; Data Architecture</p>
+                <span class="w-2.5 h-2.5 rounded-full bg-crimson animate-pulse"></span>
+                <p class="mono-meta text-xs uppercase tracking-[0.28em] swap-accent font-medium">Karachi &middot; Systems &amp; Data Architecture</p>
             </div>
             <span class="split-mask">
                 <span class="split-line font-editorial italic text-2xl sm:text-4xl text-sand font-normal mb-1">Hi, I'm</span>
             </span>
-            <h1 class="split-mask font-editorial font-semibold text-6xl sm:text-8xl md:text-[7.5rem] text-ivory tracking-[-0.03em] leading-[0.95]">
-                <span class="split-line">Maaz Khan<span class="text-amberGlow">.</span></span>
-            </h1>
+
+            <!-- Accessible H1 + Interactive TechText Canvas (Dashed Contours, Specks, Telemetry Labels & ClickKick) -->
+            <h1 class="sr-only">Maaz Khan.</h1>
+            <div id="techTextWrap" title="Hover, drag, or click to kick">
+                <canvas id="techTextCanvas"></canvas>
+            </div>
         </div>
 
-        <div id="heroBottomRight" class="max-w-2xl my-auto pt-12 reading-halo">
-            <h2 class="split-mask font-editorial text-3xl sm:text-5xl md:text-6xl text-ivory leading-[1.1] tracking-tight mb-6">
+        <div id="heroBottomRight" class="max-w-2xl my-auto pt-8 reading-halo">
+            <h2 class="split-mask font-editorial text-3xl sm:text-5xl md:text-6xl swap-heading leading-[1.1] tracking-tight mb-6">
                 <span class="split-line">Architecting systems that</span>
-                <span class="split-line">save people's <span class="italic text-amberGlow">time.</span></span>
+                <span class="split-line">save people's <span class="italic swap-accent">time.</span></span>
             </h2>
             <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed mb-10 max-w-xl font-normal">
                 Companies lose thousands of hours to work a machine should be doing. I design the software that gives people their evenings back.
@@ -521,63 +479,63 @@
                     </span>
                 </a>
                 <a href="https://calendly.com/maazkhan53123/30min" data-track="calendly_hero" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
-                    <span class="w-2.5 h-2.5 rounded-full bg-amberGlow"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-crimson"></span>
                     <span>Book a 1-on-1 Conversation</span>
-                    <span class="text-amberGlow text-lg leading-none">&nearr;</span>
+                    <span class="swap-accent text-lg leading-none">&nearr;</span>
                 </a>
             </div>
         </div>
 
         <div class="flex items-center gap-4 text-xs mono-meta uppercase tracking-[0.24em] text-sand/70 reading-halo">
-            <span>Scroll to enter the 3D timeline</span>
-            <span class="w-16 h-[1px] bg-amberGlow/50"></span>
+            <span>Scroll to widen streaks &amp; swap chapter tones</span>
+            <span class="w-16 h-[1px] bg-crimson/60"></span>
         </div>
     </section>
 
     <!-- Liquid Morphing SVG Portal 1 -->
     <svg class="liquid-divider relative z-10" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path class="morph-wave" d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="rgba(229,169,60,0.04)"/>
-        <path class="morph-line" d="M0,60 C360,120 1080,0 1440,60" fill="none" stroke="rgba(229,169,60,0.35)" stroke-width="1.5"/>
+        <path class="morph-wave" d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="rgba(217,70,62,0.05)"/>
+        <path class="morph-line" d="M0,60 C360,120 1080,0 1440,60" fill="none" stroke="rgba(232,93,84,0.42)" stroke-width="1.5"/>
     </svg>
 
     <!-- =====================================================================
-         CHAPTER 01 · SELECTED WORK
+         CHAPTER 01 · SELECTED WORK (Swaps Streak & Heading Colors on Scroll)
          ===================================================================== -->
-    <section id="projects" data-chapter="01 / Selected Work" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
+    <section id="projects" data-chapter="01 / Selected Work" data-color-mode="ivory-streaks" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
         <div class="max-w-6xl mx-auto space-y-40 md:space-y-52 reading-halo">
 
             <div class="gsap-section-header max-w-3xl">
-                <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">01 / Selected Work</p>
-                <h2 class="split-mask font-editorial text-5xl sm:text-7xl text-ivory tracking-tight leading-[1.02]">
+                <p class="mono-meta text-xs uppercase tracking-[0.28em] swap-accent mb-3">01 / Selected Work</p>
+                <h2 class="split-mask font-editorial text-5xl sm:text-7xl swap-heading tracking-tight leading-[1.02]">
                     <span class="split-line">Three problems.</span>
-                    <span class="split-line italic text-amberGlow">Three working systems.</span>
+                    <span class="split-line italic swap-accent">Three working systems.</span>
                 </h2>
             </div>
 
             <!-- SPREAD 01 · PEPSICO -->
             <article id="pepsico" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
-                        <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 01</span>
+                    <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] swap-accent">
+                        <span class="px-3 py-1 rounded-full bg-crimson/15 border border-crimson/40 font-semibold">Case 01</span>
                         <span>PepsiCo Pakistan &middot; Go-To-Market &amp; Tax</span>
                     </div>
 
-                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
+                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl swap-heading leading-[1.06] tracking-tight">
                         <span class="split-line">A 26-hour tax audit,</span>
-                        <span class="split-line">finished in <span class="italic text-amberGlow">3 minutes.</span></span>
+                        <span class="split-line">finished in <span class="italic swap-accent">3 minutes.</span></span>
                     </h3>
 
                     <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-xl">
-                        PepsiCo teams were spending <strong class="text-amberGlow font-semibold">61 hours every month</strong> cross-checking thousands of sales, barcode, and tax rows by hand. I built seven custom one-click tools directly inside Excel that automated the entire workflow across two departments—and presented the results to the COO and CFO.
+                        PepsiCo teams were spending <strong class="swap-accent font-semibold">61 hours every month</strong> cross-checking thousands of sales, barcode, and tax rows by hand. I built seven custom one-click tools directly inside Excel that automated the entire workflow across two departments—and presented the results to the COO and CFO.
                     </p>
 
                     <details id="pepsicoToolsDetails" class="pt-3 group">
-                        <summary class="list-none cursor-pointer inline-flex items-center gap-4 px-7 py-4 rounded-full bg-espresso border-2 border-amberGlow/50 hover:border-amberGlow text-ivory font-semibold text-sm tracking-wide shadow-xl transition">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amberGlow"></span>
+                        <summary class="list-none cursor-pointer inline-flex items-center gap-4 px-7 py-4 rounded-full bg-crimsonSurface border-2 border-crimson/55 hover:border-roseSoft text-ivory font-semibold text-sm tracking-wide shadow-xl transition">
+                            <span class="w-2.5 h-2.5 rounded-full bg-crimson"></span>
                             <span>Inspect All 7 Excel Engines Built for PepsiCo</span>
-                            <span class="group-open:rotate-45 transition-transform text-xl text-amberGlow leading-none">+</span>
+                            <span class="group-open:rotate-45 transition-transform text-xl swap-accent leading-none">+</span>
                         </summary>
-                        <div class="mt-6 p-6 sm:p-8 rounded-3xl bg-espresso/95 border border-amberGlow/30 grid sm:grid-cols-2 gap-x-8 gap-y-5 text-sm text-sand shadow-2xl">
+                        <div class="mt-6 p-6 sm:p-8 rounded-3xl bg-crimsonSurface/95 border border-crimson/35 grid sm:grid-cols-2 gap-x-8 gap-y-5 text-sm text-sand shadow-2xl">
                             <div><strong class="text-ivory font-semibold block text-base">01. CNIC &amp; Cell Audit</strong>Flags invalid 13-digit IDs and telecom codes across thousands of rows instantly.</div>
                             <div><strong class="text-ivory font-semibold block text-base">02. FBR &amp; SAP Tax Reconciler</strong>Matches tax ledgers line-by-line with automated green, amber, and red triage.</div>
                             <div><strong class="text-ivory font-semibold block text-base">03. Pending Transfers Finder</strong>Isolates stalled inventory transfers in under a second.</div>
@@ -589,11 +547,11 @@
                     </details>
                 </div>
 
-                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
+                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-crimsonSurface/90 border border-white/15 shadow-2xl space-y-8">
                     <div>
-                        <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">Monthly Time Returned</span>
+                        <span class="mono-meta text-xs uppercase tracking-[0.22em] swap-accent block mb-2">Monthly Time Returned</span>
                         <div class="kpi-num font-editorial text-6xl sm:text-7xl text-ivory leading-none">
-                            59.4<span class="text-2xl sm:text-3xl text-amberGlow font-sans ml-2">hrs/mo</span>
+                            59.4<span class="text-2xl sm:text-3xl swap-accent font-sans ml-2">hrs/mo</span>
                         </div>
                         <p class="text-sm text-sand mt-2">33 hrs saved in Go-To-Market + 26.4 hrs saved in Tax</p>
                     </div>
@@ -609,36 +567,35 @@
                             </div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-xs mono-meta text-amberGlow mb-2">
+                            <div class="flex justify-between text-xs mono-meta swap-accent mb-2">
                                 <span>After: One-Click VBA Engine</span>
                                 <span class="font-bold">192 Seconds</span>
                             </div>
                             <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden">
-                                <div class="compression-bar h-full bg-amberGlow rounded-full" style="width: 100%;" data-target-width="4%"></div>
+                                <div class="compression-bar h-full bg-crimson rounded-full" style="width: 100%;" data-target-width="4%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </article>
 
-            <!-- SPREAD 02 · FLYRANK AI (Updated with Maaz-Khan-FlyRank-AI-Internship URL) -->
+            <!-- SPREAD 02 · FLYRANK AI -->
             <article id="flyrank" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
-                        <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 02</span>
+                    <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] swap-accent">
+                        <span class="px-3 py-1 rounded-full bg-crimson/15 border border-crimson/40 font-semibold">Case 02</span>
                         <span>FlyRank AI &middot; Machine Learning Research</span>
                     </div>
 
-                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
-                        <span class="split-line">Finding the <span class="italic text-amberGlow">10 pages</span></span>
+                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl swap-heading leading-[1.06] tracking-tight">
+                        <span class="split-line">Finding the <span class="italic swap-accent">10 pages</span></span>
                         <span class="split-line">that matter out of 30,000.</span>
                     </h3>
 
                     <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-xl">
-                        When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. I trained a machine learning system across 32 enterprise companies that spots decaying pages <strong class="text-amberGlow font-semibold">3.5&times; more accurately</strong> on completely unseen websites.
+                        When a company manages 30,000 web pages, human editors only have time to review 10 to 50 articles a month—and standard industry rules waste 80% of that time on false alarms. I trained a machine learning system across 32 enterprise companies that spots decaying pages <strong class="swap-accent font-semibold">3.5&times; more accurately</strong> on completely unseen websites.
                     </p>
 
-                    <!-- Updated Research Paper & Verification Links -->
                     <div class="flex flex-wrap gap-4 pt-3">
                         <a href="https://maazkhan53.github.io/Maaz-Khan-FlyRank-AI-Internship/" data-track="flyrank_paper_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-primary">
                             <span>Read Published Research Paper</span>
@@ -646,16 +603,16 @@
                         </a>
                         <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="flyrank_verify_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
                             <span>Verified Credential</span>
-                            <span class="text-amberGlow">&nearr;</span>
+                            <span class="swap-accent">&nearr;</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
+                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-crimsonSurface/90 border border-white/15 shadow-2xl space-y-8">
                     <div>
-                        <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block mb-2">Top-10 Triage Accuracy</span>
+                        <span class="mono-meta text-xs uppercase tracking-[0.22em] swap-accent block mb-2">Top-10 Triage Accuracy</span>
                         <div class="kpi-num font-editorial text-6xl sm:text-7xl text-ivory leading-none">
-                            70<span class="text-3xl sm:text-4xl text-amberGlow font-sans ml-1">%</span>
+                            70<span class="text-3xl sm:text-4xl swap-accent font-sans ml-1">%</span>
                         </div>
                         <p class="text-sm text-sand mt-2">3.5&times; lift over the 20% industry heuristic baseline</p>
                     </div>
@@ -671,45 +628,45 @@
                             </div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-xs mono-meta text-amberGlow mb-2">
+                            <div class="flex justify-between text-xs mono-meta swap-accent mb-2">
                                 <span>Client-Grouped ML Pipeline</span>
                                 <span class="font-bold">7 of 10 Correct (70%)</span>
                             </div>
                             <div class="w-full h-3 rounded-full bg-white/10">
-                                <div class="compression-bar h-full rounded-full bg-amberGlow" style="width: 0%;" data-target-width="70%"></div>
+                                <div class="compression-bar h-full rounded-full bg-crimson" style="width: 0%;" data-target-width="70%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </article>
 
-            <!-- SPREAD 03 · OUTFIELD & AUTONOMOUS AGENTS -->
+            <!-- SPREAD 03 · OUTFIELD -->
             <article id="outfield" class="gsap-spread grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
-                        <span class="px-3 py-1 rounded-full bg-amberGlow/15 border border-amberGlow/40 font-semibold">Case 03</span>
+                    <div class="flex items-center gap-4 mono-meta text-xs uppercase tracking-[0.22em] swap-accent">
+                        <span class="px-3 py-1 rounded-full bg-crimson/15 border border-crimson/40 font-semibold">Case 03</span>
                         <span>Founder &amp; Lead Developer &middot; Karachi</span>
                     </div>
 
-                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl text-ivory leading-[1.06] tracking-tight">
+                    <h3 class="split-mask font-editorial text-4xl sm:text-5xl md:text-6xl swap-heading leading-[1.06] tracking-tight">
                         <span class="split-line">Replacing 15 phone calls</span>
-                        <span class="split-line">with a <span class="italic text-amberGlow">single tap.</span></span>
+                        <span class="split-line">with a <span class="italic swap-accent">single tap.</span></span>
                     </h3>
 
                     <p class="text-lg sm:text-xl text-ivory/90 leading-relaxed max-w-xl">
-                        Booking a cricket or football ground in Karachi means chasing venue owners across scattered WhatsApp threads and phone calls. I founded and engineered <strong class="text-amberGlow font-semibold">Outfield</strong>—a two-sided web platform on React and Supabase where players see live open slots and lock in a pitch instantly.
+                        Booking a cricket or football ground in Karachi means chasing venue owners across scattered WhatsApp threads and phone calls. I founded and engineered <strong class="swap-accent font-semibold">Outfield</strong>—a two-sided web platform on React and Supabase where players see live open slots and lock in a pitch instantly.
                     </p>
 
                     <div class="pt-3">
                         <a href="https://github.com/MaazKhan53/outfield" data-track="outfield_repo_click" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
                             <span>Explore Outfield Repository on GitHub</span>
-                            <span class="text-amberGlow">&nearr;</span>
+                            <span class="swap-accent">&nearr;</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-6">
-                    <span class="mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow block">Autonomous Personal Agents</span>
+                <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl bg-crimsonSurface/90 border border-white/15 shadow-2xl space-y-6">
+                    <span class="mono-meta text-xs uppercase tracking-[0.22em] swap-accent block">Autonomous Personal Agents</span>
                     <div>
                         <h4 class="font-editorial text-2xl text-ivory">6:00 AM Market Briefing</h4>
                         <p class="text-sm sm:text-base text-sand mt-1.5 leading-relaxed">
@@ -730,23 +687,23 @@
 
     <!-- Liquid Morphing SVG Portal 2 -->
     <svg class="liquid-divider relative z-10" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path class="morph-wave" d="M0,30 C480,110 960,10 1440,80 L1440,120 L0,120 Z" fill="rgba(229,169,60,0.04)"/>
-        <path class="morph-line" d="M0,30 C480,110 960,10 1440,80" fill="none" stroke="rgba(229,169,60,0.35)" stroke-width="1.5"/>
+        <path class="morph-wave" d="M0,30 C480,110 960,10 1440,80 L1440,120 L0,120 Z" fill="rgba(217,70,62,0.05)"/>
+        <path class="morph-line" d="M0,30 C480,110 960,10 1440,80" fill="none" stroke="rgba(232,93,84,0.42)" stroke-width="1.5"/>
     </svg>
 
     <!-- =====================================================================
-         CHAPTER 02 · EXPERIENCE
+         CHAPTER 02 · EXPERIENCE (Rotating Architectural Dial)
          ===================================================================== -->
-    <section id="experience" data-chapter="02 / Track Record" class="relative z-10 h-[320vh] section-scrim">
+    <section id="experience" data-chapter="02 / Track Record" data-color-mode="crimson-streaks" class="relative z-10 h-[320vh] section-scrim">
         <div class="sticky top-0 min-h-screen flex items-center px-6 sm:px-12 md:px-20 py-12 overflow-hidden">
             <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center reading-halo">
 
                 <div class="lg:col-span-5 flex flex-col items-center lg:items-start">
                     <div class="dial-wheel-wrap">
-                        <div class="absolute top-1/2 -right-7 w-12 h-[3px] bg-amberGlow z-20 pointer-events-none shadow-lg"></div>
+                        <div class="absolute top-1/2 -right-7 w-12 h-[3px] bg-crimson z-20 pointer-events-none shadow-lg"></div>
 
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                            <span class="mono-meta text-[11px] uppercase tracking-[0.24em] text-amberGlow">Track Record</span>
+                            <span class="mono-meta text-[11px] uppercase tracking-[0.24em] swap-accent">Track Record</span>
                             <span id="dialCounter" class="font-editorial text-4xl sm:text-5xl text-ivory mt-1">01 / 08</span>
                             <span class="mono-meta text-[10px] uppercase tracking-[0.18em] text-sand mt-1">Scroll or Click Logo</span>
                         </div>
@@ -757,17 +714,17 @@
                 </div>
 
                 <div class="lg:col-span-7 space-y-5 lg:pl-6">
-                    <div class="flex flex-wrap items-center gap-3 mono-meta text-xs uppercase tracking-[0.22em] text-amberGlow">
+                    <div class="flex flex-wrap items-center gap-3 mono-meta text-xs uppercase tracking-[0.22em] swap-accent">
                         <span id="expActiveDates">Jul 2026 to Sep 2026</span>
                         <span>&middot;</span>
                         <span id="expActivePlace" class="text-ivory/80">Remote, Chicago</span>
                     </div>
 
-                    <h2 id="expActiveCompany" class="font-editorial text-5xl sm:text-6xl md:text-7xl text-ivory tracking-tight leading-[1.02] transition-all duration-300">
+                    <h2 id="expActiveCompany" class="font-editorial text-5xl sm:text-6xl md:text-7xl swap-heading tracking-tight leading-[1.02] transition-all duration-300">
                         FlyRank AI
                     </h2>
 
-                    <p id="expActiveRole" class="font-editorial italic text-2xl sm:text-3xl text-amberGlow">
+                    <p id="expActiveRole" class="font-editorial italic text-2xl sm:text-3xl swap-accent">
                         Machine Learning Engineering Intern
                     </p>
 
@@ -783,13 +740,13 @@
     </section>
 
     <!-- =====================================================================
-         CHAPTER 03 · CRAFT
+         CHAPTER 03 · CRAFT ("The Typographic Split-Curtain")
          ===================================================================== -->
-    <section id="skills" data-chapter="03 / Craft" class="py-28 md:py-40 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
+    <section id="skills" data-chapter="03 / Craft" data-color-mode="ivory-streaks" class="py-28 md:py-40 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
         <div class="max-w-6xl mx-auto reading-halo">
             <div class="gsap-section-header mb-16">
-                <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">03 / Capabilities</p>
-                <h2 class="split-mask font-editorial text-5xl sm:text-7xl text-ivory tracking-tight leading-[1.04]">
+                <p class="mono-meta text-xs uppercase tracking-[0.28em] swap-accent mb-3">03 / Capabilities</p>
+                <h2 class="split-mask font-editorial text-5xl sm:text-7xl swap-heading tracking-tight leading-[1.04]">
                     <span class="split-line">How I give time back.</span>
                 </h2>
                 <p class="text-ivory/80 mt-3 text-lg">Hover or tap any discipline below to part the curtain and inspect the proof.</p>
@@ -800,23 +757,26 @@
     </section>
 
     <!-- =====================================================================
-         CHAPTER 04 · CREDENTIALS
+         CHAPTER 04 · CREDENTIALS (3D CircularCarousel — preset="cylinder")
          ===================================================================== -->
-    <section id="certificates" data-chapter="04 / Credentials" class="py-28 md:py-36 relative z-10 overflow-hidden section-scrim">
-        <div class="max-w-6xl mx-auto px-6 sm:px-12 md:px-20 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 reading-halo">
+    <section id="certificates" data-chapter="04 / Credentials" data-color-mode="crimson-streaks" class="py-28 md:py-36 relative z-10 overflow-hidden section-scrim">
+        <div class="max-w-6xl mx-auto px-6 sm:px-12 md:px-20 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 reading-halo">
             <div class="gsap-section-header">
-                <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">04 / Verified Credentials</p>
-                <h2 class="split-mask font-editorial text-5xl sm:text-6xl text-ivory tracking-tight">
-                    <span class="split-line">Anthropic Archive.</span>
+                <p class="mono-meta text-xs uppercase tracking-[0.28em] swap-accent mb-3">04 / Verified Credentials</p>
+                <h2 class="split-mask font-editorial text-5xl sm:text-6xl swap-heading tracking-tight">
+                    <span class="split-line">Anthropic 3D Cylinder.</span>
                 </h2>
             </div>
             <p class="text-ivory/85 text-base sm:text-lg max-w-md">
-                14 verified credentials across AI Fluency, Claude Code, and Subagent Workflows. Drag either gallery stream or click any certificate to enlarge.
+                14 verified credentials arranged in a 3D cylindrical carousel. Hover to pause drift, drag with momentum, or click any card to focus &amp; enlarge.
             </p>
         </div>
 
-        <div class="cert-3d-stage">
-            <div id="certRows" class="cert-3d-tilt space-y-8"></div>
+        <!-- CircularCarousel 3D Cylinder Stage -->
+        <div id="certCylinderStage" aria-label="3D Cylindrical Certificate Carousel">
+            <div id="certCylinderTilt">
+                <div id="certCylinderRotor"></div>
+            </div>
         </div>
     </section>
 
@@ -830,12 +790,12 @@
     <!-- =====================================================================
          CHAPTER 05 · OPERATING PRINCIPLE & DIRECT CHANNEL
          ===================================================================== -->
-    <section id="about" data-chapter="05 / Dialogue" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
+    <section id="about" data-chapter="05 / Dialogue" data-color-mode="ivory-streaks" class="py-28 md:py-36 px-6 sm:px-12 md:px-20 relative z-10 section-scrim">
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start reading-halo">
 
             <div class="lg:col-span-6 space-y-8">
-                <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow">05 / Operating Principle</p>
-                <blockquote id="aboutBelief" class="font-editorial text-3xl sm:text-4xl md:text-5xl text-ivory leading-[1.18] tracking-tight"></blockquote>
+                <p class="mono-meta text-xs uppercase tracking-[0.28em] swap-accent">05 / Operating Principle</p>
+                <blockquote id="aboutBelief" class="font-editorial text-3xl sm:text-4xl md:text-5xl swap-heading leading-[1.18] tracking-tight"></blockquote>
                 <div id="aboutStory" class="space-y-4 text-ivory/85 leading-relaxed text-lg"></div>
                 <ul id="aboutFacts" class="space-y-3 text-ivory/90 text-base sm:text-lg pt-4 border-t border-white/15"></ul>
 
@@ -846,29 +806,29 @@
                     </a>
                     <a href="https://www.linkedin.com/in/maaz-khan-01290025b/" data-track="contact_linkedin" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
                         <span>LinkedIn</span>
-                        <span class="text-amberGlow">&nearr;</span>
+                        <span class="swap-accent">&nearr;</span>
                     </a>
                     <a href="https://github.com/MaazKhan53" data-track="contact_github" target="_blank" rel="noopener noreferrer" data-magnetic class="cta-beam">
                         <span>GitHub</span>
-                        <span class="text-amberGlow">&nearr;</span>
+                        <span class="swap-accent">&nearr;</span>
                     </a>
                 </div>
             </div>
 
-            <div id="contact" class="lg:col-span-6 p-8 sm:p-12 rounded-3xl bg-espresso/90 border border-white/15 shadow-2xl space-y-8">
+            <div id="contact" class="lg:col-span-6 p-8 sm:p-12 rounded-3xl bg-crimsonSurface/90 border border-white/15 shadow-2xl space-y-8">
                 <div>
-                    <p class="mono-meta text-xs uppercase tracking-[0.28em] text-amberGlow mb-3">06 / Direct Channel</p>
+                    <p class="mono-meta text-xs uppercase tracking-[0.28em] swap-accent mb-3">06 / Direct Channel</p>
                     <h2 class="font-editorial text-4xl sm:text-5xl text-ivory tracking-tight">Which task eats your week?</h2>
                     <p class="text-ivory/80 mt-2 text-base sm:text-lg">Tell me about it and we'll see if it can be handed to a system.</p>
                 </div>
 
                 <form id="contactForm" action="https://formspree.io/f/xljdwapg" method="POST" class="space-y-8 pt-2">
                     <div>
-                        <label for="email" class="block mono-meta text-xs uppercase tracking-[0.2em] text-amberGlow">Your Email</label>
+                        <label for="email" class="block mono-meta text-xs uppercase tracking-[0.2em] swap-accent">Your Email</label>
                         <input type="email" name="email" id="email" required placeholder="name@company.com" class="minimal-input">
                     </div>
                     <div>
-                        <label for="message" class="block mono-meta text-xs uppercase tracking-[0.2em] text-amberGlow">The Bottleneck</label>
+                        <label for="message" class="block mono-meta text-xs uppercase tracking-[0.2em] swap-accent">The Bottleneck</label>
                         <textarea name="message" id="message" rows="3" required placeholder="Walk me through the workflow..." class="minimal-input resize-none"></textarea>
                     </div>
                     <input type="hidden" name="_next" value="https://maazkhan--portfolio.vercel.app/success.html">
@@ -882,23 +842,23 @@
         </div>
     </section>
 
-    <!-- Footer with Theme-Matched Warm Espresso & Brushed Gold FlyRank Credential -->
+    <!-- Footer with Soft Deep Red & Obsidian FlyRank Credential -->
     <footer class="py-20 px-6 text-center relative z-10 border-t border-white/15 bg-obsidian">
         <div class="mb-6 flex justify-center">
             <a href="https://internship.flyrank.ai/verify/FR-D10-856B9-368E2?first_name=Maaz" data-track="footer_flyrank_badge" target="_blank" rel="noopener noreferrer"
                aria-label="Verify Maaz Khan's FlyRank AI Internship credential"
                class="transition duration-300 transform hover:-translate-y-1"
-               style="display:inline-flex;align-items:center;gap:14px;padding:14px 22px;background:linear-gradient(145deg, #18120E 0%, #0E0B09 100%);border:1px solid rgba(229,169,60,0.45);border-radius:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,0.9);max-width:100%;text-decoration:none;">
+               style="display:inline-flex;align-items:center;gap:14px;padding:14px 22px;background:linear-gradient(145deg, #170A0C 0%, #090506 100%);border:1px solid rgba(217,70,62,0.5);border-radius:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,0.9);max-width:100%;text-decoration:none;">
               <svg width="40" height="40" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;flex:none;">
-                <rect width="96" height="96" rx="20" fill="#E5A93C" />
-                <path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#070605" />
+                <rect width="96" height="96" rx="20" fill="#D9463E" />
+                <path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#FAF6F0" />
               </svg>
               <span style="display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left;">
-                <span class="mono-meta" style="font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E5A93C;">FlyRank AI Internship</span>
+                <span class="mono-meta" style="font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#F0756C;">FlyRank AI Internship</span>
                 <span class="font-editorial" style="font-size:15px;font-weight:600;color:#FAF6F0;white-space:nowrap;">Verified Credential</span>
-                <span style="font-size:11px;color:#D4CBC0;white-space:nowrap;">Machine Learning &amp; AI Fluency</span>
+                <span style="font-size:11px;color:#DDD5D0;white-space:nowrap;">Machine Learning &amp; AI Fluency</span>
               </span>
-              <span class="mono-meta" style="display:flex;align-items:center;gap:5px;margin-left:8px;padding:6px 12px;background:rgba(229,169,60,0.16);border:1px solid rgba(229,169,60,0.45);border-radius:9999px;font-size:11px;font-weight:600;color:#E5A93C;flex:none;">
+              <span class="mono-meta" style="display:flex;align-items:center;gap:5px;margin-left:8px;padding:6px 12px;background:rgba(217,70,62,0.18);border:1px solid rgba(232,93,84,0.5);border-radius:9999px;font-size:11px;font-weight:600;color:#F0756C;flex:none;">
                 Verify &nearr;
               </span>
             </a>
@@ -906,7 +866,6 @@
         <p class="text-sand/60 text-xs mono-meta uppercase tracking-[0.22em]">&copy; 2026 Maaz Khan</p>
     </footer>
 
-    <!-- Site content and GSAP + Three.js choreography engine -->
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
