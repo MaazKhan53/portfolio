@@ -5,7 +5,52 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var EXTS = ['.svg', '.png', '.webp', '.jpg'];
 
-  /* ---------- 1. Analytics & Visitor Intelligence ---------- */
+  /* ---------- 1. Microsoft Clarity Consent API & Analytics ---------- */
+  function applyClarityConsent(granted) {
+    try {
+      if (typeof window.clarity === 'function') {
+        window.clarity('consent', granted);
+        window.clarity('consentv2', {
+          ad_Storage: 'denied',
+          analytics_Storage: granted ? 'granted' : 'denied'
+        });
+      }
+    } catch (e) {}
+  }
+
+  (function initClarityConsentBanner() {
+    var banner = $('#clarityConsentBanner');
+    var acceptBtn = $('#acceptClarity');
+    var declineBtn = $('#declineClarity');
+    if (!banner || !acceptBtn || !declineBtn) return;
+
+    try {
+      var saved = localStorage.getItem('clarity_consent_v1');
+      if (!saved) {
+        banner.classList.remove('hidden');
+        setTimeout(function () { banner.classList.remove('opacity-0'); }, 120);
+      } else if (saved === 'granted') {
+        applyClarityConsent(true);
+      } else if (saved === 'denied') {
+        applyClarityConsent(false);
+      }
+
+      acceptBtn.addEventListener('click', function () {
+        try { localStorage.setItem('clarity_consent_v1', 'granted'); } catch (e) {}
+        applyClarityConsent(true);
+        banner.classList.add('opacity-0');
+        setTimeout(function () { banner.classList.add('hidden'); }, 300);
+      });
+
+      declineBtn.addEventListener('click', function () {
+        try { localStorage.setItem('clarity_consent_v1', 'denied'); } catch (e) {}
+        applyClarityConsent(false);
+        banner.classList.add('opacity-0');
+        setTimeout(function () { banner.classList.add('hidden'); }, 300);
+      });
+    } catch (e) {}
+  })();
+
   function trackEvent(name, data) {
     try {
       if (typeof window.va === 'function') {
@@ -271,7 +316,6 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.4 : 1.8));
 
-      // Soft, Non-Flickering Hemisphere + Ambient Lighting (Eliminates facet specular flashing on mobile/desktop)
       var hemiLight = new THREE.HemisphereLight(0xfaf6f0, 0x1a0709, 1.35);
       scene.add(hemiLight);
       var softDirLight = new THREE.DirectionalLight(0xd9463e, 1.15);
@@ -285,7 +329,6 @@
       var colorShardAccent = new THREE.Color('#F0756C');
       var colorIvory = new THREE.Color('#FAF6F0');
 
-      // A. 16 Whisper-Thin Architectural Flow Streaks along the stream
       var STREAK_COUNT = 16;
       var SEGMENTS = 44;
       var streaks = [];
@@ -309,10 +352,9 @@
         });
       }
 
-      // B. Cohesive AeroShards Stream (Smooth Lambert Glass-Tinted Shards — Zero Flickering)
       var SHARD_COUNT = isMobile ? 320 : 650;
       var shardGeo = new THREE.OctahedronGeometry(0.28, 0);
-      shardGeo.scale(0.38, 1.95, 0.22); // Slender aerodynamic needles/shards
+      shardGeo.scale(0.38, 1.95, 0.22);
       shardGeo.computeVertexNormals();
 
       var shardMat = new THREE.MeshLambertMaterial({
@@ -329,16 +371,15 @@
       var dummy = new THREE.Object3D();
       for (var s = 0; s < SHARD_COUNT; s++) {
         shardParticles.push({
-          progress: (s / SHARD_COUNT), // 0..1 position along the continuous stream
-          speed: 0.00045 + (s % 7) * 0.00004, // Consistent, gentle stream velocity
-          laneY: (( (s * 17) % 100 ) / 100 - 0.5) * 18,
-          laneZ: (( (s * 31) % 100 ) / 100 - 0.5) * 12,
+          progress: (s / SHARD_COUNT),
+          speed: 0.00045 + (s % 7) * 0.00004,
+          laneY: (((s * 17) % 100) / 100 - 0.5) * 18,
+          laneZ: (((s * 31) % 100) / 100 - 0.5) * 12,
           phase: (s * 0.25) % (Math.PI * 2),
           scale: 0.45 + (s % 5) * 0.16
         });
       }
 
-      // C. Subtle '+' Precision Markers drifting within the stream
       var plusCanvas = document.createElement('canvas');
       plusCanvas.width = 32; plusCanvas.height = 32;
       var pCtx = plusCanvas.getContext('2d');
@@ -370,7 +411,6 @@
       var curMouseX = 0, curMouseY = 0;
       var gatherStrength = 0, isHolding = false, pulseWave = 0;
 
-      // Helper: coherent S-curve stream path (billow={1}, twist={1}, spread={1})
       function getStreamPoint(u, laneOffset, zOffset, scrollFactor, t) {
         var spanX = 52;
         var x = (u - 0.5) * spanX;
@@ -403,19 +443,16 @@
         gatherStrength += ((isHolding ? 1 : 0) - gatherStrength) * 0.08;
         pulseWave *= 0.9;
 
-        // Subtle scroll rotation + parallax={0.5}
         streamGroup.rotation.z = -0.18 + smoothScroll * 0.55 + curMouseX * 0.04;
         streamGroup.rotation.y = smoothScroll * 0.35 + curMouseX * 0.08;
         streamGroup.rotation.x = -curMouseY * 0.06;
         streamGroup.position.x = 3.5 - smoothScroll * 2.0;
 
-        // Smooth lighting & color transition as viewer scrolls down
         var primaryCol = colorShardPrimary.clone().lerp(colorIvory, smoothColorSwap);
         var accentCol = colorShardAccent.clone().lerp(colorShardPrimary, smoothColorSwap);
         shardMat.color.copy(primaryCol);
         softDirLight.color.copy(accentCol);
 
-        // 1. Update Continuous Flow Streaks
         for (var i = 0; i < STREAK_COUNT; i++) {
           var st = streaks[i];
           st.mat.color.copy(i % 2 === 0 ? primaryCol : accentCol);
@@ -430,7 +467,6 @@
           st.geo.attributes.position.needsUpdate = true;
         }
 
-        // 2. Update Continuous AeroShards Stream (Aligned tangentially to the flow — Zero Flicker)
         for (var s = 0; s < SHARD_COUNT; s++) {
           var sp = shardParticles[s];
           if (!reduce) {
@@ -449,14 +485,12 @@
           }
 
           dummy.position.set(sx, sy, sz);
-          // Align shard smoothly along the stream tangent (no rapid spinning that causes flickering)
           dummy.rotation.set(
             0.25 + Math.sin(sp.phase + streamTime * 0.5) * 0.15,
             0.15,
             ptS.slope - Math.PI * 0.5
           );
 
-          // depthOfField={0.75} edge & depth attenuation
           var edgeFade = Math.sin(sp.progress * Math.PI);
           var sc = sp.scale * edgeFade * introScale * (1 + pulseWave * 0.25);
           dummy.scale.set(sc, sc, sc);
@@ -465,7 +499,6 @@
         }
         shardMesh.instanceMatrix.needsUpdate = true;
 
-        // 3. Update '+' Precision Markers along the stream
         var pArr = plusGeo.attributes.position.array;
         for (var k = 0; k < plusCount; k++) {
           var pu = ((k / plusCount) + streamTime * 0.025) % 1;
@@ -706,7 +739,7 @@
       category: 'ML & AI',
       title: 'Predictive Machine Learning',
       headline: 'Models that generalize to unseen companies instead of flattering themselves.',
-      body: 'Engineered L2 Logistic Regression and Random Forest triage pipelines evaluated under strict client-grouped holdout splits (GroupShuffleSplit) and a quarantined leakage harness across 30,000 URLs.',
+      body: 'Engineered L2 Logistic Regression and Random Forest triage pipelines evaluated under strict client-grouped holdout splits (GroupShuffleSplit) and a quarantined leakage harness across 30,000 URLs sampled from a 79M-row warehouse.',
       tools: 'Python · pandas · scikit-learn · Client-Grouped Validation · NIST AI RMF Governance',
       proofLabel: 'FlyRank Research ↑',
       proofHref: '#flyrank'
