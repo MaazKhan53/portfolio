@@ -90,7 +90,7 @@
   }
   bindMagneticElements();
 
-  /* ---------- 3. TechText Interactive Hero Engine (Viewport-Gated for 120fps) ---------- */
+  /* ---------- 3. TechText Hero Engine (Clean & Viewport-Gated) ---------- */
   (function initTechText() {
     var wrap = $('#techTextWrap');
     var canvas = $('#techTextCanvas');
@@ -105,9 +105,9 @@
     var isVisible = true;
     var specks = [];
 
-    for (var i = 0; i < 16; i++) {
+    for (var i = 0; i < 15; i++) {
       specks.push({
-        rx: (i / 16) * 0.88 + 0.04,
+        rx: (i / 15) * 0.88 + 0.04,
         ry: 0.2 + (i % 3) * 0.3,
         ox: 0, oy: 0, vx: 0, vy: 0,
         isPlus: i % 3 === 0
@@ -151,13 +151,13 @@
     });
     wrap.addEventListener('pointerdown', function () {
       pointer.down = true;
-      kickEnergy = 16;
+      kickEnergy = 14;
       sweepX = 0;
       specks.forEach(function (sp) {
         var sx = sp.rx * width, sy = sp.ry * height;
         var ang = Math.atan2(sy - pointer.y, sx - pointer.x);
-        sp.vx += Math.cos(ang) * 10;
-        sp.vy += Math.sin(ang) * 10;
+        sp.vx += Math.cos(ang) * 9;
+        sp.vy += Math.sin(ang) * 9;
       });
     });
     window.addEventListener('pointerup', function () { pointer.down = false; });
@@ -191,8 +191,8 @@
       var dxCur = pointer.x - (width * 0.35);
       var dyCur = pointer.y - baseY;
       var distCur = Math.sqrt(dxCur * dxCur + dyCur * dyCur);
-      var reachPullX = distCur < 200 ? (dxCur / 200) * 5.5 : 0;
-      var reachPullY = distCur < 200 ? (dyCur / 200) * 3.5 : 0;
+      var reachPullX = distCur < 200 ? (dxCur / 200) * 5 : 0;
+      var reachPullY = distCur < 200 ? (dyCur / 200) * 3 : 0;
 
       ctx.fillStyle = '#FAF6F0';
       ctx.fillText(text, baseX - reachPullX * 0.35, baseY - reachPullY * 0.35);
@@ -205,7 +205,7 @@
       ctx.save();
       ctx.setLineDash([4, 2]);
       ctx.lineWidth = 1.4;
-      ctx.strokeStyle = 'rgba(232, 93, 84, 0.7)';
+      ctx.strokeStyle = 'rgba(232, 93, 84, 0.65)';
       ctx.strokeText(text + dot, baseX + contourShiftX, baseY + contourShiftY);
       ctx.restore();
 
@@ -213,7 +213,7 @@
         ctx.save();
         var grad = ctx.createLinearGradient(sweepX - 70, 0, sweepX + 70, 0);
         grad.addColorStop(0, 'rgba(217, 70, 62, 0)');
-        grad.addColorStop(0.5, 'rgba(240, 117, 108, 0.92)');
+        grad.addColorStop(0.5, 'rgba(240, 117, 108, 0.9)');
         grad.addColorStop(1, 'rgba(217, 70, 62, 0)');
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.8;
@@ -221,14 +221,14 @@
         ctx.restore();
       }
 
-      specks.forEach(function (sp, idx) {
+      specks.forEach(function (sp) {
         var homeX = sp.rx * Math.min(width * 0.9, textW + 36);
         var homeY = sp.ry * height;
         var curX = homeX + sp.ox, curY = homeY + sp.oy;
         var dmx = curX - pointer.x, dmy = curY - pointer.y;
         var dm = Math.sqrt(dmx * dmx + dmy * dmy);
         if (dm < 190 && dm > 1) {
-          var force = ((190 - dm) / 190) * 1.4;
+          var force = ((190 - dm) / 190) * 1.3;
           sp.vx += (dmx / dm) * force;
           sp.vy += (dmy / dm) * force;
         }
@@ -240,8 +240,8 @@
         sp.oy += sp.vy;
 
         var fx = homeX + sp.ox, fy = homeY + sp.oy;
-        ctx.strokeStyle = 'rgba(232, 93, 84, 0.55)';
-        ctx.fillStyle = 'rgba(250, 246, 240, 0.75)';
+        ctx.strokeStyle = 'rgba(232, 93, 84, 0.45)';
+        ctx.fillStyle = 'rgba(250, 246, 240, 0.6)';
         if (sp.isPlus) {
           ctx.beginPath();
           ctx.moveTo(fx - 3, fy); ctx.lineTo(fx + 3, fy);
@@ -250,51 +250,44 @@
         } else {
           ctx.fillRect(fx - 1.5, fy - 1.5, 3, 3);
         }
-        if (dm < 120 && idx % 4 === 0) {
-          ctx.font = '500 9.5px "JetBrains Mono", monospace';
-          ctx.fillStyle = '#F0756C';
-          ctx.fillText('[' + Math.round(fx) + ':' + Math.round(fy) + ']', fx + 5, fy - 5);
-        }
       });
     }
     requestAnimationFrame(renderTechText);
   })();
 
-  /* ---------- 4. Combined 3D AeroShards + Scroll-Driven Line Streaks (#bgCanvas) ---------- */
-  (function initAeroShardsAndLineStreaks() {
+  /* ---------- 4. Subtle, Flicker-Free AeroShards Continuous Stream + Line Streaks (#bgCanvas) ---------- */
+  (function initSubtleAeroShardsStream() {
     var canvas = $('#bgCanvas');
     if (!canvas || !window.THREE) return;
 
     try {
       var THREE = window.THREE;
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, 34);
+      var camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 32);
 
-      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+      var isMobile = window.innerWidth < 768;
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobile, powerPreference: 'high-performance' });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.4 : 1.8));
 
-      // Lighting for Glass/Crystal AeroShards
-      var ambLight = new THREE.AmbientLight(0x240c0f, 1.6);
-      scene.add(ambLight);
-      var dirLight1 = new THREE.DirectionalLight(0xd9463e, 2.8);
-      dirLight1.position.set(15, 20, 18);
-      scene.add(dirLight1);
-      var dirLight2 = new THREE.DirectionalLight(0xfaf6f0, 1.6);
-      dirLight2.position.set(-18, -12, 14);
-      scene.add(dirLight2);
+      // Soft, Non-Flickering Hemisphere + Ambient Lighting (Eliminates facet specular flashing on mobile/desktop)
+      var hemiLight = new THREE.HemisphereLight(0xfaf6f0, 0x1a0709, 1.35);
+      scene.add(hemiLight);
+      var softDirLight = new THREE.DirectionalLight(0xd9463e, 1.15);
+      softDirLight.position.set(8, 12, 20);
+      scene.add(softDirLight);
 
-      var masterGroup = new THREE.Group();
-      scene.add(masterGroup);
+      var streamGroup = new THREE.Group();
+      scene.add(streamGroup);
 
-      var colorCrimson = new THREE.Color('#D9463E');
-      var colorRose = new THREE.Color('#F0756C');
+      var colorShardPrimary = new THREE.Color('#D9463E');
+      var colorShardAccent = new THREE.Color('#F0756C');
       var colorIvory = new THREE.Color('#FAF6F0');
 
-      // A. 28 Dynamic Scroll-Driven Line Streaks
-      var STREAK_COUNT = 28;
-      var SEGMENTS = 40;
+      // A. 16 Whisper-Thin Architectural Flow Streaks along the stream
+      var STREAK_COUNT = 16;
+      var SEGMENTS = 44;
       var streaks = [];
 
       for (var i = 0; i < STREAK_COUNT; i++) {
@@ -302,202 +295,189 @@
         var positions = new Float32Array(SEGMENTS * 3);
         geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         var mat = new THREE.LineBasicMaterial({
-          color: i % 2 === 0 ? colorCrimson.clone() : colorRose.clone(),
+          color: i % 2 === 0 ? colorShardPrimary.clone() : colorShardAccent.clone(),
           transparent: true,
-          opacity: 0.25 + (i % 5) * 0.04
+          opacity: 0.14 + (i % 4) * 0.03
         });
         var line = new THREE.Line(geo, mat);
-        masterGroup.add(line);
+        streamGroup.add(line);
         streaks.push({
           geo: geo,
           mat: mat,
           index: i,
-          angleOffset: (i / STREAK_COUNT) * Math.PI * 2,
-          radiusBase: 10.0 + (i % 6) * 1.85
+          laneOffset: ((i / (STREAK_COUNT - 1)) - 0.5) * 14
         });
       }
 
-      // B. 420 Faceted 3D AeroShards (InstancedMesh for Locked 120fps)
-      var SHARD_COUNT = window.innerWidth < 640 ? 220 : 420;
-      var shardGeo = new THREE.OctahedronGeometry(0.42, 0);
-      // Stretch into sharp aerodynamic crystal shards
-      shardGeo.scale(0.55, 2.1, 0.35);
+      // B. Cohesive AeroShards Stream (Smooth Lambert Glass-Tinted Shards — Zero Flickering)
+      var SHARD_COUNT = isMobile ? 320 : 650;
+      var shardGeo = new THREE.OctahedronGeometry(0.28, 0);
+      shardGeo.scale(0.38, 1.95, 0.22); // Slender aerodynamic needles/shards
+      shardGeo.computeVertexNormals();
 
-      var shardMat = new THREE.MeshPhysicalMaterial({
+      var shardMat = new THREE.MeshLambertMaterial({
         color: 0xd9463e,
-        emissive: 0x3a090d,
-        roughness: 0.18,
-        metalness: 0.35,
-        transmission: 0.45,
+        emissive: 0x26070a,
         transparent: true,
-        opacity: 0.82,
-        flatShading: true
+        opacity: 0.36
       });
 
       var shardMesh = new THREE.InstancedMesh(shardGeo, shardMat, SHARD_COUNT);
-      masterGroup.add(shardMesh);
+      streamGroup.add(shardMesh);
 
-      var shardData = [];
+      var shardParticles = [];
       var dummy = new THREE.Object3D();
       for (var s = 0; s < SHARD_COUNT; s++) {
-        var u = (s / SHARD_COUNT) - 0.5;
-        var angle = (s * 0.38) % (Math.PI * 2);
-        var rad = 9.0 + (s % 9) * 1.8;
-        shardData.push({
-          u: u,
-          angle: angle,
-          rad: rad,
-          rotX: Math.random() * Math.PI,
-          rotY: Math.random() * Math.PI,
-          rotZ: Math.random() * Math.PI,
-          scale: 0.55 + (s % 5) * 0.22
+        shardParticles.push({
+          progress: (s / SHARD_COUNT), // 0..1 position along the continuous stream
+          speed: 0.00045 + (s % 7) * 0.00004, // Consistent, gentle stream velocity
+          laneY: (( (s * 17) % 100 ) / 100 - 0.5) * 18,
+          laneZ: (( (s * 31) % 100 ) / 100 - 0.5) * 12,
+          phase: (s * 0.25) % (Math.PI * 2),
+          scale: 0.45 + (s % 5) * 0.16
         });
       }
 
-      // C. 120 '+' Precision Markers (markers="plus")
+      // C. Subtle '+' Precision Markers drifting within the stream
       var plusCanvas = document.createElement('canvas');
       plusCanvas.width = 32; plusCanvas.height = 32;
       var pCtx = plusCanvas.getContext('2d');
       pCtx.strokeStyle = '#F0756C';
-      pCtx.lineWidth = 2.4;
+      pCtx.lineWidth = 2;
       pCtx.beginPath();
-      pCtx.moveTo(16, 6); pCtx.lineTo(16, 26);
-      pCtx.moveTo(6, 16); pCtx.lineTo(26, 16);
+      pCtx.moveTo(16, 8); pCtx.lineTo(16, 24);
+      pCtx.moveTo(8, 16); pCtx.lineTo(24, 16);
       pCtx.stroke();
       var plusTex = new THREE.CanvasTexture(plusCanvas);
 
-      var plusCount = 120;
+      var plusCount = isMobile ? 35 : 65;
       var plusPos = new Float32Array(plusCount * 3);
-      for (var k = 0; k < plusCount; k++) {
-        var pa = (k / plusCount) * Math.PI * 2;
-        var pr = 11 + (k % 7) * 2.2;
-        plusPos[k * 3] = Math.cos(pa) * pr;
-        plusPos[k * 3 + 1] = ((k / plusCount) - 0.5) * 38;
-        plusPos[k * 3 + 2] = Math.sin(pa) * pr * 0.55;
-      }
       var plusGeo = new THREE.BufferGeometry();
       plusGeo.setAttribute('position', new THREE.BufferAttribute(plusPos, 3));
       var plusMat = new THREE.PointsMaterial({
-        size: 0.72,
+        size: 0.55,
         map: plusTex,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.24,
         depthWrite: false
       });
-      masterGroup.add(new THREE.Points(plusGeo, plusMat));
+      streamGroup.add(new THREE.Points(plusGeo, plusMat));
 
-      // State variables for intro, scroll, mouse, click pulse, and holdToGather
-      var introProgress = 0.05; // intro animation 0 -> 1
-      var targetScroll = 0, currentScroll = 0;
-      var targetColorSwap = 0, currentColorSwap = 0;
+      var streamTime = 0;
+      var introScale = 0.1;
+      var targetScroll = 0, smoothScroll = 0;
+      var targetColorSwap = 0, smoothColorSwap = 0;
       var curMouseX = 0, curMouseY = 0;
       var gatherStrength = 0, isHolding = false, pulseWave = 0;
-      var forceRender = true;
 
-      function updateSceneGeometry(scrollVal, swapVal, introVal) {
-        var widen = (0.3 + introVal * 0.7) * (1.0 + scrollVal * 1.55 + pulseWave * 0.4 - gatherStrength * 0.48);
+      // Helper: coherent S-curve stream path (billow={1}, twist={1}, spread={1})
+      function getStreamPoint(u, laneOffset, zOffset, scrollFactor, t) {
+        var spanX = 52;
+        var x = (u - 0.5) * spanX;
+        var widen = 1.0 + scrollFactor * 0.55 + pulseWave * 0.25 - gatherStrength * 0.35;
+        var billowWave = Math.sin(u * Math.PI * 2.2 - t * 0.8) * 3.8;
+        var twistAngle = (u - 0.5) * (1.2 + scrollFactor * 1.4);
 
-        masterGroup.rotation.z = scrollVal * Math.PI * 1.4 + curMouseX * 0.08;
-        masterGroup.rotation.y = scrollVal * Math.PI * 0.85 + curMouseX * 0.14;
-        masterGroup.rotation.x = -curMouseY * 0.1;
-        masterGroup.position.x = 4.0 - scrollVal * 2.2;
+        var rotatedY = laneOffset * Math.cos(twistAngle) - zOffset * Math.sin(twistAngle);
+        var rotatedZ = laneOffset * Math.sin(twistAngle) + zOffset * Math.cos(twistAngle);
 
-        // Swap colors between Soft Deep Red and Warm Ivory across sections
-        var primaryCol = colorCrimson.clone().lerp(colorIvory, swapVal);
-        var secondaryCol = colorRose.clone().lerp(colorCrimson, swapVal);
+        var y = (rotatedY * widen) + billowWave;
+        var z = (rotatedZ * 0.65) + Math.cos(u * Math.PI * 1.8 - t * 0.6) * 2.5;
+        return { x: x, y: y, z: z, slope: Math.cos(u * Math.PI * 2.2 - t * 0.8) * 0.28 };
+      }
+
+      function tickStream() {
+        requestAnimationFrame(tickStream);
+
+        streamTime += reduce ? 0 : 0.012;
+        if (introScale < 0.999) introScale += (1 - introScale) * 0.05;
+        else introScale = 1;
+
+        var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        targetScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+        smoothScroll += (targetScroll - smoothScroll) * 0.08;
+        smoothColorSwap += (targetColorSwap - smoothColorSwap) * 0.06;
+        curMouseX += (mouseNormX - curMouseX) * 0.06;
+        curMouseY += (mouseNormY - curMouseY) * 0.06;
+        gatherStrength += ((isHolding ? 1 : 0) - gatherStrength) * 0.08;
+        pulseWave *= 0.9;
+
+        // Subtle scroll rotation + parallax={0.5}
+        streamGroup.rotation.z = -0.18 + smoothScroll * 0.55 + curMouseX * 0.04;
+        streamGroup.rotation.y = smoothScroll * 0.35 + curMouseX * 0.08;
+        streamGroup.rotation.x = -curMouseY * 0.06;
+        streamGroup.position.x = 3.5 - smoothScroll * 2.0;
+
+        // Smooth lighting & color transition as viewer scrolls down
+        var primaryCol = colorShardPrimary.clone().lerp(colorIvory, smoothColorSwap);
+        var accentCol = colorShardAccent.clone().lerp(colorShardPrimary, smoothColorSwap);
         shardMat.color.copy(primaryCol);
+        softDirLight.color.copy(accentCol);
 
-        // Update 28 Line Streaks in-place
+        // 1. Update Continuous Flow Streaks
         for (var i = 0; i < STREAK_COUNT; i++) {
           var st = streaks[i];
-          st.mat.color.copy(i % 2 === 0 ? primaryCol : secondaryCol);
+          st.mat.color.copy(i % 2 === 0 ? primaryCol : accentCol);
           var pos = st.geo.attributes.position.array;
-          var baseA = st.angleOffset;
-          var r = st.radiusBase * widen;
-
           for (var p = 0; p < SEGMENTS; p++) {
-            var u = (p / (SEGMENTS - 1)) - 0.5;
-            var twist = u * (1.8 + scrollVal * 3.6);
-            var a = baseA + twist;
-            var localR = r * (1.0 + Math.abs(u) * scrollVal * 0.85);
-            pos[p * 3] = Math.cos(a) * localR;
-            pos[p * 3 + 1] = u * (34 + scrollVal * 18) * introVal;
-            pos[p * 3 + 2] = Math.sin(a) * localR * 0.55;
+            var u = p / (SEGMENTS - 1);
+            var pt = getStreamPoint(u, st.laneOffset, 0, smoothScroll, streamTime);
+            pos[p * 3] = pt.x;
+            pos[p * 3 + 1] = pt.y * introScale;
+            pos[p * 3 + 2] = pt.z;
           }
           st.geo.attributes.position.needsUpdate = true;
         }
 
-        // Update 420 3D AeroShards along the twisting streams
+        // 2. Update Continuous AeroShards Stream (Aligned tangentially to the flow — Zero Flicker)
         for (var s = 0; s < SHARD_COUNT; s++) {
-          var d = shardData[s];
-          var twistS = d.u * (2.0 + scrollVal * 4.0);
-          var aS = d.angle + twistS + scrollVal * 2.2;
-          var rS = d.rad * widen * (1.0 + Math.abs(d.u) * scrollVal * 0.65);
+          var sp = shardParticles[s];
+          if (!reduce) {
+            sp.progress += sp.speed;
+            if (sp.progress > 1) sp.progress -= 1;
+          }
 
-          var sx = Math.cos(aS) * rS;
-          var sy = d.u * (36 + scrollVal * 16) * introVal;
-          var sz = Math.sin(aS) * rS * 0.6;
+          var ptS = getStreamPoint(sp.progress, sp.laneY, sp.laneZ, smoothScroll, streamTime);
+          var sx = ptS.x;
+          var sy = ptS.y * introScale;
+          var sz = ptS.z;
 
-          // Mouse parallax & holdToGather pull
           if (gatherStrength > 0.01) {
-            sx = sx * (1 - gatherStrength * 0.55) + curMouseX * 8 * gatherStrength;
-            sy = sy * (1 - gatherStrength * 0.55) - curMouseY * 6 * gatherStrength;
+            sx = sx * (1 - gatherStrength * 0.45) + curMouseX * 6 * gatherStrength;
+            sy = sy * (1 - gatherStrength * 0.45) - curMouseY * 5 * gatherStrength;
           }
 
           dummy.position.set(sx, sy, sz);
+          // Align shard smoothly along the stream tangent (no rapid spinning that causes flickering)
           dummy.rotation.set(
-            d.rotX + scrollVal * 3.2 + curMouseY * 0.3,
-            d.rotY + scrollVal * 2.6 + curMouseX * 0.3,
-            d.rotZ + aS
+            0.25 + Math.sin(sp.phase + streamTime * 0.5) * 0.15,
+            0.15,
+            ptS.slope - Math.PI * 0.5
           );
-          var sc = d.scale * introVal * (1 + pulseWave * 0.35);
+
+          // depthOfField={0.75} edge & depth attenuation
+          var edgeFade = Math.sin(sp.progress * Math.PI);
+          var sc = sp.scale * edgeFade * introScale * (1 + pulseWave * 0.25);
           dummy.scale.set(sc, sc, sc);
           dummy.updateMatrix();
           shardMesh.setMatrixAt(s, dummy.matrix);
         }
         shardMesh.instanceMatrix.needsUpdate = true;
 
+        // 3. Update '+' Precision Markers along the stream
+        var pArr = plusGeo.attributes.position.array;
+        for (var k = 0; k < plusCount; k++) {
+          var pu = ((k / plusCount) + streamTime * 0.025) % 1;
+          var pLane = ((k % 9) - 4) * 3.2;
+          var mPt = getStreamPoint(pu, pLane, 1.5, smoothScroll, streamTime);
+          pArr[k * 3] = mPt.x;
+          pArr[k * 3 + 1] = mPt.y * introScale;
+          pArr[k * 3 + 2] = mPt.z;
+        }
+        plusGeo.attributes.position.needsUpdate = true;
+
         renderer.render(scene, camera);
-      }
-
-      function tickBackground() {
-        requestAnimationFrame(tickBackground);
-
-        var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-        targetScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-
-        if (introProgress < 0.999) {
-          introProgress += (1 - introProgress) * 0.06;
-        } else {
-          introProgress = 1;
-        }
-
-        var dScroll = targetScroll - currentScroll;
-        var dSwap = targetColorSwap - currentColorSwap;
-        var dMouseX = mouseNormX - curMouseX;
-        var dMouseY = mouseNormY - curMouseY;
-        var dGather = (isHolding ? 1 : 0) - gatherStrength;
-
-        // Render only when scrolling, intro-animating, moving cursor, pulsing, or holding
-        if (
-          introProgress < 1 ||
-          Math.abs(dScroll) > 0.00015 ||
-          Math.abs(dSwap) > 0.002 ||
-          Math.abs(dMouseX) > 0.002 ||
-          Math.abs(dMouseY) > 0.002 ||
-          Math.abs(dGather) > 0.004 ||
-          pulseWave > 0.004 ||
-          forceRender
-        ) {
-          currentScroll += dScroll * 0.11;
-          currentColorSwap += dSwap * 0.08;
-          curMouseX += dMouseX * 0.08;
-          curMouseY += dMouseY * 0.08;
-          gatherStrength += dGather * 0.1;
-          pulseWave *= 0.88;
-          forceRender = false;
-          updateSceneGeometry(currentScroll, currentColorSwap, introProgress);
-        }
       }
 
       var colorSections = $$('[data-color-mode]');
@@ -512,7 +492,7 @@
         });
 
         if (activeMode === 'ivory-streaks') {
-          targetColorSwap = 0.85;
+          targetColorSwap = 0.78;
           document.documentElement.style.setProperty('--dyn-heading', '#F0756C');
           document.documentElement.style.setProperty('--dyn-accent', '#FAF6F0');
         } else {
@@ -523,108 +503,20 @@
       }
 
       window.addEventListener('scroll', syncChapterColorSwap, { passive: true });
-      window.addEventListener('pointerdown', function () { isHolding = true; pulseWave = 1.0; });
+      window.addEventListener('pointerdown', function () { isHolding = true; pulseWave = 0.85; });
       window.addEventListener('pointerup', function () { isHolding = false; });
       window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        forceRender = true;
       });
 
       syncChapterColorSwap();
-      tickBackground();
+      tickStream();
     } catch (e) {}
   })();
 
-  /* ---------- 5. RubberSegment Component (stretch={100}, squash={3}, glide={75}, draggable) ---------- */
-  (function initRubberSegment() {
-    var seg = $('#pepsicoRubberSegment');
-    var thumb = $('#pepsicoRubberThumb');
-    if (!seg || !thumb) return;
-
-    var slots = $$('.rubber-slot', seg);
-    var valEl = $('#pepsicoDynamicVal');
-    var unitEl = $('#pepsicoDynamicUnit');
-    var subEl = $('#pepsicoDynamicSub');
-    var beforeEl = $('#pepsicoBeforeLabel');
-    var afterEl = $('#pepsicoAfterLabel');
-
-    var PERIOD_DATA = {
-      Day:   { val: '2.7',   unit: 'hrs / day', sub: '1.5 hrs saved in GTM + 1.2 hrs saved in Tax every workday', before: '1.2 Hours / day', after: '8 Seconds' },
-      Week:  { val: '14.8',  unit: 'hrs / wk',  sub: '8.25 hrs saved in GTM + 6.6 hrs saved in Tax every week',   before: '6.5 Hours / wk',  after: '48 Seconds' },
-      Month: { val: '59.4',  unit: 'hrs / mo',  sub: '33 hrs saved in Go-To-Market + 26.4 hrs saved in Tax every month', before: '26 Hours / mo', after: '192 Seconds' },
-      Year:  { val: '712.8', unit: 'hrs / yr',  sub: 'Over 17 full work-weeks returned to PepsiCo every year',    before: '312 Hours / yr',  after: '38 Minutes / yr' }
-    };
-
-    var activeIdx = 2; // Default "Month"
-    var thumbX = 200; // in percent (0%, 100%, 200%, 300%)
-    var targetX = 200;
-    var velX = 0;
-    var dragging = false;
-
-    function selectSlot(idx) {
-      activeIdx = Math.max(0, Math.min(3, idx));
-      targetX = activeIdx * 100;
-      slots.forEach(function (s, i) {
-        s.classList.toggle('is-active', i === activeIdx);
-      });
-      var period = slots[activeIdx].getAttribute('data-period');
-      var d = PERIOD_DATA[period];
-      if (d && valEl) {
-        valEl.textContent = d.val;
-        unitEl.textContent = d.unit;
-        subEl.textContent = d.sub;
-        beforeEl.textContent = d.before;
-        afterEl.textContent = d.after;
-      }
-      trackEvent('rubber_segment_change', { period: period });
-    }
-
-    slots.forEach(function (s, idx) {
-      s.addEventListener('click', function () { selectSlot(idx); });
-    });
-
-    seg.addEventListener('pointerdown', function (e) {
-      dragging = true;
-      try { seg.setPointerCapture(e.pointerId); } catch (err) {}
-    });
-    seg.addEventListener('pointermove', function (e) {
-      if (!dragging) return;
-      var r = seg.getBoundingClientRect();
-      var rel = Math.max(0, Math.min(0.999, (e.clientX - r.left) / r.width));
-      targetX = rel * 300;
-    });
-    function endRubberDrag(e) {
-      if (!dragging) return;
-      dragging = false;
-      try { seg.releasePointerCapture(e.pointerId); } catch (err) {}
-      var r = seg.getBoundingClientRect();
-      var rel = Math.max(0, Math.min(0.999, (e.clientX - r.left) / r.width));
-      selectSlot(Math.floor(rel * 4));
-    }
-    seg.addEventListener('pointerup', endRubberDrag);
-    seg.addEventListener('pointercancel', endRubberDrag);
-
-    function tickRubber() {
-      var diff = targetX - thumbX;
-      if (Math.abs(diff) > 0.05 || Math.abs(velX) > 0.05) {
-        velX = velX * 0.72 + diff * 0.18;
-        thumbX += velX;
-        // Elastic stretch={100} and squash={3} proportional to velocity
-        var speed = Math.min(1, Math.abs(velX) / 28);
-        var scaleX = 1 + speed * 0.34;
-        var scaleY = 1 - speed * 0.14;
-        thumb.style.transform = 'translate3d(' + thumbX.toFixed(2) + '%, 0, 0) scale(' + scaleX.toFixed(3) + ', ' + scaleY.toFixed(3) + ')';
-      } else {
-        thumb.style.transform = 'translate3d(' + targetX + '%, 0, 0) scale(1, 1)';
-      }
-      requestAnimationFrame(tickRubber);
-    }
-    requestAnimationFrame(tickRubber);
-  })();
-
-  /* ---------- 6. Experience: FlexCarousel (preset="liquid", intro="rise", captureWheel) ---------- */
+  /* ---------- 5. Experience: FlexCarousel (preset="liquid", intro="rise", captureWheel) ---------- */
   function initials(name) {
     return (name || '').split(/\s+/).filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   }
@@ -711,7 +603,6 @@
       }
     }
 
-    // Trigger intro="rise" staggered entrance when #experience scrolls into view
     if ('IntersectionObserver' in window) {
       var expObserver = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting && !introDone) {
@@ -730,7 +621,6 @@
       cards.forEach(function (c) { c.style.opacity = '1'; c._risen = true; });
     }
 
-    // captureWheel: step smoothly through cards on wheel, releasing at boundaries
     var lastWheelTime = 0;
     stage.addEventListener('wheel', function (e) {
       var dy = e.deltaY || e.deltaX;
@@ -746,7 +636,6 @@
       }
     }, { passive: false });
 
-    // Drag support
     var isDragging = false, startX = 0;
     stage.addEventListener('pointerdown', function (e) {
       isDragging = true; startX = e.clientX;
@@ -777,17 +666,15 @@
         var offset = i - smoothIndex;
         var absOff = Math.abs(offset);
 
-        // Liquid lens math: lensWidth={0.74}, lensHeight={1.18}, squeeze={0.2}, tilt={62}, bend={0.34}, curl="twist"
         var lensFactor = Math.max(0, 1 - absOff * 0.85);
         var squeezeX = 1 - Math.min(0.24, absOff * 0.12) + lensFactor * 0.14;
         var scaleY = 1 - Math.min(0.22, absOff * 0.09) + lensFactor * 0.16;
 
-        // Compress spacing slightly for outer squeezed cards
         var sign = offset < 0 ? -1 : 1;
         var tx = offset * baseSpacing - sign * Math.max(0, absOff - 1) * 28;
-        var tz = lensFactor * 95 - absOff * 55; // bend={0.34}
-        var rotY = Math.max(-62, Math.min(62, -offset * 24)); // tilt={62}
-        var rotZ = offset * 2.8; // curl="twist"
+        var tz = lensFactor * 95 - absOff * 55;
+        var rotY = Math.max(-62, Math.min(62, -offset * 24));
+        var rotZ = offset * 2.8;
 
         card.style.transform =
           'translate3d(' + tx.toFixed(1) + 'px, 0px, ' + tz.toFixed(1) + 'px) ' +
@@ -802,16 +689,16 @@
     requestAnimationFrame(tickFlexCarousel);
   })();
 
-  /* ---------- 7. Craft Curtains + JellyRadio (swell={0.2}, barge={6}, shrink={0.05}, stiffness={580}) ---------- */
+  /* ---------- 6. Craft Curtains + JellyRadio Domain Filter ---------- */
   var CURTAINS = [
     {
       num: '01',
       category: 'Automation',
       title: 'Enterprise Excel & VBA Systems',
-      headline: 'Turning 36-hour manual spreadsheet routines into 15-minute in-memory engines.',
-      body: 'Built seven production tools using Scripting.Dictionary hash lookups, dynamic memory arrays, and custom XML ribbons (.xlam) so non-technical teams can run complex audits in one click.',
+      headline: 'Turning 36-hour manual Go-To-Market routines into 15-minute in-memory engines.',
+      body: 'Built seven production tools using Scripting.Dictionary hash lookups, dynamic memory arrays, and custom XML ribbons (.xlam) so commercial and tax teams run complex audits in one click.',
       tools: 'VBA · Memory Arrays · Custom XML Ribbons · CNIC & Barcode Validation · Power BI & DAX',
-      proofLabel: 'Inspect PepsiCo Suite ↑',
+      proofLabel: 'PepsiCo Case Study ↑',
       proofHref: '#pepsico'
     },
     {
@@ -821,17 +708,17 @@
       headline: 'Models that generalize to unseen companies instead of flattering themselves.',
       body: 'Engineered L2 Logistic Regression and Random Forest triage pipelines evaluated under strict client-grouped holdout splits (GroupShuffleSplit) and a quarantined leakage harness across 30,000 URLs.',
       tools: 'Python · pandas · scikit-learn · Client-Grouped Validation · NIST AI RMF Governance',
-      proofLabel: 'Inspect FlyRank Research ↑',
+      proofLabel: 'FlyRank Research ↑',
       proofHref: '#flyrank'
     },
     {
       num: '03',
       category: 'Finance & ERP',
       title: 'Tax, SAP & ERP Reconciliation',
-      headline: 'Compressing 25-hour line-by-line SAP and FBR tax audits into 192 seconds.',
+      headline: 'Compressing 26-hour line-by-line SAP and FBR tax audits into 192 seconds.',
       body: 'Designed tolerance-based matching engines for PepsiCo Tax, monitored dealer billing across 3,500 dealers in SAP at FFC, and executed SAP Ariba international sourcing at OGDCL.',
       tools: 'SAP ERP · SAP Ariba · FBR Tax Portal Reconciliation · CPR Standardization',
-      proofLabel: 'Inspect Tax Engine ↑',
+      proofLabel: 'PepsiCo Tax Suite ↑',
       proofHref: '#pepsico'
     },
     {
@@ -841,7 +728,7 @@
       headline: 'Two-sided web platforms and autonomous background agents.',
       body: 'Founded Outfield (React, Vite, Supabase) for live sports venue booking in Karachi, and deployed self-hosted n8n + Docker + Groq LLM pipelines and local MCP filesystem agents.',
       tools: 'React · Supabase · n8n · Docker · Groq API · Claude Code & Subagents (MCP)',
-      proofLabel: 'Inspect Outfield & Agents ↑',
+      proofLabel: 'Outfield & Agents ↑',
       proofHref: '#outfield'
     },
     {
@@ -851,7 +738,7 @@
       headline: 'Institutional risk frameworks and independent technical trading.',
       body: 'Worked across operational, credit, liquidity, and environmental risk (Basel II) at Askari Bank Head Office, alongside active technical and fundamental equity trading on the PSX since 2025.',
       tools: 'Basel II & RCSA · SME Credit Analysis · RSI, MACD & Bollinger Bands · Financial Statements',
-      proofLabel: 'Inspect Track Record ↑',
+      proofLabel: 'Track Record ↑',
       proofHref: '#experience'
     }
   ];
@@ -875,7 +762,7 @@
             '<span class="mono-meta text-xs swap-accent font-bold shrink-0">' + c.num + '</span>' +
             '<h3 class="curtain-title font-editorial text-xl sm:text-3xl md:text-4xl text-ivory tracking-tight truncate">' + c.title + '</h3>' +
           '</div>' +
-          '<span class="mono-meta text-[11px] uppercase tracking-widest swap-accent shrink-0 hidden sm:inline">' + c.category + ' +</span>' +
+          '<span class="mono-meta text-[11px] uppercase tracking-widest swap-accent shrink-0 hidden sm:inline">' + c.category + '</span>' +
         '</div>' +
         '<div class="curtain-drawer">' +
           '<div class="curtain-drawer-inner pl-8 sm:pl-12 pt-5 pr-4 grid grid-cols-1 lg:grid-cols-12 gap-5 items-end">' +
@@ -902,7 +789,6 @@
   }
   renderCurtains();
 
-  // JellyRadio Physics Engine (swell={0.2}, barge={6}, shrink={0.05}, stagger={22})
   function bindJellyGroup(groupEl, onSelect) {
     if (!groupEl) return;
     var chips = $$('.jelly-chip', groupEl);
@@ -915,13 +801,11 @@
 
         if (window.gsap && !reduce) {
           if (dist === 0) {
-            // Selected chip swells (swell={0.2}) and bounces with high stiffness
             window.gsap.fromTo(chip,
               { scaleX: 1.2, scaleY: 0.86 },
               { scaleX: 1, scaleY: 1, x: 0, duration: 0.55, ease: 'elastic.out(1.2, 0.35)' }
             );
           } else {
-            // Neighbor chips barge outward (barge={6}) and shrink slightly (shrink={0.05})
             var dir = dist < 0 ? -1 : 1;
             var bargePx = (dir * 6) / Math.abs(dist);
             window.gsap.fromTo(chip,
@@ -948,15 +832,7 @@
     trackEvent('jelly_filter_change', { filter: activeCategoryFilter });
   });
 
-  bindJellyGroup($('#jellyViewGroup'), function (chip) {
-    var mode = chip.getAttribute('data-jelly-view');
-    if (curtainList) {
-      curtainList.classList.toggle('is-grid-mode', mode === 'grid');
-    }
-    trackEvent('jelly_view_change', { view: mode });
-  });
-
-  /* ---------- 8. Certificates: 3D CircularCarousel (intro="rise" + Constant Drift) ---------- */
+  /* ---------- 7. Certificates: 3D CircularCarousel (intro="rise" + Constant Drift) ---------- */
   if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
@@ -1074,14 +950,11 @@
       card._certData = c;
       card._baseAngle = idx * stepDeg;
       card._shadeEl = card.querySelector('.cyl-shade');
-      // intro="rise" vertical offset per card (starts at 160px below and springs to 0)
       card._riseY = 160;
-      card._riseProgress = 0;
       cylRotor.appendChild(card);
       cylCards.push(card);
     });
 
-    // Observe Certificates section to trigger intro="rise" and gate rendering when offscreen
     var certIntroTriggered = false;
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
@@ -1103,7 +976,7 @@
     var targetSnapY = null;
     var isDragging = false;
     var lastX = 0, lastT = 0, movedDist = 0, clickedCard = null;
-    var driftSpeed = -0.15; // Constant non-stop drift regardless of cursor hover!
+    var driftSpeed = -0.15;
 
     var cachedRadius = 560;
     function updateCylRadius() {
@@ -1174,7 +1047,6 @@
             targetSnapY = null;
           }
         } else {
-          // Constant drift + user drag momentum (never stops when cursor hovers!)
           rotY += (reduce ? 0 : driftSpeed) + velY;
           velY *= 0.94;
           if (Math.abs(velY) < 0.01) velY = 0;
@@ -1211,7 +1083,7 @@
     requestAnimationFrame(tickCylinder);
   }
 
-  /* ---------- 9. Frameless Fluid FLIP Lightbox Controller ---------- */
+  /* ---------- 8. Frameless Fluid FLIP Lightbox Controller ---------- */
   var lightbox = $('#certLightbox');
   var lightboxCard = $('#certLightboxCard');
   var modalCanvas = $('#certModalCanvas');
@@ -1288,7 +1160,7 @@
     if (e.key === 'Escape') closeCertModal();
   });
 
-  /* ---------- 10. GSAP ScrollTrigger Choreography & Chapter Compass ---------- */
+  /* ---------- 9. GSAP ScrollTrigger Choreography & Chapter Compass ---------- */
   function initGSAPChoreography() {
     if (!window.gsap) return;
     var gsap = window.gsap;
@@ -1373,7 +1245,7 @@
     compassLabel.textContent = currentName;
   }, { passive: true });
 
-  /* ---------- 11. About & Contact ---------- */
+  /* ---------- 10. About & Contact ---------- */
   var factsEl = $('#aboutFacts');
   if (factsEl && S.about && Array.isArray(S.about.facts)) {
     S.about.facts.forEach(function (f) {
